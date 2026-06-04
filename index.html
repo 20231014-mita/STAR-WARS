@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Star Wars: A New Hope - Ultimate 3D Interactive</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tone.js for Audio -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <!-- Three.js for 3D Minigames -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #050505;
+            color: #e2e8f0;
+            overflow: hidden; 
+            touch-action: none; /* ゲーム操作のためのデフォルトアクション防止 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-starwars {
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 3px;
+        }
+
+        /* カスタムスクロールバー */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+        ::-webkit-scrollbar-thumb { background: rgba(252, 227, 0, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(252, 227, 0, 0.8); }
+
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            z-index: 100; pointer-events: none; opacity: 0.3;
+        }
+
+        /* 既存の星空背景アニメーション */
+        #star-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; background: radial-gradient(circle at center, #111 0%, #000 100%);
+            overflow: hidden; will-change: transform;
+        }
+        .layer { position: absolute; width: 200vw; height: 200vh; background: transparent; will-change: transform; }
+        .stars-sm {
+            background-image: radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 50px 160px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 200px 200px; animation: slowPan 120s linear infinite;
+        }
+        .stars-md {
+            background-image: radial-gradient(2px 2px at 150px 150px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 60px 120px, #eee, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 300px 300px; animation: slowPan 80s linear infinite;
+        }
+        @keyframes slowPan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50vw, -50vh); }
+        }
+        .hyperspace-active #star-container { animation: stretchStars 2.5s forwards cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes stretchStars {
+            0% { transform: scale(1); filter: blur(0px); opacity: 1; }
+            40% { transform: scale(4) translateZ(100px); filter: blur(5px) brightness(2.5); opacity: 0.9; }
+            100% { transform: scale(20) translateZ(500px); filter: blur(20px) brightness(4); opacity: 0; }
+        }
+
+        /* UI コンポーネント */
+        .game-panel {
+            background: linear-gradient(135deg, rgba(15, 15, 20, 0.95) 0%, rgba(5, 5, 10, 0.98) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(252, 227, 0, 0.15);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 1), inset 0 0 30px rgba(255,255,255,0.03);
+        }
+
+        .sw-btn {
+            position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: linear-gradient(180deg, rgba(30,30,30,0.8) 0%, rgba(10,10,10,0.9) 100%);
+            border: 1px solid #333; transform: translateZ(0); z-index: 20;
+        }
+        .sw-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+        .sw-btn:hover::after { left: 100%; }
+        .sw-btn:hover {
+            transform: translateY(-3px) scale(1.02); border-color: rgba(252, 227, 0, 0.8); 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(252, 227, 0, 0.3);
+        }
+        .sw-btn:active { transform: translateY(1px) scale(0.98); }
+
+        .btn-jedi { border-left: 4px solid #2ecc71; color: #a8e6cf; }
+        .btn-jedi:hover { border-color: #2ecc71; background: rgba(46, 204, 113, 0.15); box-shadow: 0 0 20px rgba(46, 204, 113, 0.4); text-shadow: 0 0 8px #2ecc71; color: #fff;}
+        .btn-sith { border-left: 4px solid #e74c3c; color: #ffb3ba; }
+        .btn-sith:hover { border-color: #e74c3c; background: rgba(231, 76, 60, 0.15); box-shadow: 0 0 20px rgba(231, 76, 60, 0.4); text-shadow: 0 0 8px #e74c3c; color: #fff;}
+        .btn-rebel { border-left: 4px solid #3498db; color: #bae1ff; }
+        .btn-rebel:hover { border-color: #3498db; background: rgba(52, 152, 219, 0.15); box-shadow: 0 0 20px rgba(52, 152, 219, 0.4); text-shadow: 0 0 8px #3498db; color: #fff;}
+
+        /* オープニングクロール */
+        #crawl-container {
+            position: absolute; inset: 0; background: #000; z-index: 50;
+            display: flex; justify-content: center; overflow: hidden; perspective: 500px;
+        }
+        #crawl-content {
+            position: relative; width: 85%; max-width: 900px; color: #fce300; font-size: 2.2rem; font-weight: 700;
+            text-align: justify; letter-spacing: 6px; line-height: 1.7;
+            transform-origin: 50% 100%; animation: crawlAnim 55s linear forwards;
+            text-shadow: 0 0 8px rgba(252,227,0,0.5);
+        }
+        .crawl-subtitle { text-align: center; font-size: 3em; margin-bottom: 40px; text-transform: uppercase; }
+        @keyframes crawlAnim {
+            0% { transform: rotateX(25deg) translateY(100vh); opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: rotateX(25deg) translateY(-3000px); opacity: 0; }
+        }
+
+        /* 3Dゲームキャンバス用 */
+        #game-canvas-container {
+            position: absolute; inset: 0; z-index: 40; background-color: #000;
+            display: none; opacity: 0; transition: opacity 1s;
+        }
+        canvas { display: block; width: 100%; height: 100%; outline: none; }
+        
+        #game-hud {
+            pointer-events: none; /* クリックは下のCanvasに貫通させる */
+        }
+        .crosshair {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 30px; height: 30px;
+        }
+        .crosshair::before, .crosshair::after {
+            content: ''; position: absolute; background: rgba(255, 255, 255, 0.6);
+        }
+        .crosshair::before { top: 14px; left: 0; width: 30px; height: 2px; }
+        .crosshair::after { top: 0; left: 14px; width: 2px; height: 30px; }
+        
+        .damage-overlay {
+            position: absolute; inset: 0; background: red; opacity: 0; pointer-events: none;
+            transition: opacity 0.1s; z-index: 45; mix-blend-mode: overlay;
+        }
+        .flash-active { opacity: 0.4; }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-screen relative">
+    <!-- エフェクト -->
+    <div id="star-container"><div class="layer stars-sm"></div><div class="layer stars-md"></div></div>
+    <div class="crt-overlay"></div>
+
+    <!-- オープニングクロール -->
+    <div id="crawl-container" class="hidden">
+        <div id="crawl-content">
+            <div class="text-center mb-10 font-starwars text-xl">EPISODE IV</div>
+            <div class="crawl-subtitle font-starwars">A New Hope</div>
+            <p>内戦の時代である。反乱軍の宇宙船は秘密基地から奇襲をかけ、邪悪な銀河帝国に対し初めての勝利を収めた。</p><br>
+            <p>その戦闘中、反乱軍のスパイは帝国の究極兵器「デス・スター」の極秘設計図を盗み出すことに成功した。それは惑星をも粉々に破壊する力を持つ、アーマーで覆われた宇宙ステーションであった。</p><br>
+            <p>帝国の邪悪な手先たちに追われながらも、レイア姫は盗み出した設計図を携え、自身の宇宙船で故郷へと急いでいた。人々を救い、銀河に自由を取り戻すために……。</p>
+        </div>
+        <button id="skip-crawl-btn" class="absolute bottom-8 right-8 text-gray-400 hover:text-[#fce300] z-50 uppercase tracking-widest text-sm font-starwars p-4">Skip >></button>
+    </div>
+
+    <!-- メインHUD (テキストRPG UI) -->
+    <main id="app-container" class="flex-1 w-full max-w-5xl mx-auto my-0 md:my-6 flex flex-col game-panel md:rounded-2xl overflow-hidden relative z-10 transition-all duration-1000 opacity-0 pointer-events-none cursor-pointer">
+        <header class="flex-none bg-black/60 border-b border-[rgba(252,227,0,0.2)] p-4 flex justify-between items-center relative overflow-hidden z-20 pointer-events-none">
+            <div class="flex items-center space-x-3 z-10">
+                <i class="fab fa-galactic-republic text-[#fce300] text-2xl opacity-80"></i>
+                <h1 class="text-xl md:text-2xl text-[#fce300] font-starwars uppercase tracking-widest drop-shadow-[0_0_10px_rgba(252,227,0,0.6)]">STAR WARS</h1>
+            </div>
+            <div class="flex space-x-6 md:space-x-10 text-sm font-bold tracking-wider z-10">
+                <div class="flex flex-col items-center">
+                    <span class="text-[9px] md:text-[10px] text-gray-400 uppercase mb-1.5 tracking-widest">Alignment</span>
+                    <div class="w-28 md:w-40 h-2 bg-gray-900 rounded-full flex relative overflow-hidden border border-gray-700 shadow-inner">
+                        <div class="w-1/2 bg-gradient-to-r from-red-800 to-red-500 h-full opacity-90"></div>
+                        <div class="w-1/2 bg-gradient-to-l from-blue-800 to-blue-400 h-full opacity-90"></div>
+                        <div id="alignment-marker" class="absolute top-0 w-[3px] h-full bg-white shadow-[0_0_8px_white] transition-all duration-700 ease-out" style="left: 50%; transform: translateX(-50%);"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-none h-32 md:h-56 bg-black relative border-b border-[rgba(255,255,255,0.05)] overflow-hidden flex items-center justify-center pointer-events-none">
+            <div id="scene-bg" class="absolute inset-0 transition-all duration-1500 opacity-40 bg-gradient-to-b from-gray-900/40 to-black"></div>
+            <div id="scene-icon" class="text-7xl md:text-9xl text-white z-10 transition-all duration-1000 transform scale-100 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]"></div>
+            <div class="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,1)] z-20"></div>
+        </div>
+
+        <div id="story-scroll-area" class="flex-1 overflow-y-auto p-6 md:p-10 relative scroll-smooth bg-[rgba(0,0,0,0.2)] pointer-events-none">
+            <div id="story-text" class="text-base md:text-lg text-gray-200 min-h-full flex flex-col justify-end space-y-6 md:space-y-8 pb-4 font-medium pointer-events-auto"></div>
+        </div>
+
+        <div class="flex-none bg-black/80 border-t border-[rgba(252,227,0,0.2)] p-5 md:p-8 min-h-[120px] flex flex-col justify-center relative pointer-events-auto z-30">
+            <div id="choices-container" class="grid grid-cols-1 gap-4 w-full z-10 transition-all duration-500"></div>
+        </div>
+    </main>
+
+    <!-- 3D ミニゲームレイヤー -->
+    <div id="game-canvas-container">
+        <div id="damage-overlay" class="damage-overlay"></div>
+        <div id="game-hud" class="absolute inset-0 z-50 flex flex-col">
+            <div class="p-4 flex justify-between items-start">
+                <div class="text-[#fce300] font-starwars text-2xl drop-shadow-md">
+                    SCORE: <span id="game-score">0</span> / <span id="game-target-score">10</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-white text-xs font-bold mb-1 tracking-widest">SHIELDS</span>
+                    <div class="w-48 h-4 bg-gray-800 border border-gray-600">
+                        <div id="game-health" class="h-full bg-blue-500 w-full transition-all duration-200"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 relative">
+                <!-- クロスヘア (FPSモード用) -->
+                <div id="fps-crosshair" class="crosshair hidden"></div>
+            </div>
+            <div id="game-instructions" class="p-8 text-center text-white text-lg bg-gradient-to-t from-black to-transparent">
+                CLICK / TAP TO FIRE
+            </div>
+        </div>
+    </div>
+
+    <!-- スタート画面 -->
+    <div id="start-overlay" class="absolute inset-0 bg-[#050505] z-50 flex flex-col items-center justify-center backdrop-blur-md">
+        <h1 class="text-6xl md:text-8xl text-[#fce300] font-starwars mb-2 tracking-[0.1em] drop-shadow-[0_0_20px_rgba(252,227,0,0.6)] text-center">STAR WARS</h1>
+        <p class="text-gray-400 mb-12 font-sans tracking-[0.3em] text-sm md:text-lg uppercase text-center">Interactive 3D Adventure</p>
+        <button id="btn-begin" class="px-10 py-5 border border-[#fce300] text-[#fce300] font-bold text-xl uppercase tracking-widest hover:bg-[#fce300] hover:text-black transition-all duration-500 rounded-sm shadow-[0_0_20px_rgba(252,227,0,0.3)]">
+            SYSTEM START
+        </button>
+    </div>
+
+    <script>
+        // --- 状態管理 ---
+        let state = { alignment: 50, location: 'Tantive IV', minigameCallback: null };
+        const DOM = {
+            startOverlay: document.getElementById('start-overlay'), btnBegin: document.getElementById('btn-begin'),
+            crawlContainer: document.getElementById('crawl-container'), skipCrawlBtn: document.getElementById('skip-crawl-btn'),
+            appContainer: document.getElementById('app-container'), storyScrollArea: document.getElementById('story-scroll-area'),
+            storyText: document.getElementById('story-text'), choicesContainer: document.getElementById('choices-container'),
+            alignmentMarker: document.getElementById('alignment-marker'), sceneIcon: document.getElementById('scene-icon'),
+            sceneBg: document.getElementById('scene-bg'), body: document.body,
+            gameCanvasContainer: document.getElementById('game-canvas-container'),
+            gameScore: document.getElementById('game-score'), gameTargetScore: document.getElementById('game-target-score'),
+            gameHealth: document.getElementById('game-health'), fpsCrosshair: document.getElementById('fps-crosshair'),
+            gameInstructions: document.getElementById('game-instructions'), damageOverlay: document.getElementById('damage-overlay')
+        };
+
+        // --- オーディオエンジン (Tone.js) ---
+        let audioCtxReady = false;
+        const sfx = {}; let bgNoise, bgFilter;
+
+        async function initAudio() {
+            await Tone.start(); audioCtxReady = true;
+            bgNoise = new Tone.Noise("brown").start();
+            bgFilter = new Tone.Filter(300, "lowpass").toDestination();
+            bgNoise.connect(bgFilter); bgNoise.volume.value = -Infinity;
+
+            sfx.click = new Tone.MembraneSynth({ pitchDecay: 0.01, octaves: 2, oscillator: { type: "square" }, envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.01 } }).toDestination();
+            sfx.saber = new Tone.Synth({ oscillator: { type: "sawtooth" }, envelope: { attack: 0.1, decay: 0.4, sustain: 0, release: 0.1 } }).toDestination();
+            sfx.blaster = new Tone.MembraneSynth({ pitchDecay: 0.05, octaves: 8, oscillator: { type: "square" }, envelope: { attack: 0.001, decay: 0.2, sustain: 0, release: 0.1 } }).toDestination();
+            sfx.enemyBlaster = new Tone.MembraneSynth({ pitchDecay: 0.1, octaves: 4, oscillator: { type: "triangle" }, envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.1 } }).toDestination();
+            sfx.r2d2 = new Tone.Synth({ oscillator: { type: "sine" }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.5, release: 0.1 } }).toDestination();
+            sfx.vader = new Tone.NoiseSynth({ noise: { type: 'pink' }, envelope: { attack: 1, decay: 0.5, sustain: 1, release: 1 } }).toDestination();
+            sfx.explosion = new Tone.NoiseSynth({ noise: { type: 'brown' }, envelope: { attack: 0.01, decay: 0.8, sustain: 0, release: 0.1 } }).toDestination();
+            sfx.explosion.volume.value = -10; sfx.click.volume.value = -20; sfx.blaster.volume.value = -15; sfx.enemyBlaster.volume.value = -20;
+        }
+
+        function playSound(type) {
+            if (!audioCtxReady) return;
+            const now = Tone.now();
+            try {
+                switch(type) {
+                    case 'click': sfx.click.triggerAttackRelease("C3", "32n"); break;
+                    case 'saber': sfx.saber.triggerAttackRelease("C2", "8n"); break;
+                    case 'blaster': sfx.blaster.triggerAttackRelease("C4", "16n"); break;
+                    case 'enemyBlaster': sfx.enemyBlaster.triggerAttackRelease("G3", "16n"); break;
+                    case 'r2d2': for(let i=0; i<3; i++) setTimeout(()=>sfx.r2d2.triggerAttackRelease(["C6","E6","G6"][Math.floor(Math.random()*3)], "32n"), i*100); break;
+                    case 'vader': sfx.vader.triggerAttackRelease("2n"); break;
+                    case 'explosion': sfx.explosion.triggerAttackRelease("4n"); break;
+                    case 'hyperspace': const h = new Tone.NoiseSynth({type:"brown"}).toDestination(); h.volume.value = -8; h.triggerAttackRelease("1n"); break;
+                }
+            } catch(e) {}
+        }
+
+        // --- STREAMING_CHUNK: Defining story nodes with new branches... ---
+        const storyNodes = {
+            prologue: {
+                bg: 'from-gray-700/50 to-black', icon: 'fa-space-shuttle text-gray-400', alignTone: 'rebel',
+                text: "反乱軍の外交船タンティヴィIVが、巨大なスター・デストロイヤーに拿捕された。<br>船内の白い通路に、ストームトルーパーたちが雪崩れ込んでくる！<br>レイア姫が極秘設計図をR2-D2に託す間、ブラスターで迎撃せよ！",
+                minigame: 'fps_defense', targetScore: 5, next: 'droids_desert'
+            },
+            droids_desert: {
+                bg: 'from-yellow-700/40 to-black', icon: 'fa-sun text-yellow-500', alignTone: 'light',
+                text: "トルーパーの猛攻を凌いだものの、船は制圧された。R2-D2とC-3POは脱出ポッドで砂漠の惑星タトゥイーンへと逃れた。<br>彼らはジャワ族に捕獲され、農場の青年ルーク・スカイウォーカーに買い取られる。",
+                onEnter: () => playSound('r2d2'),
+                choices: [
+                    { text: "R2-D2を整備する", action: 'luke_farm', style: 'btn-jedi' }
+                ]
+            },
+            luke_farm: {
+                bg: 'from-orange-800/40 to-black', icon: 'fa-home text-orange-400', alignTone: 'light',
+                text: "整備中、R2-D2から美しい女性のホログラム映像が再生された。<br>しかし翌朝、R2-D2は「オビ＝ワン」を探すために単独で逃げ出してしまった！",
+                choices: [
+                    { text: "スピーダーに乗ってR2-D2を捜索する", action: 'find_r2', style: 'btn-jedi', align: +5 },
+                    { text: "厄介ごとを嫌い、農場の仕事に戻る", action: 'bad_end_farm', style: 'sw-btn text-gray-500', align: -10 }
+                ]
+            },
+            bad_end_farm: {
+                bg: 'from-red-900/50 to-black', icon: 'fa-skull text-gray-500', alignTone: 'dark',
+                text: "農場に残ることを選んだルーク。しかし翌日、ドロイドを探す帝国軍のストームトルーパー部隊が急襲。<br>平凡な日常は無残に終わった。<br><br><span class='text-red-500 font-bold'>【BAD END: 失われた希望】</span>",
+                onEnter: () => playSound('vader'),
+                choices: [{ text: "RETRY", action: 'luke_farm' }]
+            },
+            find_r2: {
+                bg: 'from-blue-900/30 to-black', icon: 'fa-jedi text-blue-400', alignTone: 'light',
+                text: "荒野でR2-D2を発見するが、タスケン・レイダーに襲われる。そこへ「オビ＝ワン・ケノービ」と名乗る老人が現れ助けられた。<br>彼はルークに父のライトセーバーを渡し、共にオルデランへ行こうと誘う。<br>その時、帝国軍が農場を襲撃した痕跡を発見する。",
+                onEnter: () => playSound('saber'),
+                choices: [
+                    { text: "復讐心を燃やし、帝国を倒すため同行する", action: 'mos_eisley', style: 'btn-sith', align: -5 },
+                    { text: "悲しみを胸に秘め、ジェダイになる決意をする", action: 'mos_eisley', style: 'btn-jedi', align: +10 }
+                ]
+            },
+            mos_eisley: {
+                bg: 'from-yellow-700/30 to-black', icon: 'fa-beer-mug-empty text-orange-400', alignTone: 'rebel',
+                text: "モス・アイズリー宇宙港の酒場で、密輸業者のハン・ソロとチューバッカに出会い、彼らの船「ミレニアム・ファルコン」を雇う。<br>しかし出港直前、ドロイドを探すストームトルーパーの部隊に発見されてしまった！",
+                choices: [
+                    { text: "ブラスターを抜き、強行突破する！", action: 'start_spaceport_battle', style: 'btn-rebel' },
+                    { text: "ファルコンの砲台を使って一掃する", action: 'start_spaceport_battle', style: 'btn-sith', align: -5 },
+                    { text: "ジェダイの心理操作で密かに脱出する", action: 'escape_stealth', style: 'btn-jedi', align: +10 }
+                ]
+            },
+            escape_stealth: {
+                bg: 'from-blue-900/40 to-black', icon: 'fa-eye-slash text-blue-300', alignTone: 'light',
+                text: "オビ＝ワンは落ち着いた声で手をかざす。「お前たちが探しているドロイドではない」<br>トルーパーたちは見事に騙され、一行は無傷で宇宙空間へと脱出した。",
+                onEnter: () => { DOM.body.classList.add('hyperspace-active'); playSound('hyperspace'); setTimeout(()=>DOM.body.classList.remove('hyperspace-active'),2500); },
+                next: 'arrive_death_star'
+            },
+            start_spaceport_battle: {
+                bg: 'from-red-800/50 to-black', icon: 'fa-crosshairs text-red-400', alignTone: 'rebel',
+                text: "「撃て！道を開けろ！」ハン・ソロと共に激しい銃撃戦が始まった！",
+                minigame: 'fps_defense', targetScore: 15, next: 'arrive_death_star'
+            },
+            arrive_death_star: {
+                bg: 'from-gray-900/80 to-black', icon: 'fa-moon text-gray-500', alignTone: 'dark',
+                text: "オルデラン座標に到着したが、星は帝国の究極兵器『デス・スター』によって破壊されていた。<br>さらにファルコン号は強力なトラクター・ビームに捕らわれ、巨大な要塞の格納庫へ引きずり込まれる。<br>床下に隠れて難を逃れた後、管制室を制圧した。",
+                onEnter: () => playSound('vader'),
+                choices: [
+                    { text: "R2の情報を元に、処刑寸前のレイア姫を救出する", action: 'cell_block', style: 'btn-rebel', align: +10 },
+                    { text: "危険すぎる。姫は見捨てて船のロック解除に専念する", action: 'coward_route', style: 'sw-btn text-gray-500', align: -20 }
+                ]
+            },
+            coward_route: {
+                bg: 'from-gray-800/80 to-black', icon: 'fa-lock text-gray-500', alignTone: 'dark',
+                text: "レイア姫を見捨てたルークたち。しかしその隙にベイダーが彼らの存在を感知し、無数の兵士によって格納庫で包囲される。<br>希望を失った彼らに逃げ道はなかった。<br><br><span class='text-red-500 font-bold'>【BAD END: 絶望の要塞】</span>",
+                choices: [{ text: "RETRY", action: 'arrive_death_star' }]
+            },
+            cell_block: {
+                bg: 'from-red-900/30 to-black', icon: 'fa-door-closed text-gray-300', alignTone: 'rebel',
+                text: "監房ブロックに潜入し、レイア姫の独房を開けることに成功。<br>しかし異変に気付いたトルーパーが押し寄せる！ダストシュートに飛び込んでゴミ圧縮機から九死に一生を得た後、格納庫へ急ぐ。",
+                onEnter: () => playSound('blaster'),
+                next: 'vader_duel'
+            },
+            vader_duel: {
+                bg: 'from-red-900/60 to-black', icon: 'fa-mask text-red-600', alignTone: 'dark',
+                text: "格納庫の目前。オビ＝ワンとダース・ベイダーがライトセーバーで決闘していた。<br>オビ＝ワンは自ら防御を解き、ベイダーの刃に倒れ消失してしまう。<br>怒り狂うルークをよそに、追撃のTIEファイターが迫る！",
+                onEnter: () => playSound('saber'),
+                choices: [
+                    { text: "ファルコン号の銃座に乗り込み、敵機を迎撃する！", action: 'yavin_base', style: 'btn-rebel' }
+                ]
+            },
+            yavin_base: {
+                bg: 'from-green-900/30 to-black', icon: 'fa-map-location-dot text-green-500', alignTone: 'rebel',
+                text: "追手を振り切り、ヤヴィンの反乱軍基地へ到着。<br>設計図の分析により、デス・スターの弱点「熱排気口」が判明。連鎖反応で破壊できる。<br>ルークはXウィングに乗り込み、決死の攻撃隊に参加する。",
+                next: 'trench_run_start'
+            },
+            trench_run_start: {
+                bg: 'from-red-900/40 to-black', icon: 'fa-rocket text-orange-400', alignTone: 'rebel',
+                text: "デス・スターの表面へ降下！目標のトレンチ（溝）を突き進め！<br>対空砲火とTIEファイターの攻撃を避けながら、目標距離まで到達しろ！",
+                minigame: 'tps_flight', targetScore: 2000, next: 'trench_run_climax' // Score here acts as distance
+            },
+            trench_run_climax: {
+                bg: 'from-red-900/60 to-black', icon: 'fa-fighter-jet text-red-500', alignTone: 'dark',
+                text: "トレンチの最深部。背後からダース・ベイダーの専用機が迫る。<br>絶体絶命のその時、頭の中にオビ＝ワンの声が響いた。<br><br>「ルーク、フォースを使え。直感を信じるのだ…」",
+                onEnter: () => playSound('vader'),
+                choices: [
+                    { text: "照準コンピューターを切り、フォースに身を委ねる", action: 'victory', style: 'btn-jedi', align: +30 },
+                    { text: "機械を信じる。照準器に頼ったまま引き金を引く", action: 'fail_run', style: 'btn-sith', align: -20 }
+                ]
+            },
+            fail_run: {
+                bg: 'from-red-900/80 to-black', icon: 'fa-explosion text-orange-500', alignTone: 'dark',
+                text: "機械の計算を信じたルーク。放たれた魚雷は弾かれた。<br>次の瞬間、ベイダーの砲撃が機体を粉砕。銀河に暗黒の時代が永遠に訪れた。<br><br><span class='text-red-500 font-bold'>【GAME OVER: 帝国の支配】</span>",
+                choices: [{ text: "RETRY", action: 'trench_run_climax' }]
+            },
+            victory: {
+                bg: 'from-yellow-600/30 to-black', icon: 'fa-trophy text-yellow-500', alignTone: 'light',
+                text: "ファルコン号の援護によりベイダー機が弾き飛ばされた。<br>ルークはフォースの導きに従いトリガーを引く。魚雷は排気口へ吸い込まれ…デス・スターは大爆発を起こした！<br><br>ヤヴィン基地で、英雄たちに勲章が授与される。<br>銀河に新たなる希望が生まれたのだ。<br><br><span class='text-[#fce300] font-starwars text-4xl md:text-5xl mt-8 mb-2 block text-center'>MAY THE FORCE<br>BE WITH YOU.</span>",
+                onEnter: () => playSound('hyperspace'),
+                choices: [{ text: "RESTART SYSTEM", action: 'prologue', style: 'sw-btn' }]
+            }
+        };
+
+        // --- STREAMING_CHUNK: Text RPG UI Logic ---
+        function updateHUD() {
+            DOM.alignmentMarker.style.left = `${Math.max(0, Math.min(100, state.alignment))}%`;
+        }
+
+        let isAnimating = false;
+        function showStoryText(scene) {
+            return new Promise((resolve) => {
+                isAnimating = true;
+                const p = document.createElement('div');
+                let bc = 'border-gray-500';
+                if(scene.alignTone==='light') bc = 'border-blue-400';
+                if(scene.alignTone==='dark') bc = 'border-red-500';
+                if(scene.alignTone==='rebel') bc = 'border-[#fce300]';
+                
+                p.className = `story-paragraph relative pl-5 py-2 border-l-2 opacity-0 transform translate-y-6 transition-all duration-[800ms] ${bc} text-shadow-sm mb-4`;
+                p.innerHTML = scene.text;
+                DOM.storyText.appendChild(p);
+
+                requestAnimationFrame(() => setTimeout(() => {
+                    p.classList.remove('opacity-0', 'translate-y-6');
+                    DOM.storyScrollArea.scrollTo({ top: DOM.storyScrollArea.scrollHeight, behavior: 'smooth' });
+                    setTimeout(() => { isAnimating = false; resolve(); }, 800);
+                }, 50));
+            });
+        }
+
+        let currentAdvanceHandler = null;
+        function renderChoices(choices, nextSceneId) {
+            DOM.choicesContainer.innerHTML = '';
+            if (currentAdvanceHandler) { DOM.appContainer.removeEventListener('click', currentAdvanceHandler); currentAdvanceHandler = null; }
+
+            if (nextSceneId) {
+                DOM.choicesContainer.className = "flex justify-center w-full z-10";
+                const btn = document.createElement('div');
+                btn.className = "w-full max-w-md py-4 rounded-lg text-sm font-bold tracking-widest uppercase flex flex-col items-center opacity-0 transform translate-y-4 transition-all duration-500 bg-[rgba(252,227,0,0.05)] border border-[#fce300]/30 text-[#fce300] shadow-[0_0_15px_rgba(252,227,0,0.1)] pointer-events-none";
+                btn.innerHTML = `<span>TAP TO CONTINUE</span><i class="fas fa-chevron-down animate-bounce mt-2"></i>`;
+                DOM.choicesContainer.appendChild(btn);
+                
+                currentAdvanceHandler = () => {
+                    if (isAnimating) return; playSound('click');
+                    DOM.appContainer.removeEventListener('click', currentAdvanceHandler);
+                    renderScene(nextSceneId);
+                };
+                setTimeout(() => { DOM.appContainer.addEventListener('click', currentAdvanceHandler); btn.classList.remove('opacity-0', 'translate-y-4'); }, 300);
+            } else if (choices) {
+                DOM.choicesContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full z-10";
+                choices.forEach((choice, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = `w-full p-4 rounded-sm text-sm font-bold tracking-widest uppercase flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-500 ${choice.style || 'sw-btn text-gray-300'}`;
+                    btn.innerHTML = choice.text;
+                    btn.onclick = (e) => {
+                        e.stopPropagation(); if (isAnimating) return; playSound('click');
+                        if (choice.align) state.alignment += choice.align;
+                        renderScene(choice.action);
+                    };
+                    DOM.choicesContainer.appendChild(btn);
+                    setTimeout(() => btn.classList.remove('opacity-0', 'translate-y-4'), 150 * (idx + 1));
+                });
+            }
+        }
+
+        async function renderScene(sceneId) {
+            if (isAnimating) return;
+            const scene = storyNodes[sceneId];
+            if (!scene) return;
+
+            if (sceneId === 'prologue') DOM.storyText.innerHTML = ''; // リセット
+
+            // ミニゲームのチェック
+            if (scene.minigame) {
+                DOM.storyText.innerHTML = '';
+                await showStoryText(scene);
+                setTimeout(() => {
+                    startMinigame(scene.minigame, scene.targetScore, () => renderScene(scene.next));
+                }, 1500);
+                return;
+            }
+
+            if (scene.onEnter) scene.onEnter();
+            updateHUD();
+            DOM.sceneBg.className = `absolute inset-0 transition-all duration-1500 opacity-40 bg-gradient-to-b ${scene.bg}`;
+            DOM.sceneIcon.className = `text-7xl md:text-9xl z-10 opacity-0 transform scale-50 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)] fas ${scene.icon}`;
+            requestAnimationFrame(() => setTimeout(() => {
+                DOM.sceneIcon.className = `text-7xl md:text-9xl z-10 transition-all duration-1000 transform scale-100 opacity-100 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)] fas ${scene.icon}`;
+            }, 50));
+
+            DOM.choicesContainer.innerHTML = '';
+            await showStoryText(scene);
+            renderChoices(scene.choices, scene.next);
+        }
+
+        // --- STREAMING_CHUNK: Three.js 3D Engine Core ---
+        let scene, camera, renderer, animationId;
+        let gameActive = false;
+        let gameMode = null; // 'fps_defense' or 'tps_flight'
+        
+        let score = 0, maxScore = 0, health = 100;
+        let entities = []; // 敵やレーザーなどのオブジェクト
+        let particles = [];
+        let mouse = new THREE.Vector2();
+        let raycaster = new THREE.Raycaster();
+        
+        // 汎用マテリアル
+        const matRedLaser = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        const matGreenLaser = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
+        const matImperial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0, roughness: 0.8, metalness: 0.2 });
+        const matDarkGrey = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.9 });
+        const geoBox = new THREE.BoxGeometry(1, 1, 1);
+        
+        function init3DEngine() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.02);
+            
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            DOM.gameCanvasContainer.insertBefore(renderer.domElement, DOM.gameCanvasContainer.firstChild);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+            scene.add(ambientLight);
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(10, 20, 10);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            window.addEventListener('resize', onWindowResize, false);
+            
+            // 入力イベント
+            document.addEventListener('pointermove', onPointerMove, false);
+            DOM.gameCanvasContainer.addEventListener('pointerdown', onPointerDown, false);
+        }
+
+        function onWindowResize() {
+            if(!camera) return;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onPointerMove(event) {
+            // 正規化デバイス座標 (-1 to +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        function onPointerDown(event) {
+            if (!gameActive) return;
+            if (gameMode === 'fps_defense') playerShootFPS();
+            if (gameMode === 'tps_flight') playerShootTPS();
+        }
+
+        // --- STREAMING_CHUNK: 3D Objects & FX Factories ---
+        function createExplosion(position, color=0xffaa00) {
+            playSound('explosion');
+            const particleCount = 20;
+            const geo = new THREE.BufferGeometry();
+            const posArray = new Float32Array(particleCount * 3);
+            const velArray = [];
+            for(let i=0; i<particleCount; i++) {
+                posArray[i*3] = position.x; posArray[i*3+1] = position.y; posArray[i*3+2] = position.z;
+                velArray.push(new THREE.Vector3((Math.random()-0.5)*2, (Math.random()-0.5)*2, (Math.random()-0.5)*2).normalize().multiplyScalar(Math.random()*0.5));
+            }
+            geo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const mat = new THREE.PointsMaterial({ size: 0.5, color: color, transparent: true, blending: THREE.AdditiveBlending });
+            const points = new THREE.Points(geo, mat);
+            scene.add(points);
+            particles.push({ mesh: points, velocities: velArray, life: 1.0 });
+        }
+
+        function createEnemyStormtrooper(x, z) {
+            const group = new THREE.Group();
+            const matArmor = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+            const matBlack = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
+            
+            // 胴体 (白い装甲)
+            const body = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 0.8), matArmor);
+            body.position.y = 0.9;
+            // 頭 (白い装甲)
+            const head = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), matArmor);
+            head.position.y = 2.2;
+            // バイザー (黒)
+            const visor = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.2, 0.1), matBlack);
+            visor.position.set(0, 2.3, 0.4);
+
+            group.add(body); group.add(head); group.add(visor);
+            group.position.set(x, 0, z);
+            scene.add(group);
+            
+            // 難易度調整: スピードを遅く、射撃間隔を長く設定
+            entities.push({ type: 'enemy_fps', mesh: group, hp: 1, speed: 0.02 + Math.random()*0.02, nextShoot: Date.now() + 2000 + Math.random()*3000 });
+        }
+
+        function createTieFighter(x, y, z) {
+            const group = new THREE.Group();
+            const cockpit = new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 8), matDarkGrey);
+            const wingGeo = new THREE.BoxGeometry(0.1, 2, 1.5);
+            const wingL = new THREE.Mesh(wingGeo, matImperial); wingL.position.x = -1;
+            const wingR = new THREE.Mesh(wingGeo, matImperial); wingR.position.x = 1;
+            const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 2, 8), matDarkGrey);
+            arm.rotation.z = Math.PI / 2;
+            group.add(cockpit); group.add(wingL); group.add(wingR); group.add(arm);
+            group.position.set(x, y, z);
+            scene.add(group);
+            entities.push({ type: 'enemy_tps', mesh: group, hp: 1, speed: 0.2 + Math.random()*0.2 });
+        }
+
+        function createLaser(startPos, dir, isPlayer) {
+            if(isPlayer) playSound('blaster'); else playSound('enemyBlaster');
+            const geo = new THREE.CylinderGeometry(0.05, 0.05, 2, 4);
+            geo.rotateX(Math.PI/2);
+            const mesh = new THREE.Mesh(geo, isPlayer ? matRedLaser : matGreenLaser);
+            mesh.position.copy(startPos);
+            
+            // 方向を向かせる
+            const target = startPos.clone().add(dir);
+            mesh.lookAt(target);
+
+            scene.add(mesh);
+            entities.push({ type: 'laser', mesh: mesh, dir: dir.normalize(), speed: 1.5, isPlayer: isPlayer, life: 60 });
+        }
+
+        // 環境オブジェクト (Trench用)
+        let trenchBlocks = [];
+        function initTrenchEnvironment() {
+            const matWall = new THREE.MeshStandardMaterial({color: 0x444444, wireframe: false});
+            for(let i=0; i<40; i++) {
+                const z = -i * 5;
+                // 左右の壁
+                const wallL = new THREE.Mesh(geoBox, matWall);
+                wallL.scale.set(10, 10, 5); wallL.position.set(-15, 0, z);
+                scene.add(wallL); trenchBlocks.push(wallL);
+                
+                const wallR = new THREE.Mesh(geoBox, matWall);
+                wallR.scale.set(10, 10, 5); wallR.position.set(15, 0, z);
+                scene.add(wallR); trenchBlocks.push(wallR);
+                
+                // たまに障害物
+                if(Math.random() > 0.7) {
+                    const obs = new THREE.Mesh(geoBox, matWall);
+                    obs.scale.set(2, 4, 2);
+                    obs.position.set((Math.random()-0.5)*16, -2, z);
+                    scene.add(obs); trenchBlocks.push(obs);
+                }
+            }
+        }
+
+        // --- STREAMING_CHUNK: Minigame Logic (FPS & TPS) ---
+        function takeDamage(amt) {
+            health -= amt;
+            DOM.gameHealth.style.width = Math.max(0, health) + '%';
+            DOM.damageOverlay.classList.add('flash-active');
+            setTimeout(() => DOM.damageOverlay.classList.remove('flash-active'), 100);
+            if (health <= 0) endGame(false);
+        }
+
+        function addScore(amt) {
+            score += amt;
+            DOM.gameScore.innerText = score;
+            if (score >= maxScore && gameMode === 'fps_defense') endGame(true);
+        }
+
+        // FPS 防衛モード
+        function playerShootFPS() {
+            raycaster.setFromCamera(mouse, camera);
+            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.5,0)), raycaster.ray.direction, true);
+        }
+
+        function updateFPS() {
+            // 敵のスポーン (通路の幅に合わせてX座標を絞る, 同時出現数を減らす)
+            if(Math.random() < 0.015 && entities.filter(e=>e.type==='enemy_fps').length < 3) {
+                createEnemyStormtrooper((Math.random()-0.5)*6, -30 - Math.random()*10);
+            }
+            
+            // カメラの微妙な揺れ(狙いやすくするために揺れを軽減)
+            const t = Date.now() * 0.001;
+            camera.position.y = 2 + Math.sin(t*2) * 0.02;
+            camera.rotation.y = -mouse.x * 0.05;
+            camera.rotation.x = mouse.y * 0.05;
+        }
+
+        // TPS フライトモード
+        let playerShip;
+        function initPlayerShip() {
+            const group = new THREE.Group();
+            // X-Wing風簡易モデル
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.4, 3, 8), new THREE.MeshStandardMaterial({color:0xdddddd}));
+            body.rotation.x = Math.PI/2;
+            const wings = new THREE.Mesh(geoBox, new THREE.MeshStandardMaterial({color:0xaa2222}));
+            wings.scale.set(4, 0.1, 1);
+            group.add(body); group.add(wings);
+            group.position.set(0, 0, -5);
+            scene.add(group);
+            playerShip = group;
+        }
+
+        function playerShootTPS() {
+            if(!playerShip) return;
+            const dir = new THREE.Vector3(0, 0, -1);
+            createLaser(playerShip.position.clone().add(new THREE.Vector3(0,0,-1)), dir, true);
+        }
+
+        function updateTPS() {
+            // スコア(距離)加算
+            addScore(1);
+            if(score >= maxScore) endGame(true);
+
+            // 自機の移動 (マウス追従)
+            if(playerShip) {
+                const targetX = mouse.x * 8;
+                const targetY = mouse.y * 4;
+                playerShip.position.x += (targetX - playerShip.position.x) * 0.1;
+                playerShip.position.y += (targetY - playerShip.position.y) * 0.1;
+                playerShip.rotation.z = (playerShip.position.x - targetX) * 0.2; // ロール
+                
+                // カメラ追従
+                camera.position.x = playerShip.position.x * 0.5;
+                camera.position.y = playerShip.position.y * 0.5 + 2;
+                camera.lookAt(playerShip.position.x, playerShip.position.y, playerShip.position.z - 20);
+            }
+
+            // 地形のスクロール
+            const speed = 0.5;
+            trenchBlocks.forEach(b => {
+                b.position.z += speed;
+                if(b.position.z > 5) {
+                    b.position.z -= 200;
+                    if(b.scale.x < 5) { // 障害物の再配置
+                        b.position.x = (Math.random()-0.5)*16;
+                    }
+                }
+                // 障害物との当たり判定
+                if(playerShip && b.scale.x < 5 && Math.abs(b.position.z - playerShip.position.z) < 1.5) {
+                    if(Math.abs(b.position.x - playerShip.position.x) < 2) {
+                        takeDamage(10);
+                        createExplosion(playerShip.position);
+                        b.position.z = 10; // 当たったら消す（後ろへ）
+                    }
+                }
+            });
+
+            // 敵スポーン
+            if(Math.random() < 0.03 && entities.filter(e=>e.type==='enemy_tps').length < 3) {
+                createTieFighter((Math.random()-0.5)*15, (Math.random()-0.5)*5, -100);
+            }
+        }
+
+        // --- STREAMING_CHUNK: Game Loop and Lifecycle ---
+        function updateEntities() {
+            for (let i = entities.length - 1; i >= 0; i--) {
+                const e = entities[i];
+                
+                if (e.type === 'laser') {
+                    e.mesh.position.add(e.dir.clone().multiplyScalar(e.speed));
+                    e.life--;
+                    if (e.life <= 0) {
+                        scene.remove(e.mesh); entities.splice(i, 1); continue;
+                    }
+                    
+                    // 当たり判定 (vs 敵)
+                    if (e.isPlayer) {
+                        for (let j = 0; j < entities.length; j++) {
+                            const enemy = entities[j];
+                            if (enemy.type.startsWith('enemy_')) {
+                                // 当たり判定を大幅に拡大 (2.0 -> 3.5) して簡単に当てられるように
+                                if (e.mesh.position.distanceTo(enemy.mesh.position) < 3.5) {
+                                    createExplosion(enemy.mesh.position);
+                                    scene.remove(enemy.mesh); entities.splice(j, 1);
+                                    scene.remove(e.mesh); entities.splice(i, 1);
+                                    if(gameMode === 'fps_defense') addScore(1);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        // 当たり判定 (vs プレイヤー)
+                        const pPos = (gameMode === 'tps_flight' && playerShip) ? playerShip.position : camera.position;
+                        if (e.mesh.position.distanceTo(pPos) < 2.0) {
+                            takeDamage(15);
+                            scene.remove(e.mesh); entities.splice(i, 1);
+                        }
+                    }
+                }
+                
+                if (e.type === 'enemy_fps') {
+                    e.mesh.position.z += e.speed;
+                    e.mesh.lookAt(camera.position.x, 0, camera.position.z);
+                    if (Date.now() > e.nextShoot) {
+                        const dir = camera.position.clone().sub(e.mesh.position).normalize();
+                        createLaser(e.mesh.position.clone().add(new THREE.Vector3(0,1,0)), dir, false);
+                        e.nextShoot = Date.now() + 1500 + Math.random()*2000;
+                    }
+                    if(e.mesh.position.z > 5) { // 通過されたらダメージ
+                        takeDamage(10);
+                        scene.remove(e.mesh); entities.splice(i, 1);
+                    }
+                }
+
+                if (e.type === 'enemy_tps') {
+                    e.mesh.position.z += e.speed;
+                    if(Math.random() < 0.02) { // 射撃
+                        const dir = new THREE.Vector3(0,0,1);
+                        createLaser(e.mesh.position.clone().add(new THREE.Vector3(0,0,1)), dir, false);
+                    }
+                    if(e.mesh.position.z > 5) {
+                        scene.remove(e.mesh); entities.splice(i, 1);
+                    }
+                }
+            }
+
+            // パーティクル更新
+            for(let i=particles.length-1; i>=0; i--) {
+                const p = particles[i];
+                const pos = p.mesh.geometry.attributes.position.array;
+                for(let j=0; j<p.velocities.length; j++) {
+                    pos[j*3] += p.velocities[j].x;
+                    pos[j*3+1] += p.velocities[j].y;
+                    pos[j*3+2] += p.velocities[j].z;
+                }
+                p.mesh.geometry.attributes.position.needsUpdate = true;
+                p.mesh.material.opacity = p.life;
+                p.life -= 0.02;
+                if(p.life <= 0) {
+                    scene.remove(p.mesh); particles.splice(i,1);
+                }
+            }
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+            animationId = requestAnimationFrame(gameLoop);
+
+            if(gameMode === 'fps_defense') updateFPS();
+            if(gameMode === 'tps_flight') updateTPS();
+            
+            updateEntities();
+            renderer.render(scene, camera);
+        }
+
+        function startMinigame(mode, target, onComplete) {
+            if (!scene) init3DEngine();
+            
+            // クリーンアップ
+            while(scene.children.length > 0) scene.remove(scene.children[0]);
+            entities = []; particles = []; trenchBlocks = []; playerShip = null;
+            
+            // 共通ライト再設定
+            scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+            const dirL = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirL.position.set(10,20,10); scene.add(dirL);
+            scene.fog = new THREE.FogExp2(0x000000, mode==='tps_flight' ? 0.01 : 0.02);
+
+            gameMode = mode;
+            score = 0; maxScore = target; health = 100;
+            state.minigameCallback = onComplete;
+            
+            DOM.gameScore.innerText = '0';
+            DOM.gameTargetScore.innerText = maxScore;
+            DOM.gameHealth.style.width = '100%';
+            
+            DOM.appContainer.classList.add('opacity-0', 'pointer-events-none');
+            DOM.gameCanvasContainer.style.display = 'block';
+            setTimeout(() => DOM.gameCanvasContainer.style.opacity = '1', 100);
+            
+            if (mode === 'fps_defense') {
+                camera.position.set(0, 2, 0);
+                DOM.fpsCrosshair.classList.remove('hidden');
+                
+                // タンティヴィIVの象徴的な白い通路を生成
+                const matWall = new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.8});
+                const matFloor = new THREE.MeshStandardMaterial({color: 0x333333, roughness: 0.9});
+                const matCeil = new THREE.MeshStandardMaterial({color: 0xffffff, emissive: 0x222222});
+
+                const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, 100), matFloor);
+                floor.rotation.x = -Math.PI / 2; floor.position.z = -40; scene.add(floor);
+
+                const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(12, 100), matCeil);
+                ceiling.rotation.x = Math.PI / 2; ceiling.position.y = 5; ceiling.position.z = -40; scene.add(ceiling);
+
+                const wallL = new THREE.Mesh(new THREE.BoxGeometry(1, 5, 100), matWall);
+                wallL.position.set(-6, 2.5, -40); scene.add(wallL);
+
+                const wallR = new THREE.Mesh(new THREE.BoxGeometry(1, 5, 100), matWall);
+                wallR.position.set(6, 2.5, -40); scene.add(wallR);
+                
+                // 通路の装飾柱
+                for(let i=0; i<10; i++) {
+                    const pillarL = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5, 1), new THREE.MeshStandardMaterial({color:0xaaaaaa}));
+                    pillarL.position.set(-5.5, 2.5, -5 - i*8); scene.add(pillarL);
+                    const pillarR = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5, 1), new THREE.MeshStandardMaterial({color:0xaaaaaa}));
+                    pillarR.position.set(5.5, 2.5, -5 - i*8); scene.add(pillarR);
+                }
+            } else if (mode === 'tps_flight') {
+                camera.position.set(0, 2, 5);
+                DOM.fpsCrosshair.classList.add('hidden');
+                initPlayerShip();
+                initTrenchEnvironment();
+            }
+
+            gameActive = true;
+            gameLoop();
+        }
+
+        function endGame(success) {
+            gameActive = false;
+            cancelAnimationFrame(animationId);
+            
+            DOM.gameCanvasContainer.style.opacity = '0';
+            setTimeout(() => {
+                DOM.gameCanvasContainer.style.display = 'none';
+                DOM.appContainer.classList.remove('opacity-0', 'pointer-events-none');
+                
+                if (success) {
+                    if (state.minigameCallback) state.minigameCallback();
+                } else {
+                    // 死亡時の汎用処理
+                    renderScene('bad_end_farm'); // 暫定的に既存のバッドエンドノードへ
+                }
+            }, 1000);
+        }
+
+        // --- STREAMING_CHUNK: Boot Sequence ---
+        DOM.btnBegin.addEventListener('click', async () => {
+            await initAudio();
+            playSound('click'); playSound('saber');
+            DOM.startOverlay.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
+            setTimeout(() => DOM.startOverlay.classList.add('hidden'), 1000);
+            
+            DOM.crawlContainer.classList.remove('hidden');
+            const crawlTimeout = setTimeout(() => finishCrawl(), 55000);
+
+            DOM.skipCrawlBtn.onclick = () => {
+                playSound('click'); clearTimeout(crawlTimeout); finishCrawl();
+            };
+        });
+
+        function finishCrawl() {
+            DOM.crawlContainer.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
+            setTimeout(() => {
+                DOM.crawlContainer.classList.add('hidden');
+                DOM.appContainer.classList.remove('opacity-0', 'pointer-events-none');
+                DOM.appContainer.classList.add('opacity-100');
+                renderScene('prologue');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

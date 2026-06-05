@@ -3,250 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Star Wars: A New Hope - Ultimate Enhanced V5</title>
+<title>Star Wars: A New Hope - Ultimate Cinematic Edition V7</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
-:root{--sw-yellow:#fce300;--sw-blue:#3498db;--sw-red:#e74c3c;--sw-green:#2ecc71}
+:root{--sw-yellow:#ffe400;--sw-blue:#29b6f6;--sw-red:#ff1744;--sw-green:#00e676}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#e2e8f0;font-family:'Noto Sans JP',sans-serif;touch-action:none;overscroll-behavior:none}
-body{position:fixed;inset:0}.font-starwars{font-family:'Oswald',sans-serif;letter-spacing:3px}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#f8fafc;font-family:'Noto Sans JP',sans-serif;touch-action:none;overscroll-behavior:none}
+body{position:fixed;inset:0}.font-starwars{font-family:'Oswald',sans-serif;letter-spacing:4px}
 button{pointer-events:auto!important;touch-action:manipulation;cursor:pointer;outline:none}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.3)}::-webkit-scrollbar-thumb{background:rgba(252,227,0,.35);border-radius:10px}
 
-/* --- Space Background --- */
-#star-container{position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at center,#0a0a0f 0%,#000 100%);overflow:hidden;pointer-events:none}
+#star-container{position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at center,#050508 0%,#000 100%);overflow:hidden;pointer-events:none}
 .layer{position:absolute;width:200vw;height:200vh;pointer-events:none}
-.stars-sm{background-image:radial-gradient(1px 1px at 20px 30px,#fff,rgba(0,0,0,0)),radial-gradient(1px 1px at 40px 70px,#ddd,rgba(0,0,0,0)),radial-gradient(1.5px 1.5px at 90px 160px,#fff,rgba(0,0,0,0));background-repeat:repeat;background-size:250px 250px;animation:slowPan 150s linear infinite}
+.stars-sm{background-image:radial-gradient(1px 1px at 15px 25px,#fff,rgba(0,0,0,0)),radial-gradient(1.5px 1.5px at 50px 80px,#fff,rgba(0,0,0,0)),radial-gradient(1px 1px at 90px 140px,#bbb,rgba(0,0,0,0));background-repeat:repeat;background-size:300px 300px;animation:slowPan 180s linear infinite}
 @keyframes slowPan{0%{transform:translate(0,0)}100%{transform:translate(-50vw,-50vh)}}
 
-/* --- UI Overlays (Hologram / CRT) --- */
-.crt-overlay{position:fixed;inset:0;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.3) 50%);background-size:100% 4px;z-index:100;pointer-events:none;opacity:.3}
-.scanline{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,rgba(252,227,0,.1) 10%,transparent 100%);height:10%;animation:scan 8s linear infinite;pointer-events:none;z-index:101}
-@keyframes scan{0%{top:-10%}100%{top:110%}}
-.game-panel{background:linear-gradient(135deg,rgba(15,15,22,.9) 0%,rgba(5,5,10,.95) 100%);backdrop-filter:blur(8px);border:1px solid rgba(252,227,0,.15);box-shadow:0 0 40px rgba(0,0,0,1),inset 0 0 20px rgba(255,255,255,.03)}
+.crt-overlay{position:fixed;inset:0;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.25) 50%);background-size:100% 4px;z-index:100;pointer-events:none;opacity:.4}
+.game-panel{background:linear-gradient(135deg,rgba(10,12,18,.95) 0%,rgba(3,4,6,.98) 100%);backdrop-filter:blur(12px);border:1px solid rgba(255,228,0,.15);box-shadow:0 0 50px rgba(0,0,0,.9),inset 0 0 30px rgba(255,255,255,.02)}
 
-/* --- Buttons --- */
-.sw-btn{position:relative;overflow:hidden;transition:all .2s cubic-bezier(.25,.8,.25,1);background:linear-gradient(180deg,rgba(30,30,30,.8) 0%,rgba(10,10,10,.9) 100%);border:1px solid #333;transform:translateZ(0)}
-.sw-btn::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:.4s;pointer-events:none}
+.sw-btn{position:relative;overflow:hidden;transition:all .25s cubic-bezier(.4,0,.2,1);background:linear-gradient(180deg,rgba(25,25,30,.9) 0%,rgba(5,5,8,.95) 100%);border:1px solid #334155;transform:translateZ(0)}
+.sw-btn::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:.5s;pointer-events:none}
 .sw-btn:hover::after{left:100%}
-.sw-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.5)}
+.sw-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.6)}
 .sw-btn:active{transform:translateY(1px) scale(.98)}
-.sw-btn:disabled {opacity: 0.5; cursor: not-allowed; pointer-events: none;}
 
-.btn-jedi{border-left:4px solid var(--sw-blue);color:#b8e2ff;text-shadow:0 0 5px var(--sw-blue)}
-.btn-jedi:hover{border-color:var(--sw-blue);box-shadow:0 0 20px rgba(52,152,219,.4)}
-.btn-sith{border-left:4px solid var(--sw-red);color:#ffc2c2;text-shadow:0 0 5px var(--sw-red)}
-.btn-sith:hover{border-color:var(--sw-red);box-shadow:0 0 20px rgba(231,76,60,.4)}
-.btn-rebel{border-left:4px solid var(--sw-green);color:#c4e6ff;text-shadow:0 0 5px var(--sw-green)}
-.btn-rebel:hover{border-color:var(--sw-green);box-shadow:0 0 20px rgba(46,204,113,.4)}
-.btn-gold{border-left:4px solid var(--sw-yellow);color:#fff6a7;text-shadow:0 0 5px var(--sw-yellow)}
-.btn-gold:hover{border-color:var(--sw-yellow);box-shadow:0 0 20px rgba(252,227,0,.4)}
-.btn-action{background:linear-gradient(180deg,rgba(252,227,0,.2) 0%,rgba(20,20,0,.9) 100%);border:1px solid var(--sw-yellow);color:var(--sw-yellow);animation:pulse-btn 2s infinite}
-@keyframes pulse-btn{0%{box-shadow:0 0 5px rgba(252,227,0,.2)}50%{box-shadow:0 0 20px rgba(252,227,0,.6)}100%{box-shadow:0 0 5px rgba(252,227,0,.2)}}
+.btn-jedi{border-left:4px solid var(--sw-blue);color:#e0f2fe;text-shadow:0 0 8px rgba(41,182,246,.5)}
+.btn-jedi:hover{border-color:var(--sw-blue);box-shadow:0 0 25px rgba(41,182,246,.35)}
+.btn-sith{border-left:4px solid var(--sw-red);color:#ffe4e6;text-shadow:0 0 8px rgba(255,23,68,.5)}
+.btn-sith:hover{border-color:var(--sw-red);box-shadow:0 0 25px rgba(255,23,68,.35)}
+.btn-rebel{border-left:4px solid var(--sw-green);color:#f0fdf4;text-shadow:0 0 8px rgba(0,230,118,.5)}
+.btn-rebel:hover{border-color:var(--sw-green);box-shadow:0 0 25px rgba(0,230,118,.35)}
+.btn-gold{border-left:4px solid var(--sw-yellow);color:#fffbeb;text-shadow:0 0 8px rgba(255,228,0,.5)}
+.btn-gold:hover{border-color:var(--sw-yellow);box-shadow:0 0 25px rgba(255,228,0,.4)}
+.btn-action{background:linear-gradient(180deg,rgba(255,228,0,.15) 0%,rgba(15,15,5,.95) 100%);border:1px solid var(--sw-yellow);color:var(--sw-yellow);animation:pulse-btn 2.5s infinite}
+@keyframes pulse-btn{0%,100%{box-shadow:0 0 6px rgba(255,228,0,.2)}50%{box-shadow:0 0 25px rgba(255,228,0,.5)}}
 
-/* --- Crawl --- */
-#crawl-container{position:absolute;inset:0;background:#000;z-index:70;display:flex;justify-content:center;overflow:hidden;perspective:500px;pointer-events:auto}
-#crawl-content{position:relative;width:85%;max-width:900px;color:var(--sw-yellow);font-size:clamp(1.2rem,3.5vw,2rem);font-weight:700;text-align:justify;letter-spacing:clamp(1px,.5vw,4px);line-height:1.6;transform-origin:50% 100%;animation:crawlAnim 50s linear forwards;text-shadow:0 0 8px rgba(252,227,0,.6)}
-.crawl-subtitle{text-align:center;font-size:2.5em;margin-bottom:30px;text-transform:uppercase}
-@keyframes crawlAnim{0%{transform:rotateX(25deg) translateY(100vh);opacity:1}85%{opacity:1}100%{transform:rotateX(25deg) translateY(-2500px);opacity:0}}
+#crawl-container{position:absolute;inset:0;background:#000;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#far-away-text{color:#4bd5ee;font-size:clamp(1.2rem,3vw,2rem);font-weight:700;letter-spacing:1px;opacity:0;transition:opacity 1.5s ease-in-out;width:85%;max-width:800px;line-height:1.6}
+#crawl-logo{position:absolute;color:var(--sw-yellow);font-size:clamp(4rem,15vw,12rem);font-weight:700;text-align:center;line-height:0.85;opacity:0;transform:scale(4);transition:transform 12s cubic-bezier(0.1, 0.6, 0.2, 1), opacity 2s ease-in-out;filter:drop-shadow(0 0 20px rgba(255,228,0,0.4))}
+#crawl-window{position:absolute;inset:0;display:flex;justify-content:center;perspective:350px;perspective-origin:50% 100%;overflow:hidden;opacity:0;transition:opacity 2s ease-in-out}
+#crawl-content{position:absolute;width:85%;max-width:750px;color:var(--sw-yellow);font-size:clamp(1.1rem,2.8vw,1.7rem);font-weight:700;text-align:justify;line-height:1.8;letter-spacing:2px;transform-origin:50% 100%;transform:rotateX(25deg) translateY(100vh)}
+.crawl-scroll-anim{animation:crawlScroll 55s linear forwards}
+.crawl-subtitle{text-align:center;font-size:2.2em;margin-bottom:20px;text-transform:uppercase;letter-spacing:4px}
+@keyframes crawlScroll{0%{transform:rotateX(25deg) translateY(100vh)}100%{transform:rotateX(25deg) translateY(-2500px)}}
 
-/* --- UI Elements --- */
-.status-chip{background:rgba(0,0,0,.6);border:1px solid rgba(252,227,0,.2);border-radius:4px;padding:.2rem .6rem;font-size:.7rem;letter-spacing:.1em;color:#dfeaff;box-shadow:inset 0 0 10px rgba(255,255,255,.05)}
-.story-paragraph strong{color:var(--sw-yellow)}
-.story-key{color:var(--sw-yellow);font-weight:800;text-shadow:0 0 5px var(--sw-yellow)}
-
-/* --- Game Canvas --- */
-#game-canvas-container{position:absolute;inset:0;z-index:60;background:#000;transition:opacity .5s;pointer-events:auto}
-.crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border:2px solid rgba(255,255,255,.4);border-radius:50%;pointer-events:none;transition:.2s}
-.crosshair::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;background:white;border-radius:50%}
-.crosshair.aiming{border-color:red;box-shadow:0 0 15px red;transform:translate(-50%,-50%) scale(0.8)}
-.crosshair.aiming::after{background:red}
-.damage-overlay{position:absolute;inset:0;background:radial-gradient(circle,transparent 30%,rgba(255,0,0,.6) 100%);opacity:0;pointer-events:none;transition:opacity .1s;z-index:45}
+.crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border:2px solid rgba(255,255,255,.3);border-radius:50%;pointer-events:none;transition:.15s}
+.crosshair::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:rgba(255,255,255,.7);border-radius:50%}
+.crosshair.aiming{border-color:var(--sw-red);box-shadow:0 0 20px var(--sw-red);transform:translate(-50%,-50%) scale(0.85);background:rgba(255,23,68,0.1)}
+.crosshair.aiming::after{background:var(--sw-red)}
+.damage-overlay{position:absolute;inset:0;background:radial-gradient(circle,transparent 20%,rgba(255,23,68,.5) 100%);opacity:0;pointer-events:none;transition:opacity .08s;z-index:45}
 .flash-active{opacity:1}
-.screen-shake{animation:shake .2s cubic-bezier(.36,.07,.19,.97) both}
-@keyframes shake{10%,90%{transform:translate3d(-2px,1px,0)}20%,80%{transform:translate3d(3px,-2px,0)}30%,50%,70%{transform:translate3d(-4px,3px,0)}40%,60%{transform:translate3d(4px,-1px,0)}}
+.screen-shake{animation:shake .25s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes shake{10%,90%{transform:translate3d(-3px,2px,0)}20%,80%{transform:translate3d(4px,-3px,0)}30%,50%,70%{transform:translate3d(-5px,4px,0)}40%,60%{transform:translate3d(5px,-2px,0)}}
 
-/* --- Virtual Controls --- */
-#virtual-controls{position:absolute;inset:0;pointer-events:none;z-index:75;display:flex;justify-content:space-between;align-items:flex-end;padding:8vw;padding-bottom:12vh}
-.joystick-base{width:130px;height:130px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.3);border-radius:50%;position:relative;pointer-events:auto;touch-action:none;backdrop-filter:blur(4px)}
-.joystick-stick{width:50px;height:50px;background:rgba(252,227,0,0.6);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px rgba(252,227,0,0.5)}
-.action-btn-group{display:flex;gap:20px;pointer-events:auto}
-.action-btn{width:85px;height:85px;border-radius:50%;background:rgba(200,30,30,0.5);border:2px solid rgba(255,50,50,0.7);color:white;font-weight:bold;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,0,0,0.3);touch-action:none;backdrop-filter:blur(4px);transition:transform 0.1s}
-.action-btn:active{background:rgba(200,30,30,0.8);transform:scale(0.9)}
-.interact-btn{background:rgba(30,150,200,0.5);border:2px solid rgba(50,200,255,0.7);box-shadow:0 0 15px rgba(0,150,255,0.3);display:none}
+#virtual-controls{position:absolute;inset:0;pointer-events:none;z-index:75;display:flex;justify-content:space-between;align-items:flex-end;padding:6vw;padding-bottom:10vh}
+.joystick-base{width:140px;height:140px;background:rgba(15,23,42,0.4);border:2px solid rgba(255,255,255,0.25);border-radius:50%;position:relative;pointer-events:auto;touch-action:none;backdrop-filter:blur(6px);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)}
+.joystick-stick{width:56px;height:56px;background:radial-gradient(circle, #ffe400 0%, #ccaa00 100%);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px rgba(255,228,0,0.6), 0 4px 10px rgba(0,0,0,0.5)}
+.action-btn-group{display:flex;gap:24px;pointer-events:auto}
+.action-btn{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle, rgba(255,23,68,0.6) 0%, rgba(180,10,40,0.7) 100%);border:2px solid rgba(255,100,120,0.6);color:white;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(255,23,68,0.4);touch-action:none;backdrop-filter:blur(6px);transition:transform 0.1s, background 0.1s}
+.action-btn:active{background:radial-gradient(circle, rgba(255,23,68,0.85) 0%, rgba(180,10,40,0.9) 100%);transform:scale(0.92)}
+.interact-btn{background:radial-gradient(circle, rgba(41,182,246,0.6) 0%, rgba(10,120,200,0.7) 100%);border:2px solid rgba(100,210,255,0.6);box-shadow:0 0 20px rgba(41,182,246,0.4);display:none}
 .interact-btn.show{display:flex}
-@media (min-width: 768px) { #virtual-controls { padding: 50px; } .joystick-base{width:160px;height:160px;} .action-btn{width:100px;height:100px;} .joystick-stick{width:70px;height:70px;} }
 
-/* Utilities */
 .hidden{display:none!important}
 .opacity-0{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
-<body class="flex flex-col h-screen w-screen relative">
+<body class="flex flex-col h-screen w-screen relative select-none">
 
-<!-- Backgrounds -->
 <div id="star-container"><div class="layer stars-sm"></div></div>
 <div class="crt-overlay"></div>
-<div class="scanline"></div>
 
-<!-- Start Overlay -->
-<div id="start-overlay" class="absolute inset-0 bg-[#050505] z-80 flex flex-col items-center justify-center backdrop-blur-md pointer-events-auto transition-opacity duration-700" style="z-index: 80;">
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
-    <h1 class="text-5xl md:text-8xl text-[#fce300] font-starwars mb-4 tracking-widest drop-shadow-[0_0_20px_rgba(252,227,0,0.6)] text-center relative z-10">STAR WARS</h1>
-    <p class="text-blue-400 mb-12 font-sans tracking-[0.4em] text-sm md:text-lg uppercase text-center relative z-10 font-bold drop-shadow-[0_0_8px_blue]">Ultimate Enhanced V4</p>
+<!-- Start Screen -->
+<div id="start-overlay" class="absolute inset-0 bg-[#020203] z-80 flex flex-col items-center justify-center backdrop-blur-md pointer-events-auto transition-opacity duration-700" style="z-index: 80;">
+    <h1 class="text-6xl md:text-9xl text-[#ffe400] font-starwars mb-2 tracking-[6px] drop-shadow-[0_0_25px_rgba(255,228,0,0.5)] text-center relative z-10 select-none">STAR WARS</h1>
+    <p class="text-sky-400 mb-16 font-sans tracking-[0.5em] text-xs md:text-sm uppercase text-center relative z-10 font-bold drop-shadow-[0_0_10px_rgba(56,189,248,0.6)]">Ultimate Cinematic Edition V7</p>
     
-    <div class="bg-black/80 border border-blue-500/30 rounded-2xl p-8 min-w-[320px] md:min-w-[450px] shadow-[0_0_40px_rgba(0,0,0,0.8)] relative z-10 space-y-6">
-        <button id="btn-begin" class="sw-btn btn-gold w-full px-6 py-5 rounded-lg font-bold text-xl uppercase tracking-widest text-center shadow-[0_0_15px_rgba(252,227,0,0.3)]">NEW GAME</button>
-        <button id="btn-continue" class="sw-btn btn-jedi w-full px-6 py-5 rounded-lg font-bold text-xl uppercase tracking-widest text-center hidden">CONTINUE</button>
+    <div class="bg-slate-950/90 border border-sky-500/20 rounded-2xl p-8 min-w-[320px] md:min-w-[450px] shadow-[0_0_50px_rgba(0,0,0,0.8)] relative z-10 space-y-5">
+        <button id="btn-begin" class="sw-btn btn-gold w-full px-6 py-5 rounded-xl font-bold text-xl uppercase tracking-widest text-center shadow-[0_0_20px_rgba(255,228,0,0.2)]">NEW GAME</button>
+        <button id="btn-continue" class="sw-btn btn-jedi w-full px-6 py-5 rounded-xl font-bold text-xl uppercase tracking-widest text-center hidden">CONTINUE</button>
     </div>
-    <div id="audio-warning" class="absolute bottom-8 text-gray-500 text-sm tracking-widest flex items-center gap-2"><i class="fas fa-headphones"></i> SOUND REQUIRED</div>
 </div>
 
-<!-- Opening Crawl -->
+<!-- Authentic Cinematic Opening Crawl -->
 <div id="crawl-container" class="hidden">
-    <div id="crawl-content">
-        <div class="text-center mb-8 font-starwars text-xl opacity-80">EPISODE IV</div>
-        <div class="crawl-subtitle font-starwars text-[#fce300]">A New Hope</div>
-        <p>内戦 of the Galaxyである。反乱軍の宇宙船は秘密基地から奇襲をかけ、邪悪な銀河帝国に対し初めての勝利を収めた。</p><br>
-        <p>その戦闘中、反乱軍のスパイは帝国の究極兵器「デス・スター」の極秘設計図を盗み出すことに成功した。</p><br>
-        <p>帝国に追われながらも、レイア姫は盗み出した設計図を携え、人々を救い、銀河に自由を取り戻すために進んでいた……。</p>
+    <div id="far-away-text">A long time ago in a galaxy far, far away....</div>
+    <div id="crawl-logo" class="font-starwars">STAR<br>WARS</div>
+    <div id="crawl-window">
+        <div id="crawl-content">
+            <div class="text-center mb-6 font-starwars text-2xl tracking-widest text-amber-300">EPISODE IV</div>
+            <div class="crawl-subtitle font-starwars text-amber-400">A NEW HOPE</div>
+            <p>銀河系は内戦のさなかにあった。秘密基地から奇襲を仕掛けた反乱軍の宇宙船は、邪悪な銀河帝国に対して劇的な初勝利を収めたのである。</p><br>
+            <p>その戦闘の最中、反乱軍のスパイは帝国軍の究極兵器である宇宙要塞「デス・スター」の極秘設計図を盗み出すことに成功した。</p><br>
+            <p>帝国の凶悪なエージェントに追われながらも、レイア姫は奪われた設計図を手に、人々を救い、銀河に自由を取り戻すため、自身の宇宙船で故郷へと急ぐのだった……。</p>
+        </div>
     </div>
-    <button id="skip-crawl-btn" class="absolute bottom-10 right-10 z-[999] bg-black/50 border border-gray-500 text-gray-300 hover:text-white hover:border-white px-6 py-3 rounded-lg font-starwars tracking-widest text-base transition-all">SKIP >></button>
+    <button id="skip-crawl-btn" class="absolute bottom-10 right-10 z-[999] bg-black/70 border border-amber-500/50 text-amber-400 hover:bg-amber-400 hover:text-black px-6 py-3 rounded-lg font-starwars tracking-widest text-sm transition-all shadow-md">SKIP >></button>
 </div>
 
-<!-- Main UI -->
-<main id="app-container" class="flex-1 w-full max-w-5xl mx-auto flex flex-col game-panel md:my-auto md:max-h-[90vh] md:rounded-2xl shadow-2xl overflow-hidden relative transition-all duration-700 opacity-0 pointer-events-none" style="z-index: 10;">
-    <!-- Header -->
-    <header class="flex-none bg-black/80 border-b border-gray-800 p-4 md:p-5 z-20 pointer-events-none flex justify-between items-center">
+<!-- Main Narrative Engine UI -->
+<main id="app-container" class="flex-1 w-full max-w-5xl mx-auto flex flex-col game-panel md:my-auto md:max-h-[88vh] md:rounded-2xl shadow-2xl overflow-hidden relative transition-all duration-700 opacity-0 pointer-events-none" style="z-index: 10;">
+    <header class="flex-none bg-slate-950/90 border-b border-slate-800 p-4 md:p-5 z-20 flex justify-between items-center">
         <div class="flex items-center gap-4">
-            <i class="fab fa-galactic-republic text-[#fce300] text-3xl drop-shadow-[0_0_5px_#fce300]"></i>
-            <h1 class="text-xl md:text-2xl text-[#fce300] font-starwars tracking-widest drop-shadow-[0_0_8px_rgba(252,227,0,0.6)]">STAR WARS</h1>
+            <i class="fab fa-galactic-republic text-[#ffe400] text-3xl drop-shadow-[0_0_8px_#ffe400]"></i>
+            <h1 class="text-xl md:text-2xl text-[#ffe400] font-starwars tracking-widest">STAR WARS</h1>
         </div>
-        <div class="flex gap-2">
-            <div class="status-chip py-1 px-3 text-sm">LOC: <span id="ui-location" class="font-bold text-white">Tantive IV</span></div>
-        </div>
+        <div class="status-chip py-1.5 px-4 text-xs font-bold border border-slate-700 bg-black/50 text-slate-300 rounded">LOC: <span id="ui-location" class="text-white ml-1 text-sky-400">Tantive IV</span></div>
     </header>
 
-    <!-- Scene Banner -->
-    <div class="flex-none h-32 md:h-48 bg-black relative border-b border-gray-800 overflow-hidden flex items-center justify-center pointer-events-none">
-        <div id="scene-bg" class="absolute inset-0 transition-all duration-1000 opacity-40 bg-gradient-to-b from-gray-900 to-black"></div>
-        <div id="scene-icon" class="text-6xl md:text-8xl text-white z-10 transition-all duration-700 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"></div>
-        <div class="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,1)] z-20"></div>
+    <div class="flex-none h-36 md:h-48 bg-black relative border-b border-slate-900 overflow-hidden flex items-center justify-center">
+        <div id="scene-bg" class="absolute inset-0 transition-all duration-1000 opacity-50 bg-gradient-to-b from-slate-900 to-black"></div>
+        <div id="scene-icon" class="text-6xl md:text-7xl text-white z-10 transition-all duration-700 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]"></div>
+        <div class="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,1)] z-20"></div>
     </div>
 
-    <!-- Story Text -->
-    <div id="story-scroll-area" class="flex-1 overflow-y-auto p-5 md:p-8 relative scroll-smooth bg-black/40 pointer-events-auto">
-        <div id="story-text" class="text-sm md:text-base text-gray-200 min-h-full flex flex-col justify-end space-y-4 pb-4 leading-relaxed font-medium"></div>
+    <div id="story-scroll-area" class="flex-1 overflow-y-auto p-6 md:p-8 relative bg-slate-950/20">
+        <div id="story-text" class="text-sm md:text-base text-slate-200 min-h-full flex flex-col justify-end space-y-4 pb-2 leading-relaxed"></div>
     </div>
 
-    <!-- Choices / Actions -->
-    <div class="flex-none bg-black/90 border-t border-gray-800 p-4 md:p-6 min-h-[120px] flex flex-col justify-center relative pointer-events-auto z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.9)]">
-        <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-4xl mx-auto z-10 transition-all duration-300"></div>
+    <div class="flex-none bg-slate-950/95 border-t border-slate-900 p-4 md:p-6 min-h-[120px] flex flex-col justify-center relative z-30 shadow-[0_-15px_40px_rgba(0,0,0,0.85)]">
+        <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl mx-auto transition-all duration-300"></div>
     </div>
 </main>
 
-<!-- Mini Game Overlay -->
-<div id="game-canvas-container" class="hidden opacity-0">
+<!-- High-Fidelity 3D Mini-Game Engine Container -->
+<div id="game-canvas-container" class="hidden opacity-0 absolute inset-0 z-60">
     <div id="damage-overlay" class="damage-overlay"></div>
     
-    <!-- Virtual Controls -->
     <div id="virtual-controls" class="hidden">
         <div id="joystick-zone" class="joystick-base">
             <div id="joystick-stick" class="joystick-stick"></div>
         </div>
         <div class="action-btn-group">
-            <button id="btn-interact" class="action-btn interact-btn font-starwars tracking-widest text-sm">ACT</button>
-            <button id="btn-shoot" class="action-btn font-starwars tracking-widest">FIRE</button>
+            <button id="btn-interact" class="action-btn interact-btn font-starwars text-xs">OPERATE</button>
+            <button id="btn-shoot" class="action-btn font-starwars text-base tracking-wider">FIRE</button>
         </div>
     </div>
 
-    <!-- Target Lock HUD (New) -->
     <div id="target-lock-hud" class="absolute inset-0 pointer-events-none hidden flex items-center justify-center z-40">
-        <div class="w-64 h-64 border-2 border-red-500 rounded-full animate-pulse flex items-center justify-center">
-             <div class="w-1/2 h-1/2 border border-red-400 rounded-full relative">
-                <div class="absolute top-0 left-1/2 w-1 h-2 bg-red-500 -translate-x-1/2"></div>
-                <div class="absolute bottom-0 left-1/2 w-1 h-2 bg-red-500 -translate-x-1/2"></div>
-                <div class="absolute left-0 top-1/2 h-1 w-2 bg-red-500 -translate-y-1/2"></div>
-                <div class="absolute right-0 top-1/2 h-1 w-2 bg-red-500 -translate-y-1/2"></div>
+        <div class="w-72 h-72 border-2 border-red-500 rounded-full animate-ping absolute opacity-25"></div>
+        <div class="w-48 h-48 border-2 border-red-500/60 rounded-full animate-pulse flex items-center justify-center">
+             <div class="w-1/3 h-1/3 border border-red-400 rounded-full relative">
+                <div class="absolute top-0 left-1/2 w-1 h-3 bg-red-500 -translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-1/2 w-1 h-3 bg-red-500 -translate-x-1/2"></div>
+                <div class="absolute left-0 top-1/2 h-1 w-3 bg-red-500 -translate-y-1/2"></div>
+                <div class="absolute right-0 top-1/2 h-1 w-3 bg-red-500 -translate-y-1/2"></div>
              </div>
         </div>
     </div>
 
-    <!-- Game HUD (In-Game) -->
     <div id="game-hud" class="absolute inset-0 z-50 flex flex-col pointer-events-none hidden">
-        <div class="p-4 flex justify-between items-start">
-            <div class="bg-black/60 border border-[#fce300]/40 rounded px-4 py-2 text-[#fce300] font-starwars text-xl drop-shadow-md backdrop-blur">
-                SCORE: <span id="game-score">0</span> / <span id="game-target-score">10</span>
+        <div class="p-6 flex justify-between items-start w-full max-w-7xl mx-auto">
+            <div class="bg-slate-950/80 border border-amber-500/30 rounded-xl px-5 py-3 text-amber-400 font-starwars text-2xl shadow-lg backdrop-blur">
+                SCORE: <span id="game-score" class="text-white">0</span> <span class="text-xs text-amber-500/60">/ <span id="game-target-score">10</span></span>
             </div>
-            <div class="bg-black/60 border border-blue-500/40 rounded px-4 py-2 flex flex-col items-end min-w-[200px] backdrop-blur">
-                <span class="text-blue-300 text-xs font-bold mb-1 tracking-widest drop-shadow-[0_0_5px_blue]">SHIELDS</span>
-                <div class="w-full h-3 bg-gray-900 border border-gray-700 rounded overflow-hidden">
-                    <div id="game-health" class="h-full bg-gradient-to-r from-blue-600 to-blue-400 w-full transition-all duration-200 shadow-[0_0_8px_blue]"></div>
+            <div class="bg-slate-950/80 border border-sky-500/30 rounded-xl px-5 py-3 flex flex-col items-end min-w-[220px] shadow-lg backdrop-blur">
+                <span class="text-sky-400 text-xs font-bold mb-1.5 tracking-widest drop-shadow-[0_0_5px_rgba(56,189,248,0.5)]">SHIELDS / INTEGRITY</span>
+                <div class="w-full h-2.5 bg-slate-900 border border-slate-700 rounded-full overflow-hidden">
+                    <div id="game-health" class="h-full bg-gradient-to-r from-sky-600 to-sky-400 w-full transition-all duration-150 shadow-[0_0_10px_rgba(56,189,248,0.8)]"></div>
                 </div>
             </div>
         </div>
-        <div class="flex-1 relative flex flex-col justify-end pb-8 items-center">
+        <div class="flex-1 relative flex flex-col justify-end pb-12 items-center">
             <div id="fps-crosshair" class="crosshair hidden"></div>
-            <div id="mission-message" class="text-[#fce300] font-starwars text-2xl tracking-widest drop-shadow-[0_0_10px_rgba(252,227,0,1)] bg-black/50 px-6 py-2 rounded-lg opacity-0 transition-opacity duration-500"></div>
+            <div id="mission-message" class="text-amber-400 font-starwars text-2xl tracking-widest drop-shadow-[0_0_12px_rgba(255,228,0,0.8)] bg-black/70 border border-amber-500/20 px-8 py-3 rounded-xl opacity-0 transition-opacity duration-500"></div>
         </div>
     </div>
 
-    <!-- Game Start Confirmation Overlay -->
-    <div id="game-start-overlay" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md pointer-events-auto hidden">
-        <div class="bg-black/80 border border-[#fce300]/30 p-8 md:p-12 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col items-center max-w-lg w-[90%]">
-            <h2 id="game-start-title" class="text-4xl md:text-5xl text-[#fce300] font-starwars mb-6 tracking-widest drop-shadow-[0_0_15px_rgba(252,227,0,0.6)] text-center">MISSION</h2>
-            <p id="game-start-desc" class="text-white text-lg md:text-xl mb-10 font-bold tracking-widest text-center leading-relaxed"></p>
-            <button id="btn-start-mission" class="sw-btn btn-action w-full px-10 py-5 rounded-lg text-xl font-bold tracking-widest shadow-[0_0_20px_rgba(252,227,0,0.5)]">
-                挑戦する (START)
-            </button>
+    <div id="game-start-overlay" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md pointer-events-auto hidden">
+        <div class="bg-slate-950 border border-amber-500/30 p-8 md:p-10 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] flex flex-col items-center max-w-lg w-[92%]">
+            <h2 id="game-start-title" class="text-3xl md:text-4xl text-amber-400 font-starwars mb-4 tracking-widest drop-shadow-[0_0_15px_rgba(255,228,0,0.5)] text-center">MISSION START</h2>
+            <p id="game-start-desc" class="text-slate-300 text-sm md:text-base mb-8 tracking-wide text-center leading-relaxed font-medium"></p>
+            <button id="btn-start-mission" class="sw-btn btn-action w-full px-8 py-4 rounded-xl text-lg font-bold tracking-widest shadow-md">LAUNCH MISSION</button>
         </div>
     </div>
 </div>
 
-<!-- Negotiation Overlay -->
+<!-- Interactive Negotiation Matrix -->
 <div id="negotiation-overlay" class="absolute inset-0 z-[95] hidden items-center justify-center bg-black/80 backdrop-blur-md pointer-events-auto">
-    <div class="w-[95%] md:w-[80%] max-w-[700px] bg-gradient-to-b from-gray-900 to-black border border-gray-700 rounded-2xl p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,1)] relative overflow-hidden my-auto">
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-20"></div>
-        <div class="flex justify-between items-end border-b border-gray-700 pb-3 mb-5 relative z-10">
+    <div class="w-[95%] md:w-[80%] max-w-[700px] bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-700 rounded-2xl p-6 md:p-8 shadow-[0_0_60px_#000] relative overflow-hidden">
+        <div class="flex justify-between items-end border-b border-slate-800 pb-4 mb-6">
             <div>
-                <div class="font-starwars text-[#fce300] text-2xl">NEGOTIATION</div>
-                <div id="dialog-speaker" class="text-blue-400 text-sm tracking-widest font-bold drop-shadow-[0_0_3px_blue]">HAN SOLO</div>
+                <div class="font-starwars text-amber-400 text-2xl tracking-wider">CHARTER NEGOTIATION</div>
+                <div id="dialog-speaker" class="text-sky-400 text-xs font-bold tracking-widest mt-1">HAN SOLO</div>
             </div>
             <div class="text-right">
-                <div class="text-xs text-gray-400 tracking-widest mb-1">TRUST</div>
-                <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden border border-gray-600">
-                    <div id="trust-fill" class="h-full bg-[#fce300] w-1/2 transition-all duration-300"></div>
+                <div class="text-[10px] text-slate-400 tracking-widest mb-1.5 font-bold">CREDIBILITY / TRUST</div>
+                <div class="w-36 h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-700">
+                    <div id="trust-fill" class="h-full bg-amber-400 w-1/2 transition-all duration-300"></div>
                 </div>
             </div>
         </div>
-        <div id="dialog-text" class="text-gray-200 text-lg md:text-xl leading-relaxed italic mb-8 min-h-[80px] relative z-10"></div>
-        <div id="dialog-choices" class="space-y-3 relative z-10"></div>
+        <div id="dialog-text" class="text-slate-200 text-base md:text-lg leading-relaxed italic mb-8 min-h-[70px] px-2"></div>
+        <div id="dialog-choices" class="space-y-3"></div>
     </div>
 </div>
 
-<!-- Results Overlay -->
-<div id="result-overlay" class="absolute inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-lg pointer-events-auto">
-    <div class="text-center p-10 border border-gray-800 bg-gray-900/80 rounded-2xl shadow-2xl max-w-md w-[90%]">
-        <div id="result-title" class="font-starwars text-4xl md:text-5xl mb-6 drop-shadow-[0_0_15px_currentColor]">MISSION CLEAR</div>
-        <div id="result-desc" class="text-gray-300 mb-10 text-base md:text-lg leading-relaxed"></div>
-        <button id="result-next-btn" class="sw-btn btn-gold w-full py-5 rounded-lg font-bold tracking-widest text-xl shadow-[0_0_20px_rgba(252,227,0,0.3)]">CONTINUE >></button>
+<!-- Game Results Evaluation Screen -->
+<div id="result-overlay" class="absolute inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-xl pointer-events-auto">
+    <div class="text-center p-8 md:p-10 border border-slate-800 bg-slate-950/90 rounded-2xl shadow-2xl max-w-md w-[90%]">
+        <div id="result-title" class="font-starwars text-4xl mb-4 drop-shadow-[0_0_20px_currentColor]">MISSION CLEAR</div>
+        <div id="result-desc" class="text-slate-400 mb-8 text-sm md:text-base leading-relaxed"></div>
+        <button id="result-next-btn" class="sw-btn btn-gold w-full py-4 rounded-xl font-bold tracking-widest text-lg shadow-md">CONTINUE >></button>
     </div>
 </div>
 
 <script>
 "use strict";
 
-const SAVE_KEY = "sw_interactive_v4";
+const SAVE_KEY = "sw_interactive_v7";
 let state = { currentScene: "prologue", location: "Tantive IV" };
 
 const DOM = {
     startOverlay: document.getElementById("start-overlay"), btnBegin: document.getElementById("btn-begin"), btnContinue: document.getElementById("btn-continue"),
-    crawlContainer: document.getElementById("crawl-container"), crawlContent: document.getElementById("crawl-content"), skipCrawlBtn: document.getElementById("skip-crawl-btn"),
+    crawlContainer: document.getElementById("crawl-container"), skipCrawlBtn: document.getElementById("skip-crawl-btn"),
     appContainer: document.getElementById("app-container"), storyText: document.getElementById("story-text"), storyScrollArea: document.getElementById("story-scroll-area"),
     choicesContainer: document.getElementById("choices-container"), sceneIcon: document.getElementById("scene-icon"), sceneBg: document.getElementById("scene-bg"),
     uiLocation: document.getElementById("ui-location"), gameCanvasContainer: document.getElementById("game-canvas-container"),
@@ -262,8 +236,8 @@ const DOM = {
 
 const input = { keys: { w:false, a:false, s:false, d:false, space:false }, joy: { active:false, x:0, y:0, ox:0, oy:0 }, initialized: false };
 let interactTarget = null;
-let currentMiniGameCompleted = false; // ループ防止フラグ
-let missionPhase = 0; // ミッション進行管理
+let currentMiniGameCompleted = false;
+let missionPhase = 0;
 
 window.addEventListener('keydown', e => {
     const k = e.key.toLowerCase();
@@ -271,7 +245,7 @@ window.addEventListener('keydown', e => {
     if(k==='a'||k==='arrowleft') input.keys.a = true;
     if(k==='s'||k==='arrowdown') input.keys.s = true;
     if(k==='d'||k==='arrowright') input.keys.d = true;
-    if(k===' ') { input.keys.space = true; if(gameActive && (gameMode.startsWith('fps') || gameMode.startsWith('tps'))) playerShoot(); }
+    if(k===' ') { input.keys.space = true; if(gameActive && gameMode.startsWith('fps')) playerShoot(); }
 });
 window.addEventListener('keyup', e => {
     const k = e.key.toLowerCase();
@@ -280,13 +254,6 @@ window.addEventListener('keyup', e => {
     if(k==='s'||k==='arrowdown') input.keys.s = false;
     if(k==='d'||k==='arrowright') input.keys.d = false;
     if(k===' ') input.keys.space = false;
-});
-window.addEventListener('keyup', e => {
-    const k = e.key.toLowerCase();
-    if(k==='w'||k==='arrowup') input.keys.w = false;
-    if(k==='a'||k==='arrowleft') input.keys.a = false;
-    if(k==='s'||k==='arrowdown') input.keys.s = false;
-    if(k==='d'||k==='arrowright') input.keys.d = false;
 });
 
 function initJoystick() {
@@ -328,10 +295,9 @@ function bindSafeButton(btn, handler) {
     let locked = false;
     const run = async (e) => {
         if(e) { e.preventDefault(); e.stopPropagation(); }
-        if(locked) return;
-        locked = true;
+        if(locked) return; locked = true;
         try { await handler(e); } catch(err) { console.error(err); }
-        setTimeout(() => locked = false, 300);
+        setTimeout(() => locked = false, 250);
     };
     btn.onclick = run;
     btn.ontouchend = run;
@@ -345,15 +311,10 @@ function setLayerMode(mode) {
     [DOM.startOverlay, DOM.crawlContainer, DOM.appContainer, DOM.gameCanvasContainer, DOM.negotiationOverlay, DOM.resultOverlay].forEach(el => {
         if(el) { el.classList.add('hidden', 'opacity-0'); el.style.pointerEvents = 'none'; }
     });
-
     const show = (el) => { 
         el.classList.remove('hidden'); 
-        requestAnimationFrame(()=> {
-            el.classList.remove('opacity-0');
-            el.style.pointerEvents = 'auto';
-        }); 
+        requestAnimationFrame(()=> { el.classList.remove('opacity-0'); el.style.pointerEvents = 'auto'; }); 
     };
-
     if(mode === "start") show(DOM.startOverlay);
     else if(mode === "crawl") show(DOM.crawlContainer);
     else if(mode === "app") show(DOM.appContainer);
@@ -362,9 +323,6 @@ function setLayerMode(mode) {
     else if(mode === "result") show(DOM.resultOverlay);
 }
 
-// ==========================================
-// 2. AUDIO SYSTEM (Tone.js)
-// ==========================================
 let audioCtxReady = false;
 const sfx = {};
 let bgmSynth, bgmLoop;
@@ -374,142 +332,123 @@ async function initAudio() {
     try {
         await Tone.start();
         audioCtxReady = true;
-
-        sfx.click = new Tone.Synth({ oscillator:{type:"sine"}, envelope:{attack:.01,decay:.1,sustain:0,release:.01} }).toDestination();
-        sfx.click.volume.value = -15;
-
-        sfx.saber = new Tone.MembraneSynth({ pitchDecay: 0.1, octaves: 4, oscillator:{type:"sawtooth"}, envelope:{attack:0.1, decay:0.4, sustain:0, release:0.5} }).toDestination();
-        sfx.saber.volume.value = -5;
-        
-        const dist = new Tone.Distortion(0.4).toDestination();
-        sfx.blaster = new Tone.Synth({ oscillator:{type:"sawtooth"}, envelope:{attack:0.01, decay:0.1, sustain:0, release:0.1} }).connect(dist);
-        sfx.blaster.volume.value = -10;
-
-        sfx.enemyBlaster = new Tone.Synth({ oscillator:{type:"square"}, envelope:{attack:0.01, decay:0.15, sustain:0, release:0.1} }).toDestination();
-        sfx.enemyBlaster.volume.value = -12;
-
-        sfx.explosion = new Tone.NoiseSynth({ noise:{type:'brown'}, envelope:{attack:.01,decay:.6,sustain:0,release:.2} }).toDestination();
-        sfx.explosion.volume.value = -5;
-
-        sfx.alarm = new Tone.Synth({ oscillator:{type:"square"}, envelope:{attack:0, decay:0.5, sustain:0, release:0.1} }).toDestination();
-        sfx.alarm.volume.value = -15;
+        sfx.click = new Tone.Synth({ oscillator:{type:"sine"}, envelope:{attack:.005,decay:.05,sustain:0,release:.01} }).toDestination();
+        sfx.click.volume.value = -18;
+        sfx.saber = new Tone.MembraneSynth({ pitchDecay: 0.15, octaves: 3, oscillator:{type:"sawtooth"}, envelope:{attack:0.08, decay:0.3, sustain:0.1, release:0.4} }).toDestination();
+        sfx.saber.volume.value = -6;
+        const dist = new Tone.Distortion(0.5).toDestination();
+        sfx.blaster = new Tone.Synth({ oscillator:{type:"sawtooth"}, envelope:{attack:0.005, decay:0.08, sustain:0, release:0.05} }).connect(dist);
+        sfx.blaster.volume.value = -12;
+        sfx.enemyBlaster = new Tone.Synth({ oscillator:{type:"square"}, envelope:{attack:0.005, decay:0.12, sustain:0, release:0.06} }).toDestination();
+        sfx.enemyBlaster.volume.value = -14;
+        sfx.explosion = new Tone.NoiseSynth({ noise:{type:'brown'}, envelope:{attack:.005,decay:.5,sustain:0,release:.15} }).toDestination();
+        sfx.explosion.volume.value = -4;
+        sfx.alarm = new Tone.Synth({ oscillator:{type:"triangle"}, envelope:{attack:0.1, decay:0.3, sustain:0.2, release:0.2} }).toDestination();
+        sfx.alarm.volume.value = -12;
 
         bgmSynth = new Tone.PolySynth(Tone.Synth).toDestination();
-        bgmSynth.volume.value = -20;
-        bgmLoop = new Tone.Loop(time => {
-            bgmSynth.triggerAttackRelease("C2", "8n", time);
-        }, "2n");
-    } catch(e) { console.warn("Audio init failed", e); }
+        bgmSynth.volume.value = -22;
+        bgmLoop = new Tone.Loop(time => { bgmSynth.triggerAttackRelease("E2", "8n", time); }, "2n");
+    } catch(e) { console.warn("Audio Context setup failed", e); }
 }
 
 function playSound(type) {
     if(!audioCtxReady) return;
     try {
         if(Tone.context.state !== 'running') Tone.context.resume();
-        if(type === 'click') sfx.click.triggerAttackRelease("C5", "32n");
-        if(type === 'saber') sfx.saber.triggerAttackRelease("C2", "8n");
-        if(type === 'blaster') { sfx.blaster.frequency.setValueAtTime(800, Tone.now()); sfx.blaster.frequency.exponentialRampToValueAtTime(100, Tone.now()+0.1); sfx.blaster.triggerAttackRelease("C4", "16n"); }
-        if(type === 'enemyBlaster') { sfx.enemyBlaster.frequency.setValueAtTime(600, Tone.now()); sfx.enemyBlaster.frequency.exponentialRampToValueAtTime(200, Tone.now()+0.15); sfx.enemyBlaster.triggerAttackRelease("G3", "16n"); }
-        if(type === 'explosion') sfx.explosion.triggerAttackRelease("4n");
-        if(type === 'alarm') { sfx.alarm.frequency.setValueAtTime(800, Tone.now()); sfx.alarm.frequency.linearRampToValueAtTime(400, Tone.now()+0.5); sfx.alarm.triggerAttackRelease("C4", "8n"); }
+        if(type === 'click') sfx.click.triggerAttackRelease("E5", "32n");
+        if(type === 'saber') sfx.saber.triggerAttackRelease("D2", "4n");
+        if(type === 'blaster') { sfx.blaster.frequency.setValueAtTime(900, Tone.now()); sfx.blaster.frequency.exponentialRampToValueAtTime(80, Tone.now()+0.08); sfx.blaster.triggerAttackRelease("B4", "16n"); }
+        if(type === 'enemyBlaster') { sfx.enemyBlaster.frequency.setValueAtTime(550, Tone.now()); sfx.enemyBlaster.frequency.exponentialRampToValueAtTime(120, Tone.now()+0.12); sfx.enemyBlaster.triggerAttackRelease("F3", "16n"); }
+        if(type === 'explosion') sfx.explosion.triggerAttackRelease("2n");
+        if(type === 'alarm') { sfx.alarm.frequency.setValueAtTime(650, Tone.now()); sfx.alarm.frequency.linearRampToValueAtTime(350, Tone.now()+0.4); sfx.alarm.triggerAttackRelease("G4", "4n"); }
     } catch(e) {}
 }
 
-function startBGM(bpm) {
-    if(!audioCtxReady || !bgmLoop) return;
-    Tone.Transport.bpm.value = bpm;
-    Tone.Transport.start();
-    bgmLoop.start(0);
-}
-function stopBGM() {
-    if(!audioCtxReady) return;
-    if(bgmLoop) bgmLoop.stop();
-    Tone.Transport.stop();
-}
+function startBGM(bpm) { if(!audioCtxReady || !bgmLoop) return; Tone.Transport.bpm.value = bpm; Tone.Transport.start(); bgmLoop.start(0); }
+function stopBGM() { if(!audioCtxReady) return; if(bgmLoop) bgmLoop.stop(); Tone.Transport.stop(); }
 
-// ==========================================
-// 3. STORY DATA
-// ==========================================
+// 拡張されたストーリーノード (1.5倍ボリューム)
 const storyNodes = {
     prologue: {
-        location: "Tantive IV", bg: 'from-gray-800 to-black', icon: 'fa-space-shuttle text-gray-300',
-        text: "反乱軍の外交船タンティヴィIVが、巨大なスター・デストロイヤーのトラクタービームに捕らえられた。<br><br>通路の隔壁が爆破され、白い装装のストームトルーパーたちが雪崩れ込んでくる！<br><span class='story-key'>レイア姫がR2-D2に「デス・スター」の設計図を託す時間を稼ぐため、防衛線を死守せよ。</span>",
-        choices: [{ text: "ブラスターを構え、防衛戦を開始する", action: 'PLAY_fps_defense', targetScore: 15, next: 'r2_escape', fail: 'prologue', style: 'btn-action' }]
+        location: "Tantive IV - Main Corridor", bg: 'from-slate-800 to-slate-950', icon: 'fa-space-shuttle text-slate-400',
+        text: "反乱軍の外交船タンティヴィIVが、巨大なスター・デストロイヤーのトラクタービームに捕らえられた！<br><br>白い装甲服に身を包んだ帝国の「ストームトルーパー」たちが、爆破された隔壁から容赦なく雪崩れ込んでくる。<br><span class='text-amber-400 font-bold'>レイア姫がR2-D2に極秘設計図を託す時間を稼ぐため、ブラスターを手に取り防衛線を死守せよ！</span>",
+        choices: [{ text: "迎撃態勢を取り、防衛戦を開始する", action: 'PLAY_fps_defense', targetScore: 8, next: 'r2_escape', fail: 'prologue', style: 'btn-action' }]
     },
     r2_escape: {
-        location: "Escape Pod", bg: 'from-gray-900 to-black', icon: 'fa-rocket text-gray-400',
-        text: "「助けてオビ＝ワン・ケノービ、あなただけが頼りです」<br><br>レイア姫はR2-D2にデス・スターの設計図とメッセージを託した。R2はC-3POと共に脱出ポッドに乗り込み、眼下の砂漠の惑星タトゥイーンへと射出された。<br><br>帝国軍の砲手は「生命反応がない」としてポッドへの砲撃を中止する。これが銀河の運命を変えることとなる。",
-        choices: [{ text: "タトゥイーンへ降下する", action: 'jawa_capture', style: 'btn-rebel' }]
+        location: "Tantive IV - Pod Bay", bg: 'from-slate-900 to-black', icon: 'fa-rocket text-slate-400',
+        text: "「助けてオビ＝ワン・ケノービ。あなただけが頼りです」<br><br>レイア姫はR2-D2にデス・スターの設計図と救援メッセージを託した。R2はC-3POと共に脱出ポッドへ乗り込み、眼下に広がる砂漠の惑星タトゥイーンへと射出される。帝国軍の監視の目を欺き、運命の脱出劇が始まった。",
+        choices: [{ text: "タトゥイーンの砂漠へ降下する", action: 'jawa_capture', style: 'btn-rebel' }]
     },
     jawa_capture: {
-        location: "Tatooine Desert", bg: 'from-yellow-900/80 to-orange-900/50', icon: 'fa-sun text-yellow-500',
-        text: "灼熱の砂漠をさまよう2体のドロイドは、廃品回収業者のジャワ族に捕らえられてしまった。<br><br>巨大なサンドクローラーで運ばれた先は、水分農夫のラーズ家。そこで若きルーク・スカイウォーカーと叔父のオーウェンによって購入される。",
-        choices: [{ text: "ルークの作業場へ", action: 'r2_runaway', style: 'btn-jedi' }]
+        location: "Tatooine - Dune Sea", bg: 'from-amber-950 to-orange-950', icon: 'fa-sun text-amber-500',
+        text: "不毛な広野をさまよう2体のドロイドだったが、廃品回収業者ジャワ族の罠にかかり捕獲されてしまう。<br><br>巨大な移動要塞サンドクローラーで運ばれた先で、叔父オーウェンと若き農夫ルーク・スカイウォーカーの元へ買い取られることとなる。",
+        choices: [{ text: "ラーズ家の作業場へ向かう", action: 'r2_runaway', style: 'btn-jedi' }]
     },
     r2_runaway: {
-        location: "Lars Homestead", bg: 'from-orange-800/60 to-black', icon: 'fa-house text-orange-400',
-        text: "ルークがR2-D2の整備中、偶然レイア姫のホログラム・メッセージの一部が再生される。「オビ＝ワン」という名前にルークは老隠遁者ベン・ケノービを思い出す。<br><br>夜になり、使命を帯びたR2は単独で砂漠へ逃げ出してしまった。翌朝、R2を追って砂漠の奥深くに入ったルークとC-3POは、凶暴なタスケン・レイダーの襲撃を受ける。",
-        choices: [{ text: "襲撃を切り抜ける", action: 'meet_obiwan', style: 'btn-sith' }]
+        location: "Lars Homestead", bg: 'from-orange-900 to-black', icon: 'fa-house text-orange-400',
+        text: "ルークがR2の整備を行っていると、偶然レイアのホログラムが再生された。「オビ＝ワン」という名に心当たりのあるルーク。しかしその夜、過酷な使命を帯びたR2は単独で砂漠へ逃亡してしまう。<br><br>翌朝、R2を追ってタトゥイーンの岩場へ立ち入ったルークだったが、凶暴な原住民「タスケン・レイダー」がうろついていた。",
+        choices: [{ text: "タスケンの目を盗み、R2を探し出す", action: 'PLAY_explore_tatooine', targetScore: 1, next: 'meet_obiwan', fail: 'r2_runaway', style: 'btn-action' }]
     },
     meet_obiwan: {
-        location: "Jundland Wastes", bg: 'from-orange-900/60 to-black', icon: 'fa-user-ninja text-gray-400',
-        text: "クレイト・ドラゴンの鳴き真似でタスケンを追い払ったのは、フードを被ったベン・ケノービだった。<br>「オビ＝ワン・ケノービ。それは私が生まれる前からの名前だ」<br><br>彼はルークの父アナキンのライトセーバーを託し、フォースの道を説く。そしてR2のメッセージを再生し、オルデランへの同行をルークに求める。",
-        choices: [{ text: "モス・アイズリー宇宙港へ向かう", action: 'cantina', style: 'btn-rebel' }]
+        location: "Jundland Wastes", bg: 'from-amber-900 to-black', icon: 'fa-user-ninja text-slate-300',
+        text: "恐ろしい咆哮の真似でタスケンを追い払ったのは、フードを被った老隠遁者ベン・ケノービだった。<br>「オビ＝ワン…久しく聞いていなかった名だな」<br><br>彼はルークの父が遺したライトセーバーを授け、かつて銀河を統和していた神秘の力「フォース」の存在を説く。そして姫を救うため、危険な宇宙港へ向かうことを提案した。",
+        choices: [{ text: "モス・アイズリー宇宙港へ移動", action: 'cantina', style: 'btn-rebel' }]
     },
     cantina: {
-        location: "Mos Eisley", bg: 'from-yellow-900/60 to-black', icon: 'fa-beer-mug-empty text-yellow-500',
-        text: "「宇宙港モス・アイズリー。これほど悪党が密集している場所は他にない」<br><br>ストームトルーパーの検問をオビ＝ワンの「マインド・トリック」で切り抜け、酒場（カンティーナ）に到着した。密輸業者のハン・ソロを探し出し、船のチャーターを交渉しよう。",
-        choices: [{ text: "酒場に入り、ハン・ソロを探す", action: 'PLAY_explore_cantina', targetScore: 1, next: 'cantina_nego', fail: 'cantina', style: 'btn-action' }]
+        location: "Mos Eisley - Chalmun's Cantina", bg: 'from-amber-950 to-neutral-950', icon: 'fa-beer-mug-empty text-amber-600',
+        text: "「モス・アイズリー宇宙港。宇宙で最も悪党が集まる危険な街だ」<br><br>オビ＝ワンの精神操作（マインド・トリック）で帝国の検問を突破し、薄暗い酒場（カンティーナ）に到着した。オルデランへ向かう船を手配するため、密輸業者ハン・ソロを探し出さねばならない。",
+        choices: [{ text: "酒場を探索し、ハン・ソロを捜索する", action: 'PLAY_explore_cantina', targetScore: 1, next: 'cantina_nego', fail: 'cantina', style: 'btn-action' }]
     },
     cantina_nego: {
-        location: "Mos Eisley Cantina", bg: 'from-yellow-900/60 to-black', icon: 'fa-user-astronaut text-gray-400',
-        text: "酒場の奥でウーキー族のチューバッカ、そしてハン・ソロと出会った。<br><br>「俺はハン・ソロ。ミレニアム・ファルコンの船長だ」<br>オルデランまでの船のチャーターを持ちかける。一筋縄ではいかない彼らとの交渉を成功させねばならない。",
-        choices: [{ text: "ハン・ソロと交渉を開始する", action: 'PLAY_negotiation', next: 'falcon_escape', fail: 'cantina_nego', style: 'btn-action' }]
+        location: "Cantina - Back Booth", bg: 'from-neutral-900 to-black', icon: 'fa-user-astronaut text-sky-400',
+        text: "酒場の奥で、ウーキー族のチューバッカ、そして不敵な笑みを浮かべるハン・ソロと対面する。<br><br>「俺はハン・ソロ。ミレニアム・ファルコンの船長だ。お前さんたち、良い船を探しているらしいな？」<br>一筋縄ではいかない密輸業者との命がけのチャーター交渉が幕を開ける。",
+        choices: [{ text: "ハンの提示する条件と交渉する", action: 'PLAY_negotiation', next: 'falcon_escape', fail: 'cantina_nego', style: 'btn-action' }]
     },
     falcon_escape: {
-        location: "Mos Eisley Spaceport", bg: 'from-gray-800 to-black', icon: 'fa-plane-departure text-gray-400',
-        text: "交渉は成立したが、ハンがジャバ・ザ・ハットの賞金稼ぎグリードを始末した直後、帝国軍のストームトルーパーがドロイドの捜索に駆けつけてきた！<br><br>銃撃戦の中、一行は「銀河系最速のガラクタ」ミレニアム・ファルコン号に乗り込み、強引に離陸する。追撃してくるスター・デストロイヤーを振り切り、ハイパースペースへジャンプせよ！",
-        choices: [{ text: "ハイパースペース・ジャンプ", action: 'alderaan_destroyed', style: 'btn-jedi' }]
+        location: "Mos Eisley - Docking Bay 94", bg: 'from-slate-800 to-black', icon: 'fa-plane-departure text-slate-400',
+        text: "交渉は成立したものの、密告によりドッキング・ベイ94にストームトルーパーの大部隊が乱入してきた！<br><br>「銀河系最速のガラクタ」ミレニアム・ファルコン号の離陸準備を整えるため、ハン・ソロとして荒くれ者たちをブラスターで蹴散らし、時間を稼げ！",
+        choices: [{ text: "ベイ94での離陸防衛戦を開始", action: 'PLAY_fps_escape', targetScore: 10, next: 'alderaan_destroyed', fail: 'falcon_escape', style: 'btn-action' }]
     },
     alderaan_destroyed: {
-        location: "Alderaan System", bg: 'from-blue-900/50 to-black', icon: 'fa-meteor text-blue-300',
-        text: "オルデランの座標に到着したが、そこにあるはずの惑星は完全に消滅し、無数の岩石が漂う小惑星帯と化していた。グランド・モフ・ターキンによって、レイア姫の目の前でデス・スターのスーパーレーザーの標的にされたのだ。<br><br>そしてファルコン号は、近くに潜んでいた帝国軍のTIEファイターを追ううちに、巨大な宇宙ステーションの強力なトラクタービームに捕らえられてしまう。",
-        choices: [{ text: "密輸用の隠し区画に身を潜める", action: 'ds_infiltration', style: 'btn-rebel' }]
+        location: "Alderaan System", bg: 'from-indigo-950 to-black', icon: 'fa-meteor text-blue-400',
+        text: "ハイパースペースを抜け、なんとか帝国の追撃をかわした一行。だが眼前に広がっていたのは、粉々に砕け散った小惑星の塵だった。帝国軍の要塞デス・スターのスーパーレーザーにより、惑星オルデランは一瞬で消滅させられていたのだ。<br><br>驚愕する間もなく、ファルコン号は小天体のように巨大なデス・スターのトラクタービームに捕らえられ、内部へと引き込まれていく……。",
+        choices: [{ text: "船内の密輸用隠し区画へ潜伏する", action: 'ds_infiltration', style: 'btn-rebel' }]
     },
     ds_infiltration: {
-        location: "Death Star", bg: 'from-gray-900 to-black', icon: 'fa-shield-halved text-gray-500',
-        text: "格納庫（ドッキング・ベイ327）に引き込まれた一行は、船内を捜索しに来たストームトルーパーを倒し、その装甲服を奪って変装した。<br><br>オビ＝ワンは単独でトラクタービームの電源ユニットへ向かう。見回りの帝国兵の視界を避け、ターミナルに到達しシステムを無効化せよ。",
-        choices: [{ text: "オビ＝ワン：ターミナルへ潜入する (ステルス)", action: 'PLAY_explore_deathstar', targetScore: 1, next: 'rescue_leia', fail: 'ds_infiltration', style: 'btn-jedi' }]
+        location: "Death Star - Hangar 327", bg: 'from-slate-900 to-slate-950', icon: 'fa-shield-halved text-slate-500',
+        text: "要塞内部に抑留された一行は、ストームトルーパーを不意打ちして装甲服を奪い変装に成功。<br><br>オビ＝ワンが単独でビーム停止へ向かう間、ルークとハンは姫が囚われている監房ブロックの制御ターミナルへ潜入を試みる。敵の見回りを回避し、システムを掌握せよ。",
+        choices: [{ text: "制御システムへ潜入 (隠密)", action: 'PLAY_explore_deathstar', targetScore: 1, next: 'rescue_leia', fail: 'ds_infiltration', style: 'btn-jedi' }]
     },
     rescue_leia: {
-        location: "Detention Block AA-23", bg: 'from-gray-800 to-black', icon: 'fa-unlock-keyhole text-gray-400',
-        text: "R2-D2のデータ検索により、レイア姫がこのステーションで処刑を待っていることが判明。ルークとハンはチューバッカを捕虜に見せかけて監房ブロックAA-23に潜入する。<br><br>看守を奇襲しレイアを救出したのも束の間、騒ぎに気づいた増援部隊が押し寄せてきた。退路を断たれた一行は、レイアの機転でダストシュートへと飛び込む！",
-        choices: [{ text: "追手を迎え撃ち、ダストシュートへ飛び込む", action: 'PLAY_fps_defense', targetScore: 20, next: 'trash_compactor', fail: 'rescue_leia', style: 'btn-action' }]
+        location: "Detention Block AA-23", bg: 'from-slate-850 to-black', icon: 'fa-unlock-keyhole text-slate-400',
+        text: "ルークらは監房に突入しレイア姫の救出に成功するが、警報が鳴り響き通路は完全に包囲されてしまう！<br><br>「素晴らしい救出作戦だわ！」姫の機転でゴミ投棄ダストシュートへの退路を見出す。執拗に迫る帝国の増援部隊をブラスターで食い止めろ！",
+        choices: [{ text: "監房ブロックの防衛線を維持する", action: 'PLAY_fps_defense_cell', targetScore: 12, next: 'trash_compactor', fail: 'rescue_leia', style: 'btn-action' }]
     },
     trash_compactor: {
-        location: "Trash Compactor 3263827", bg: 'from-green-900/80 to-black', icon: 'fa-dumpster text-green-600',
-        text: "ダストシュートの先はゴミ圧縮機の中だった。水中に潜むダイアノーガ（触手生物）にルークが引きずり込まれかける。さらに最悪なことに、壁が動き出し彼らを押し潰そうと迫りくる！<br><br>「R2、通信機を切れ！圧縮機を止めるんだ！！」<br>間一髪でR2-D2がシステムをハッキングし、一行は難を逃れた。",
-        choices: [{ text: "ファルコン号へ急ぐ", action: 'obiwan_sacrifice', style: 'btn-rebel' }]
+        location: "Trash Compactor 3263827", bg: 'from-emerald-950 to-black', icon: 'fa-dumpster text-emerald-600',
+        text: "シュートの先は薄暗いゴミ圧縮処理室だった。汚水に潜むダイアノーガ（肉食生物）がうごめき、さらに最悪なことに、鉄壁の隔壁が作動し、一行を圧殺せよと徐々に閉鎖を開始する。<br><br>「R2！聞こえるか！？今すぐすべての圧縮機を停止させろ！」<br>迫りくる壁とダイアノーガの触手を避け、通信パネルへと急げ！",
+        choices: [{ text: "壁が閉まる前に通信パネルを作動させる", action: 'PLAY_explore_trash', targetScore: 1, next: 'obiwan_sacrifice', fail: 'trash_compactor', style: 'btn-action' }]
     },
     obiwan_sacrifice: {
-        location: "Death Star Hangar", bg: 'from-gray-900 to-black', icon: 'fa-jedi text-blue-400',
-        text: "トラクタービームを停止させたオビ＝ワンは、ファルコン号へ戻る途中でかつての弟子、ダース・ベイダーと対峙する。<br><br>ルークたちの脱出の隙を作るため、オビ＝ワンは自らライトセーバーを止め、ベイダーの刃を受けてフォースと一体となった。「ベン！」と叫ぶルークをよそに、一行はファルコン号でデス・スターを強行脱出する。",
-        choices: [{ text: "迫り来るTIEファイターを砲座で迎撃する", action: 'PLAY_fps_turret', targetScore: 15, next: 'yavin_briefing', fail: 'obiwan_sacrifice', style: 'btn-action' }]
+        location: "Death Star - Main Hangar", bg: 'from-slate-900 to-black', icon: 'fa-jedi text-cyan-400',
+        text: "間一髪で圧縮室を脱出した一行。トラクタービームを無効化したオビ＝ワンの前には、ダース・ベイダーが立ち塞がる。<br><br>ルークたちの脱出路を拓くため、オビ＝ワンは静かに刃を収め、ベイダーの猛撃を受け入れて肉体を消滅させた。悲しみを堪え、ファルコン号の対空砲座へと急ぎ、追撃してくるTIEファイターを迎え撃て！",
+        choices: [{ text: "ファルコン砲座でTIEファイターを迎撃", action: 'PLAY_fps_turret', targetScore: 8, next: 'yavin_briefing', fail: 'obiwan_sacrifice', style: 'btn-action' }]
     },
     yavin_briefing: {
-        location: "Yavin 4 Base", bg: 'from-green-900/40 to-black', icon: 'fa-map-location-dot text-green-400',
-        text: "一行は反乱軍の秘密基地があるヤヴィン第4衛星に到着。しかし、ファルコン号に仕掛けられた追跡装置により、デス・スターはヤヴィンの位置を突き止め接近していた。<br><br>R2-D2のデータから、デス・スターの唯一の弱点が、反応炉に直結する幅わずか2メートルの「熱排気口」であることが判明する。ルークはXウィング（レッド5）に搭乗し、反乱同盟軍の決死の反攻作戦に参加する。",
-        choices: [{ text: "Xウィングに搭乗し、デス・スターへ出撃", action: 'PLAY_tps_flight', targetScore: 3000, next: 'trench_run', fail: 'yavin_briefing', style: 'btn-action' }]
+        location: "Yavin 4 - Rebel Hidden Base", bg: 'from-emerald-900/30 to-black', icon: 'fa-map-location-dot text-emerald-500',
+        text: "反乱同盟軍のヤヴィン秘密基地に帰還した一行。しかし、追尾されていたデス・スターがすでに惑星系へ接近していた。残された時間はわずか数分。<br><br>R2が解析した設計図から、唯一の弱点である直径わずか2メートルの「熱排気口」が判明。ルークはXウィング「レッド5」に搭乗し、銀河の命運を賭けた超低空爆撃作戦へ出撃する！",
+        choices: [{ text: "Xウィングを駆り、ヤヴィン軌道上へ", action: 'PLAY_tps_flight', targetScore: 800, next: 'trench_run', fail: 'yavin_briefing', style: 'btn-action' }]
     },
     trench_run: {
-        location: "Death Star Trench", bg: 'from-gray-900 to-black', icon: 'fa-fighter-jet text-gray-500',
-        text: "表面の防衛線を突破した反乱軍は、赤道上のトレンチ（溝）への爆撃行（トレンチ・ラン）を開始する。しかし後方から、ダース・ベイダー自らが操縦するTIEアドバンストx1が迫り、僚機を次々と撃墜していく。<br><br>いよいよルークの番だ。『ルーク、フォースを使え。己を信じるのだ』オビ＝ワンの声を聞いたルークは、照準コンピューターを切った。背後にはベイダーが迫る。極限の集中で排気口を狙え！",
-        choices: [{ text: "トレンチ・ランを完遂し、プロトン魚雷を発射する", action: 'PLAY_tps_trench', targetScore: 1, next: 'ending', fail: 'trench_run', style: 'btn-action' }]
+        location: "Death Star - Outer Trench", bg: 'from-slate-900 to-slate-950', icon: 'fa-fighter-jet text-slate-400',
+        text: "激しい対空砲火を抜け、ルークはデス・スター赤道上の狭隘なトレンチ（溝）への最終突入を開始した。<br><br>だが、背後からはダース・ベイダー直属のTIEアドバンストが肉薄し、僚機が次々と撃墜されていく。『フォースを使え、ルーク』オビ＝ワンの魂の声に従い、照準コンピュータをオフにするルーク。己の直感だけを信じ、排気口へプロトン魚雷を放て！",
+        choices: [{ text: "トレンチを完全走破し、魚雷を発射する", action: 'PLAY_tps_trench', targetScore: 1, next: 'ending', fail: 'trench_run', style: 'btn-action' }]
     },
     ending: {
-        location: "Victory Celebration", bg: 'from-yellow-800/40 to-black', icon: 'fa-medal text-yellow-400',
-        text: "間一髪で現れたハン・ソロのファルコン号がベイダーの機体を弾き飛ばした。ルークがフォースの導きで放ったプロトン魚雷は、見事に排気口へと吸い込まれていく。<br><br>大爆発と共にデス・スターは宇宙の塵となり、ヤヴィン基地に歓声が響き渡った。大講堂での表彰式で、ルークとハンはレイア姫から勇気を称えるメダルを授与される。銀河に新たなる希望が生まれたのだ。<br><br><span class='text-blue-400 font-starwars text-4xl block text-center mt-6'>MAY THE FORCE<br>BE WITH YOU.</span>",
-        choices: [{ text: "MAIN MENU", action: 'prologue', style: 'btn-gold' }]
+        location: "Yavin 4 - Great Canopy Hall", bg: 'from-amber-900/30 to-slate-950', icon: 'fa-medal text-amber-400',
+        text: "窮地に現れたハンのファルコン号がベイダー機を弾き飛ばした！ルークが放ったプロトン魚雷は、フォースの導きによって正確に排気口へと吸い込まれた。<br><br>凄絶な大爆発と共にデス・スターは宇宙の塵と化し、銀河に勝利の歓声が轟く。大講堂のセレモニーにて、ルークとハンはレイア姫から聖なるメダルを授与された。銀河に、今「新たなる希望」が誕生したのだ。<br><br><span class='text-amber-400 font-starwars text-4xl block text-center mt-8 drop-shadow-[0_0_15px_rgba(255,228,0,0.6)]'>MAY THE FORCE<br>BE WITH YOU.</span>",
+        choices: [{ text: "RETURN TO MAIN MENU", action: 'prologue', style: 'btn-gold' }]
     }
 };
 
@@ -523,81 +462,67 @@ async function renderScene(sceneId) {
     state.currentScene = sceneId;
     state.location = data.location;
     saveGame();
-    missionPhase = 0; // Reset mission phase
+    missionPhase = 0;
 
     setLayerMode("app");
-    
     if(sceneId === 'prologue') DOM.storyText.innerHTML = '';
     DOM.choicesContainer.innerHTML = '';
     DOM.uiLocation.textContent = state.location;
     
-    DOM.sceneBg.className = `absolute inset-0 transition-all duration-1000 opacity-50 bg-gradient-to-b ${data.bg}`;
-    DOM.sceneIcon.className = `text-6xl md:text-8xl text-white z-10 transition-all duration-700 opacity-0 transform scale-50 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.5)] fas ${data.icon}`;
+    DOM.sceneBg.className = `absolute inset-0 transition-all duration-1000 opacity-60 bg-gradient-to-b ${data.bg}`;
+    DOM.sceneIcon.className = `text-6xl md:text-7xl text-white z-10 transition-all duration-700 opacity-0 transform scale-50 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.4)] fas ${data.icon}`;
     
-    requestAnimationFrame(() => {
-        DOM.sceneIcon.classList.remove('opacity-0', 'scale-50');
-    });
-
-    if(data.onEnter) data.onEnter();
+    requestAnimationFrame(() => { DOM.sceneIcon.classList.remove('opacity-0', 'scale-50'); });
 
     isAnimating = true;
     const p = document.createElement('div');
-    p.className = `story-paragraph relative pl-4 py-3 border-l-4 border-[#fce300] opacity-0 transform translate-y-4 transition-all duration-700 bg-black/50 rounded-r mb-4 shadow-md`;
+    p.className = `story-paragraph relative pl-4 py-4 border-l-4 border-[#ffe400] opacity-0 transform translate-y-4 transition-all duration-700 bg-slate-900/60 rounded-r mb-4 shadow-lg font-medium`;
     p.innerHTML = data.text;
     DOM.storyText.appendChild(p);
     
     setTimeout(() => {
         p.classList.remove('opacity-0','translate-y-4');
         DOM.storyScrollArea.scrollTo({top: DOM.storyScrollArea.scrollHeight, behavior: 'smooth'});
-    }, 50);
+    }, 60);
 
     setTimeout(() => {
         isAnimating = false;
         data.choices.forEach((choice, idx) => {
             const btn = document.createElement('button');
-            btn.className = `sw-btn w-full p-4 rounded text-sm md:text-base font-bold tracking-widest uppercase opacity-0 transform translate-y-4 transition-all duration-500 ${choice.style}`;
+            btn.className = `sw-btn w-full p-4.5 rounded-xl text-sm md:text-base font-bold tracking-widest uppercase opacity-0 transform translate-y-4 transition-all duration-500 ${choice.style}`;
             btn.innerHTML = choice.text;
-            
             bindSafeButton(btn, () => {
                 if(isAnimating) return;
                 playSound('click');
                 handleAction(choice);
             });
-            
             DOM.choicesContainer.appendChild(btn);
-            setTimeout(() => btn.classList.remove('opacity-0','translate-y-4'), 100 * (idx + 1));
+            setTimeout(() => btn.classList.remove('opacity-0','translate-y-4'), 120 * (idx + 1));
         });
-    }, 1000);
+    }, 1200);
 }
 
 function handleAction(choice) {
     if(choice.action.startsWith('PLAY_')) {
         const mode = choice.action.replace('PLAY_', '');
-        if(mode === 'negotiation') {
-            startNegotiation(choice.next, choice.fail);
-        } else {
-            startMinigame(mode, choice.targetScore, choice.next, choice.fail);
-        }
+        if(mode === 'negotiation') startNegotiation(choice.next, choice.fail);
+        else startMinigame(mode, choice.targetScore, choice.next, choice.fail);
     } else {
         renderScene(choice.action);
     }
 }
 
-// ==========================================
-// 4. NEGOTIATION SYSTEM
-// ==========================================
 const negoQ = [
-    { text: '「俺はハン・ソロ。ミレニアム・ファルコンの船長だ。お前さんたち、オルデランに行きたいそうだな？」', choices: [['帝国に知られずに頼む。速い船が必要だ', 20], ['いくら出せばいい？', -10], ['帝国軍が追っている。急いでくれ', -20]] },
-    { text: '「俺の船は早いぜ。ケッセル・ランを12パーセクで飛んだんだ。で、金はいくら出せる？」', choices: [['前金で2千、着いたら1万5千だ。それでどうだ？', 30], ['1万だ、全て前金で払う', -10], ['金はない。フォースの導きだ', -30]] },
-    { text: '「1万7千！これで自分の船が買えるぜ。よし、乗せてやろう。トラブルはご免だぜ？」', choices: [['帝国軍の巡洋艦（クルーザー）から逃げる必要がある', -10], ['荷物（ドロイド）と一緒に静かに旅したいだけだ', 20], ['任せておけ、ジェダイの騎士がついている', 10]] }
+    { text: '「俺はハン・ソロ。ミレニアム・ファルコンの船長だ。お前さんたち、オルデランに行きたいそうだな？ だが今、俺の後ろには帝国軍がうるさくてな…」', choices: [['チャーター便を頼む。帝国軍の目を盗める、足の速い船が必要だ。', 20], ['いくら出せばいい？ 金ならある程度融通できる。', -10], ['帝国軍に追われているのか？ ならば一刻を争う。急いでくれ。', -20]] },
+    { text: '「俺の船は速いぜ、お嬢ちゃん。ケッセル・ランを12パーセク未満で飛んだ代物だ。で、こっちも命がけだ、支払いはどうする？」', choices: [['前金で2千クレジット、目的地に到着したら1万5千を支払う。', 30], ['総額1万クレジット、すべて前金でどうだ？', -10], ['現金の持ち合わせはない。だがフォースの導きが富をもたらす。', -30]] },
+    { text: '「1万7千だと！？ よし乗った。それだけあれば、借金まみれのこの身も綺麗に清算できる。ただしトラブルは持ち込むなよ？」', choices: [['実は…帝国の巡洋艦（スター・デストロイヤー）を振り切る必要がある。', -10], ['我々は荷物（ドロイド）と共に静かに、迅速に移動したいだけだ。', 20], ['問題ない、歴戦のジェダイの騎士が同行している。', 10]] }
 ];
 let nRound = 0, trust = 50, nSuccess = null, nFail = null;
 
 function startNegotiation(nextScn, failScn) {
-    nSuccess = nextScn; nFail = failScn;
-    nRound = 0; trust = 50;
+    nSuccess = nextScn; nFail = failScn; nRound = 0; trust = 50;
     setLayerMode('negotiation');
-    startBGM(80);
+    startBGM(85);
     renderNegoRound();
 }
 
@@ -605,40 +530,35 @@ function renderNegoRound() {
     if(nRound >= negoQ.length) {
         stopBGM();
         const success = trust >= 60;
-        showResult(success ? 'NEGOTIATION SUCCESS' : 'NEGOTIATION FAILED', success ? 'ハン・ソロが仲間になった！' : '交渉決裂...', success, () => renderScene(success ? nSuccess : nFail));
+        showResult(success ? 'NEGOTIATION SUCCESS' : 'NEGOTIATION FAILED', success ? 'ハン・ソロとのチャーター契約が成立した！' : 'ハンの不信感を買い、交渉は決裂した...', success, () => renderScene(success ? nSuccess : nFail));
         return;
     }
     const q = negoQ[nRound];
     DOM.trustFill.style.width = `${Math.max(0, Math.min(100, trust))}%`;
-    DOM.trustFill.style.background = trust < 40 ? "red" : trust < 70 ? "#fce300" : "#2ecc71";
-    
-    DOM.dialogText.innerHTML = '';
-    DOM.dialogChoices.innerHTML = '';
+    DOM.trustFill.style.background = trust < 40 ? "var(--sw-red)" : trust < 70 ? "var(--sw-yellow)" : "var(--sw-green)";
+    DOM.dialogText.innerHTML = ''; DOM.dialogChoices.innerHTML = '';
     
     let txt = q.text, i = 0;
     function type() {
-        if(i < txt.length) { DOM.dialogText.innerHTML += txt.charAt(i); i++; setTimeout(type, 30); }
+        if(i < txt.length) { DOM.dialogText.innerHTML += txt.charAt(i); i++; setTimeout(type, 25); }
         else {
             q.choices.forEach(([lbl, val], idx) => {
                 const b = document.createElement('button');
-                b.className = 'w-full text-left p-3 border border-gray-600 rounded bg-gray-800/50 hover:bg-gray-700 text-white font-bold opacity-0 transition-all';
+                b.className = 'w-full text-left p-3.5 border border-slate-700 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 font-medium opacity-0 transition-all text-sm';
                 b.textContent = lbl;
                 bindSafeButton(b, () => {
                     playSound('click'); trust += val; nRound++;
-                    if(trust < 40) startBGM(120);
+                    if(trust < 40) startBGM(125);
                     renderNegoRound();
                 });
                 DOM.dialogChoices.appendChild(b);
-                setTimeout(()=>b.classList.remove('opacity-0'), 100*idx);
+                setTimeout(()=>b.classList.remove('opacity-0'), 80*idx);
             });
         }
     }
     type();
 }
 
-// ==========================================
-// 5. THREE.JS MINIGAMES
-// ==========================================
 let scene, camera, renderer;
 let gameActive = false, gameMode = null, animId = null;
 let score = 0, maxScore = 0, health = 100, maxHealth = 100;
@@ -646,26 +566,25 @@ let entities = [], particles = [], envBlocks = [];
 let mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
 let playerObj = null, lastShoot = 0;
 let minigameNext = null, minigameFail = null;
-let trenchTimer = 0; // トレンチラン用タイマー
+let trenchTimer = 0, trashTimer = 0;
 let showMessageTimer = null;
 
 function showMissionMessage(text, duration = 3000) {
     if(showMessageTimer) clearTimeout(showMessageTimer);
     DOM.missionMessage.innerHTML = text;
     DOM.missionMessage.classList.remove('opacity-0');
-    showMessageTimer = setTimeout(() => {
-        DOM.missionMessage.classList.add('opacity-0');
-    }, duration);
+    showMessageTimer = setTimeout(() => { DOM.missionMessage.classList.add('opacity-0'); }, duration);
 }
 
 function init3D() {
     if(renderer) return;
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
     
     renderer = new THREE.WebGLRenderer({antialias: true, alpha: true}); 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
     DOM.gameCanvasContainer.insertBefore(renderer.domElement, DOM.gameCanvasContainer.firstChild);
 
     initJoystick();
@@ -680,31 +599,17 @@ function init3D() {
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
-
-    DOM.gameCanvasContainer.addEventListener('pointermove', e => {
-        if(!gameActive) return;
-        if(e.target.closest('#virtual-controls')) return;
-        updateMouse(e);
-    });
-    DOM.gameCanvasContainer.addEventListener('pointerdown', e => {
-        if(!gameActive) return;
-        if(e.target.closest('#virtual-controls')) return;
-        if(e.cancelable) e.preventDefault();
-        updateMouse(e);
-    });
+    DOM.gameCanvasContainer.addEventListener('pointermove', e => { if(gameActive) updateMouse(e); });
+    DOM.gameCanvasContainer.addEventListener('pointerdown', e => { if(gameActive) { updateMouse(e); } });
 }
 
 function clear3D() {
-    gameActive = false;
-    currentMiniGameCompleted = false;
+    gameActive = false; currentMiniGameCompleted = false;
     if(animId) { cancelAnimationFrame(animId); animId = null; }
-    
-    entities.forEach(e => { if(e.mesh) { scene.remove(e.mesh); if(e.mesh.geometry) e.mesh.geometry.dispose(); }});
-    particles.forEach(p => { if(p.mesh) { scene.remove(p.mesh); if(p.mesh.geometry) p.mesh.geometry.dispose(); }});
-    envBlocks.forEach(b => { scene.remove(b); if(b.geometry) b.geometry.dispose(); });
-    
+    entities.forEach(e => { if(e.mesh) scene.remove(e.mesh); });
+    particles.forEach(p => { if(p.mesh) scene.remove(p.mesh); });
+    envBlocks.forEach(b => scene.remove(b));
     entities = []; particles = []; envBlocks = []; playerObj = null;
-    
     const toRemove = [];
     scene.children.forEach(c => { if(c.type !== 'AmbientLight' && c.type !== 'DirectionalLight') toRemove.push(c); });
     toRemove.forEach(c => scene.remove(c));
@@ -713,7 +618,7 @@ function clear3D() {
 function updateHUD() {
     DOM.gameScore.textContent = score;
     DOM.gameHealth.style.width = Math.max(0, (health/maxHealth)*100) + "%";
-    DOM.gameHealth.className = health < 30 ? "h-full bg-gradient-to-r from-red-600 to-red-400 w-full transition-all" : "h-full bg-gradient-to-r from-blue-600 to-blue-400 w-full transition-all";
+    DOM.gameHealth.className = health < 35 ? "h-full bg-gradient-to-r from-red-600 to-red-400 w-full transition-all shadow-[0_0_10px_red]" : "h-full bg-gradient-to-r from-sky-500 to-sky-300 w-full transition-all shadow-[0_0_10px_#29b6f6]";
 }
 
 function takeDamage(amt) {
@@ -723,39 +628,34 @@ function takeDamage(amt) {
     DOM.gameCanvasContainer.classList.remove('screen-shake');
     void DOM.gameCanvasContainer.offsetWidth;
     DOM.gameCanvasContainer.classList.add('screen-shake');
-    setTimeout(() => DOM.damageOverlay.classList.remove('flash-active'), 100);
+    setTimeout(() => DOM.damageOverlay.classList.remove('flash-active'), 80);
     if(health <= 0) finishMinigame(false);
 }
 
-const laserGeo = new THREE.CylinderGeometry(0.1, 0.1, 2, 8);
+const laserGeo = new THREE.CylinderGeometry(0.025, 0.025, 3.8, 6);
 laserGeo.rotateX(Math.PI/2);
-const matRedLaser = new THREE.MeshBasicMaterial({color: 0xff3333, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.9}); 
-const matGreenLaser = new THREE.MeshBasicMaterial({color: 0x33ff33, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.9});
+const matRedLaser = new THREE.MeshBasicMaterial({color: 0xff1744, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.95}); 
+const matGreenLaser = new THREE.MeshBasicMaterial({color: 0x00e676, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.95});
 
 function createLaser(pos, dir, isPlayer, isProtonTorpedo = false) {
     if(!isProtonTorpedo) playSound(isPlayer ? 'blaster' : 'enemyBlaster');
-    else playSound('explosion'); // 代替音
-    
     const mesh = new THREE.Group();
     if (isProtonTorpedo) {
-        const core = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({color: 0x00ffff}));
-        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 8), new THREE.MeshBasicMaterial({color: 0x0088ff, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.8}));
+        const core = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 12), new THREE.MeshBasicMaterial({color: 0xffffff}));
+        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.65, 12, 12), new THREE.MeshBasicMaterial({color: 0x29b6f6, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.85}));
         mesh.add(core, glow);
     } else {
-        const core = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2, 4), new THREE.MeshBasicMaterial({color: 0xffffff}));
+        const core = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 3.6, 4), new THREE.MeshBasicMaterial({color: 0xffffff}));
         core.rotateX(Math.PI/2);
         const glow = new THREE.Mesh(laserGeo, isPlayer ? matRedLaser : matGreenLaser);
-        glow.scale.set(1.5, 1.5, 1.2);
         mesh.add(core, glow);
     }
-    
     mesh.position.copy(pos);
     const nd = dir.clone().normalize();
     if(!isProtonTorpedo) mesh.lookAt(pos.clone().add(nd));
     scene.add(mesh);
-    
-    const speed = isProtonTorpedo ? 1.5 : (isPlayer ? 4 : 2); // 弾速調整
-    entities.push({type: isProtonTorpedo ? 'torpedo' : 'laser', mesh, dir: nd, speed: speed, isPlayer, life: 100});
+    const speed = isProtonTorpedo ? 1.6 : (isPlayer ? 5.2 : 3.0);
+    entities.push({type: isProtonTorpedo ? 'torpedo' : 'laser', mesh, dir: nd, speed, isPlayer, life: 90});
 }
 
 function checkCollision(pos, radius) {
@@ -767,244 +667,177 @@ function checkCollision(pos, radius) {
         const dist = Math.hypot(pos.x - closestX, pos.z - closestZ);
         if(dist < radius) {
             const pushDir = new THREE.Vector3(pos.x - closestX, 0, pos.z - closestZ).normalize();
-            if(pushDir.lengthSq() === 0) pushDir.set(1,0,0);
-            pos.x = closestX + pushDir.x * radius;
-            pos.z = closestZ + pushDir.z * radius;
+            if(pushDir.lengthSq() === 0) pushDir.set(0,0,1);
+            pos.x = closestX + pushDir.x * radius; pos.z = closestZ + pushDir.z * radius;
         }
     }
 }
 
 function createExplosion(pos) {
     playSound('explosion');
-    const count = 30;
+    const count = 35;
     const geo = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     const vels = [];
     for(let i=0; i<count; i++) {
         positions[i*3] = pos.x; positions[i*3+1] = pos.y; positions[i*3+2] = pos.z;
-        vels.push(new THREE.Vector3((Math.random()-.5)*2, (Math.random()-.5)*2, (Math.random()-.5)*2).normalize().multiplyScalar(0.5));
+        vels.push(new THREE.Vector3((Math.random()-.5)*2.5, (Math.random()-.5)*2.5, (Math.random()-.5)*2.5).normalize().multiplyScalar(0.4 + Math.random()*0.3));
     }
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const mat = new THREE.PointsMaterial({size: 1.5, color: new THREE.Color(1, 0.5, 0.1), blending: THREE.AdditiveBlending, transparent: true});
+    const mat = new THREE.PointsMaterial({size: 1.8, color: new THREE.Color(1.0, 0.45, 0.08), blending: THREE.AdditiveBlending, transparent: true});
     const pts = new THREE.Points(geo, mat);
     scene.add(pts);
-    particles.push({mesh: pts, vels, life: 1});
+    particles.push({mesh: pts, vels, life: 1.0});
 }
 
-// リアルなTIEファイター (原作準拠の形状に近づける)
+// 追加モデリング群
 function buildTieFighter(isAdvanced = false) {
     const group = new THREE.Group();
-    const matDark = new THREE.MeshStandardMaterial({color: 0x333333, roughness: 0.7, metalness: 0.2}); // わずかに青みがかったグレー
-    const matCockpit = new THREE.MeshStandardMaterial({color: 0x111111, roughness: 0.2, metalness: 0.8});
-    const matPanel = new THREE.MeshStandardMaterial({color: 0x050505, roughness: 0.9, metalness: 0.1}); // ソーラーパネルの黒
-    const matEdge = new THREE.MeshStandardMaterial({color: 0x444444});
+    const matDark = new THREE.MeshStandardMaterial({color: 0x22262b, roughness: 0.6, metalness: 0.4});
+    const matCockpit = new THREE.MeshStandardMaterial({color: 0x090d10, roughness: 0.2});
+    const matPanel = new THREE.MeshStandardMaterial({color: 0x050608, roughness: 0.95});
+    const matEdge = new THREE.MeshStandardMaterial({color: 0x3a414a});
     
-    // コックピット球体
-    const cockpit = new THREE.Mesh(new THREE.SphereGeometry(1.0, 16, 16), matDark);
-    const window = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.2, 8), matCockpit);
-    window.rotation.x = Math.PI/2; window.position.z = 0.95;
-    cockpit.add(window);
+    const cockpit = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), matDark);
+    const wnd = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.15, 8), matCockpit);
+    wnd.rotation.x = Math.PI/2; wnd.position.z = 0.85; cockpit.add(wnd);
 
-    // アーム
-    const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.5, 8), matDark); armL.rotation.z = Math.PI/2; armL.position.x = -1.2;
-    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.5, 8), matDark); armR.rotation.z = Math.PI/2; armR.position.x = 1.2;
+    const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.25, 1.3, 8), matDark); armL.rotation.z = Math.PI/2; armL.position.x = -1.0;
+    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.25, 1.3, 8), matDark); armR.rotation.z = Math.PI/2; armR.position.x = 1.0;
     
     if (isAdvanced) {
-        // ダース・ベイダーのTIEアドバンストx1 (折れ曲がった翼と延長された後部)
-        const rearBody = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.2, 2.5), matDark);
-        rearBody.position.set(0, 0, -1.0);
-        
-        // 折れ曲がった翼 (上半分と下半分を組み合わせる)
+        const rear = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.9, 2.0), matDark); rear.position.set(0, 0, -0.8);
         const buildWing = () => {
-            const wGroup = new THREE.Group();
-            const panelGeo = new THREE.BoxGeometry(0.1, 3, 4);
-            const edgeGeo = new THREE.BoxGeometry(0.2, 3.2, 4.2);
-            
-            const topPanel = new THREE.Mesh(panelGeo, matPanel);
-            const topEdge = new THREE.Mesh(edgeGeo, matEdge);
-            topPanel.position.set(0, 1.3, 0); topEdge.position.set(0, 1.3, 0);
-            topPanel.rotation.z = -Math.PI/6; topEdge.rotation.z = -Math.PI/6;
-            
-            const botPanel = new THREE.Mesh(panelGeo, matPanel);
-            const botEdge = new THREE.Mesh(edgeGeo, matEdge);
-            botPanel.position.set(0, -1.3, 0); botEdge.position.set(0, -1.3, 0);
-            botPanel.rotation.z = Math.PI/6; botEdge.rotation.z = Math.PI/6;
-
-            wGroup.add(topEdge, topPanel, botEdge, botPanel);
-            return wGroup;
+            const wg = new THREE.Group();
+            const pGeo = new THREE.BoxGeometry(0.08, 2.6, 3.6);
+            const p1 = new THREE.Mesh(pGeo, matPanel); p1.position.set(0, 1.1, 0); p1.rotation.z = -Math.PI/6;
+            const p2 = new THREE.Mesh(pGeo, matPanel); p2.position.set(0, -1.1, 0); p2.rotation.z = Math.PI/6;
+            wg.add(p1, p2); return wg;
         };
-
-        const wL = buildWing(); wL.position.x = -2.5;
-        const wR = buildWing(); wR.position.x = 2.5;
-        // 反転
-        wR.children[0].rotation.z = Math.PI/6; wR.children[1].rotation.z = Math.PI/6;
-        wR.children[2].rotation.z = -Math.PI/6; wR.children[3].rotation.z = -Math.PI/6;
-
-        group.add(cockpit, rearBody, armL, armR, wL, wR);
+        const wL = buildWing(); wL.position.x = -2.1;
+        const wR = buildWing(); wR.position.x = 2.1; wR.rotation.y = Math.PI;
+        group.add(cockpit, rear, armL, armR, wL, wR);
     } else {
-        // 通常のTIEファイター (六角形の翼)
         const buildWing = () => {
-            const wGroup = new THREE.Group();
-            // 六角形を作るためのシリンダー
-            const panelGeo = new THREE.CylinderGeometry(2.5, 2.5, 0.1, 6);
-            panelGeo.rotateX(Math.PI/2); panelGeo.rotateZ(Math.PI/2);
-            const edgeGeo = new THREE.CylinderGeometry(2.6, 2.6, 0.15, 6);
-            edgeGeo.rotateX(Math.PI/2); edgeGeo.rotateZ(Math.PI/2);
-
-            const panel = new THREE.Mesh(panelGeo, matPanel);
-            const edge = new THREE.Mesh(edgeGeo, matEdge);
-            
-            // 縦の骨組み
-            const strut1 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 0.2), matEdge);
-            const strut2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 0.2), matEdge); strut2.rotation.x = Math.PI/3;
-            const strut3 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 0.2), matEdge); strut3.rotation.x = -Math.PI/3;
-
-            wGroup.add(edge, panel, strut1, strut2, strut3);
-            return wGroup;
+            const wg = new THREE.Group();
+            const panel = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.06, 6), matPanel); panel.rotateX(Math.PI/2); panel.rotateZ(Math.PI/2);
+            const strut = new THREE.Mesh(new THREE.BoxGeometry(0.15, 4.4, 0.15), matEdge);
+            const strut2 = strut.clone(); strut2.rotation.x = Math.PI/3;
+            const strut3 = strut.clone(); strut3.rotation.x = -Math.PI/3;
+            wg.add(panel, strut, strut2, strut3); return wg;
         };
-
-        const wL = buildWing(); wL.position.x = -2.0;
-        const wR = buildWing(); wR.position.x = 2.0;
+        const wL = buildWing(); wL.position.x = -1.8;
+        const wR = buildWing(); wR.position.x = 1.8;
         group.add(cockpit, armL, armR, wL, wR);
     }
-
     return group;
 }
 
-// リアルなXウィング
 function buildXWing() {
     const group = new THREE.Group();
-    const matBody = new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.6});
-    const matRed = new THREE.MeshStandardMaterial({color: 0xaa2222, roughness: 0.7});
-    const matEngine = new THREE.MeshStandardMaterial({color: 0x444444});
-    const matGlow = new THREE.MeshBasicMaterial({color: new THREE.Color(1, 0.4, 0.8), blending: THREE.AdditiveBlending});
+    const matBody = new THREE.MeshStandardMaterial({color: 0xcccccc, roughness: 0.5});
+    const matRed = new THREE.MeshStandardMaterial({color: 0xd32f2f});
+    const matEngine = new THREE.MeshStandardMaterial({color: 0x333333, metalness: 0.6});
+    const matGlow = new THREE.MeshBasicMaterial({color: new THREE.Color(1.0, 0.3, 0.7), blending: THREE.AdditiveBlending});
 
-    // 機首
-    const nose = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.6, 6, 8), matBody);
-    nose.rotation.x = Math.PI/2; nose.position.z = -2;
-    // コックピット
-    const cockpit = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 2), new THREE.MeshStandardMaterial({color: 0x222222}));
-    cockpit.position.set(0, 0.6, 0.5);
-    // アストロメク・ドロイド (R2)
-    const r2 = new THREE.Mesh(new THREE.SphereGeometry(0.25), new THREE.MeshStandardMaterial({color: 0x2244aa}));
-    r2.position.set(0, 0.8, 1.5);
-    // 胴体後部
-    const bodyRear = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.0, 3), matBody);
-    bodyRear.position.set(0, 0, 2);
-
+    const nose = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.5, 5.5, 8), matBody); nose.rotation.x = Math.PI/2; nose.position.z = -1.8;
+    const cockpit = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 1.8), new THREE.MeshStandardMaterial({color: 0x1e293b})); cockpit.position.set(0, 0.5, 0.4);
+    const r2 = new THREE.Mesh(new THREE.SphereGeometry(0.2), new THREE.MeshStandardMaterial({color: 0x0284c7})); r2.position.set(0, 0.6, 1.3);
+    const bodyRear = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.8, 2.6), matBody); bodyRear.position.set(0, 0, 1.8);
     group.add(nose, cockpit, r2, bodyRear);
 
-    // 翼とエンジン (X字に展開)
-    const wingLength = 4;
-    const angle = Math.PI/10; // Xの開き具合
-
     const buildWing = (isRight, isTop) => {
-        const wGroup = new THREE.Group();
-        // 翼本体
-        const wing = new THREE.Mesh(new THREE.BoxGeometry(wingLength, 0.1, 1.5), matBody);
-        wing.position.set(wingLength/2, 0, 0);
-        // 赤いライン
+        const wg = new THREE.Group();
+        const wing = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.08, 1.4), matBody); wing.position.set(1.8, 0, 0);
         if(isTop) {
-            const stripe = new THREE.Mesh(new THREE.BoxGeometry(1, 0.12, 0.8), matRed);
-            stripe.position.set(wingLength/2, 0, 0);
-            wGroup.add(stripe);
+            const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.1, 0.7), matRed); stripe.position.set(1.8, 0, 0);
+            wg.add(stripe);
         }
-        // レーザーキャノン (翼の先端)
-        const cannon = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 3, 8), matBody);
-        cannon.rotation.x = Math.PI/2; cannon.position.set(wingLength, 0, -1);
-        // エンジン
-        const engine = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 2, 8), matEngine);
-        engine.rotation.x = Math.PI/2; engine.position.set(0.5, 0, 0.5);
-        // エンジンの光
-        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.35), matGlow);
-        glow.position.set(0.5, 0, 1.5);
-
-        wGroup.add(wing, cannon, engine, glow);
+        const cannon = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.8, 6), matBody); cannon.rotation.x = Math.PI/2; cannon.position.set(3.6, 0, -0.8);
+        const engine = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.8, 8), matEngine); engine.rotation.x = Math.PI/2; engine.position.set(0.4, 0, 0.4);
+        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.3), matGlow); glow.position.set(0.4, 0, 1.3);
+        wg.add(wing, cannon, engine, glow);
         
-        // 配置と回転
-        const pivotX = isRight ? 0.6 : -0.6;
-        wGroup.position.set(pivotX, 0, 2);
-        if(!isRight) wGroup.rotation.z = Math.PI; // 左側は反転
-        
-        // X字に開く
-        wGroup.rotation.x = isTop ? angle : -angle;
-
-        return wGroup;
+        wg.position.set(isRight ? 0.5 : -0.5, 0, 1.5);
+        if(!isRight) wg.rotation.z = Math.PI; 
+        wg.rotation.x = isTop ? Math.PI/12 : -Math.PI/12;
+        return wg;
     };
-
     group.add(buildWing(true, true), buildWing(true, false), buildWing(false, true), buildWing(false, false));
     return group;
 }
 
-// ストームトルーパー
 function buildStormtrooper() {
     const g = new THREE.Group();
-    const matArmor = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.3});
-    const matBlack = new THREE.MeshStandardMaterial({color: 0x111111});
-    
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.2, 8), matArmor);
-    body.position.y = 0.6;
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), matArmor);
-    head.position.y = 1.4;
-    // バイザー
-    const visor = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.1, 0.4), matBlack);
-    visor.position.set(0, 1.4, 0.2);
-    // 腕と足
-    const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1, 8), matArmor); armL.position.set(-0.6, 0.6, 0);
-    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1, 8), matArmor); armR.position.set(0.6, 0.6, 0);
-    // ブラスター構え
-    armR.rotation.x = -Math.PI/2; armR.position.set(0.4, 0.8, -0.4);
-    const blaster = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.6), matBlack);
-    blaster.position.set(0.4, 0.8, -0.8);
-    
+    const matArmor = new THREE.MeshStandardMaterial({color: 0xf8fafc, roughness: 0.2});
+    const matBlack = new THREE.MeshStandardMaterial({color: 0x0f172a});
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.1, 8), matArmor); body.position.y = 0.55;
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), matArmor); head.position.y = 1.25;
+    const visor = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.08, 0.36), matBlack); visor.position.set(0, 1.28, 0.16);
+    const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.9, 8), matArmor); armL.position.set(-0.5, 0.55, 0);
+    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.9, 8), matArmor); armR.rotation.x = -Math.PI/2; armR.position.set(0.4, 0.7, -0.3);
+    const blaster = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 0.55), matBlack); blaster.position.set(0.4, 0.7, -0.6);
     g.add(body, head, visor, armL, armR, blaster);
+    return g;
+}
+
+// タスケンレイダーのモデリング追加
+function buildTusken() {
+    const g = new THREE.Group();
+    const matArmor = new THREE.MeshStandardMaterial({color: 0x8b5a2b, roughness: 0.9}); // ブラウンローブ
+    const matHead = new THREE.MeshStandardMaterial({color: 0xd2b48c, roughness: 0.8}); // サンド
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.45, 1.1, 8), matArmor); body.position.y = 0.55;
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), matHead); head.position.y = 1.25;
+    const stick = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.5), new THREE.MeshStandardMaterial({color: 0x5c4033}));
+    stick.rotation.z = Math.PI/4; stick.position.set(0.4, 0.8, -0.2); // ガッフィの杖
+    g.add(body, head, stick);
+    return g;
+}
+
+// ダイアノーガ(ゴミ圧縮室の触手)モデリング追加
+function buildTentacle() {
+    const g = new THREE.Group();
+    const mat = new THREE.MeshStandardMaterial({color: 0x556b2f, roughness: 0.4}); // オリーブ
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.25, 1.2, 8), mat);
+    body.position.y = 0.4;
+    g.add(body);
     return g;
 }
 
 
 function playerShoot() {
     const now = Date.now();
-    if(now - lastShoot < 250 || !gameActive || currentMiniGameCompleted) return; // 連射速度調整
+    if(now - lastShoot < 220 || !gameActive || currentMiniGameCompleted) return; 
     lastShoot = now;
     
-    if(gameMode === 'fps_defense' || gameMode === 'fps_turret') {
-        const dir = new THREE.Vector3();
-        camera.getWorldDirection(dir);
-        dir.x += mouse.x * 0.5; dir.y += mouse.y * 0.5; dir.normalize();
+    if(gameMode.startsWith('fps')) {
+        const dir = new THREE.Vector3(); camera.getWorldDirection(dir);
+        dir.x += mouse.x * 0.45; dir.y += mouse.y * 0.45; dir.normalize();
         
-        // 砲座モードは連装砲をイメージ
         if(gameMode === 'fps_turret') {
-            createLaser(camera.position.clone().add(new THREE.Vector3(-1,-0.5,-1)), dir, true);
-            createLaser(camera.position.clone().add(new THREE.Vector3(1,-0.5,-1)), dir, true);
+            createLaser(camera.position.clone().add(new THREE.Vector3(-1.2, -0.6, -1)), dir, true);
+            createLaser(camera.position.clone().add(new THREE.Vector3(1.2, -0.6, -1)), dir, true);
         } else {
-            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.5,-1)), dir, true);
+            createLaser(camera.position.clone().add(new THREE.Vector3(0, -0.4, -1)), dir, true);
         }
         
         raycaster.setFromCamera(mouse, camera);
-        const enemyType = gameMode === 'fps_defense' ? 'enemy_fps' : 'enemy_tps';
+        const enemyType = gameMode === 'fps_turret' ? 'enemy_tps' : 'enemy_fps';
         const colliders = entities.filter(e => e.type === enemyType).map(e => e.collider || e.mesh);
         const hit = raycaster.intersectObjects(colliders, true);
         if(hit.length) {
-            let tgtObj = hit[0].object;
-            while(tgtObj.parent && tgtObj.parent.type !== 'Scene') { tgtObj = tgtObj.parent; }
-            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.5,-1)), tgtObj.position.clone().sub(camera.position).normalize(), true);
+            let tgt = hit[0].object;
+            while(tgt.parent && tgt.parent.type !== 'Scene') { tgt = tgt.parent; }
+            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.4,-1)), tgt.position.clone().sub(camera.position).normalize(), true);
         }
-    } else if(gameMode === 'tps_flight' || gameMode === 'tps_trench') {
+    } else if(gameMode.startsWith('tps')) {
         if(playerObj) {
             if(gameMode === 'tps_trench' && missionPhase === 2) {
-                // プロトン魚雷発射
-                if(score >= maxScore -1) return; // 発射後は無効化
-                createLaser(playerObj.position.clone().add(new THREE.Vector3(0, 0, -2)), new THREE.Vector3(0,-0.1,-1), true, true);
-                showMissionMessage("TORPEDO AWAY!", 2000);
+                if(score >= maxScore) return;
+                createLaser(playerObj.position.clone().add(new THREE.Vector3(0, -0.2, -2.5)), new THREE.Vector3(0,-0.08,-1), true, true);
             } else {
-                // Xウィングの4連レーザー
-                createLaser(playerObj.position.clone().add(new THREE.Vector3(-2, 1, -2)), new THREE.Vector3(0,0,-1), true);
-                createLaser(playerObj.position.clone().add(new THREE.Vector3(2, 1, -2)), new THREE.Vector3(0,0,-1), true);
-                setTimeout(() => {
-                    if(!gameActive) return;
-                    createLaser(playerObj.position.clone().add(new THREE.Vector3(-2, -1, -2)), new THREE.Vector3(0,0,-1), true);
-                    createLaser(playerObj.position.clone().add(new THREE.Vector3(2, -1, -2)), new THREE.Vector3(0,0,-1), true);
-                }, 100);
+                createLaser(playerObj.position.clone().add(new THREE.Vector3(-1.8, 0.3, -2)), new THREE.Vector3(0,0,-1), true);
+                createLaser(playerObj.position.clone().add(new THREE.Vector3(1.8, 0.3, -2)), new THREE.Vector3(0,0,-1), true);
             }
         }
     }
@@ -1013,105 +846,119 @@ function playerShoot() {
 function gameLoop() {
     if(!gameActive) return;
     animId = requestAnimationFrame(gameLoop);
-    
-    if(currentMiniGameCompleted) return; // ループ防止
+    if(currentMiniGameCompleted) return;
 
-    // ---------------- Explore Modes ----------------
+    // 探索モード
     if(gameMode.startsWith('explore')) {
         const mv = getMoveVec();
         if(playerObj) {
-            const speed = 0.15;
-            playerObj.position.x += mv.x * speed;
-            playerObj.position.z += mv.y * speed;
-            checkCollision(playerObj.position, 0.4);
-            
-            if(mv.x !== 0 || mv.y !== 0) {
-                playerObj.rotation.y = Math.atan2(mv.x, mv.y);
-            }
+            const speed = gameMode === 'explore_trash' ? 0.12 : 0.16; // ゴミの中は少し遅い
+            playerObj.position.x += mv.x * speed; playerObj.position.z += mv.y * speed;
+            checkCollision(playerObj.position, 0.45);
+            if(mv.x !== 0 || mv.y !== 0) { playerObj.rotation.y = Math.atan2(mv.x, mv.y); }
 
-            camera.position.x += (playerObj.position.x - camera.position.x) * 0.1;
-            camera.position.z += (playerObj.position.z + 8 - camera.position.z) * 0.1;
+            camera.position.x += (playerObj.position.x - camera.position.x) * 0.08;
+            camera.position.z += (playerObj.position.z + 7.5 - camera.position.z) * 0.08;
             camera.lookAt(playerObj.position);
 
             interactTarget = null;
             entities.forEach(e => {
                 if(e.type === 'interactable') {
-                    if(playerObj.position.distanceTo(e.mesh.position) < 2.5) interactTarget = e;
+                    if(playerObj.position.distanceTo(e.mesh.position) < 2.2) interactTarget = e;
+                    if(e.marker) e.marker.rotation.y += 0.04;
                 }
                 if(e.type === 'enemy_patrol') {
-                    e.mesh.position.add(e.dir.clone().multiplyScalar(0.05));
-                    e.patrolTimer--;
-                    if(e.patrolTimer <= 0) {
-                        e.dir.negate(); e.patrolTimer = 100;
-                        e.mesh.rotation.y += Math.PI;
+                    e.mesh.position.add(e.dir.clone().multiplyScalar(0.065));
+                    
+                    if (e.isTentacle) {
+                        e.mesh.position.y = Math.abs(Math.sin(Date.now()*0.005))*0.4 - 0.2; // 触手の動き
+                    } else {
+                        e.mesh.position.y = Math.abs(Math.sin(Date.now()*0.008))*0.12; // 歩行バウンド
                     }
+
+                    e.patrolTimer--;
+                    if(e.patrolTimer <= 0) { e.dir.negate(); e.patrolTimer = 110; e.mesh.rotation.y += Math.PI; }
+                    
                     const toPlayer = playerObj.position.clone().sub(e.mesh.position);
-                    const dist = toPlayer.length();
-                    toPlayer.normalize();
-                    const angle = e.dir.angleTo(toPlayer);
-                    if(dist < 5 && angle < Math.PI/4) {
-                        playSound('enemyBlaster');
-                        takeDamage(20);
-                        playerObj.position.copy(e.startPos); 
+                    if (e.isTentacle && toPlayer.length() < 2.5) {
+                        takeDamage(3); // 触手ダメージ
+                    } else if(!e.isTentacle && toPlayer.length() < 4.5 && e.dir.angleTo(toPlayer.normalize()) < Math.PI/3.5) {
+                        playSound('enemyBlaster'); takeDamage(25); playerObj.position.copy(e.startPos); 
                     }
                 }
             });
+
+            // 迫る壁ギミック (explore_trash)
+            if (gameMode === 'explore_trash') {
+                trashTimer += 0.005;
+                envBlocks.forEach(b => {
+                    if(b.isCrushingWall) {
+                        b.position.x += b.isCrushingWall * -0.005; // 中心へ
+                    }
+                });
+                const leftWall = envBlocks.find(b => b.isCrushingWall === -1);
+                const rightWall = envBlocks.find(b => b.isCrushingWall === 1);
+                if(leftWall && rightWall) {
+                    if (rightWall.position.x - leftWall.position.x < 4.5) { 
+                        takeDamage(2); // 潰されてダメージ
+                    }
+                }
+            }
 
             if(interactTarget) DOM.btnInteract.classList.add('show');
             else DOM.btnInteract.classList.remove('show');
         }
     }
-    // ---------------- FPS Modes ----------------
-    else if(gameMode === 'fps_defense' || gameMode === 'fps_turret') {
+    // FPS 防衛・ガンナーモード
+    else if(gameMode.startsWith('fps')) {
         const mv = getMoveVec();
-        
-        // Adjusting sensitivity to be heavy and smooth for fine aiming
-        camera.rotation.y -= mv.x * 0.015;
-        camera.rotation.x -= mv.y * 0.015;
-        
-        if(Math.abs(mv.x) < 0.1 && Math.abs(mv.y) < 0.1 && !input.joy.active) {
-            camera.rotation.y += (-mouse.x * 0.8 - camera.rotation.y) * 0.03;
-            camera.rotation.x += (mouse.y * 0.5 - camera.rotation.x) * 0.03;
+        camera.rotation.y -= mv.x * 0.016; camera.rotation.x -= mv.y * 0.012;
+        if(Math.abs(mv.x) < 0.05 && Math.abs(mv.y) < 0.05 && !input.joy.active) {
+            camera.rotation.y += (-mouse.x * 0.7 - camera.rotation.y) * 0.04;
+            camera.rotation.x += (mouse.y * 0.45 - camera.rotation.x) * 0.04;
         }
-
-        camera.rotation.x = Math.max(-Math.PI/3, Math.min(Math.PI/3, camera.rotation.x));
+        camera.rotation.x = Math.max(-Math.PI/3.5, Math.min(Math.PI/3.5, camera.rotation.x));
         
-        const enemyType = gameMode === 'fps_defense' ? 'enemy_fps' : 'enemy_tps';
-        // 出現率調整
-        if(Math.random() < (gameMode === 'fps_defense' ? 0.04 : 0.06) && entities.filter(e=>e.type===enemyType).length < (gameMode === 'fps_defense' ? 5 : 8)) {
+        const enemyType = gameMode === 'fps_turret' ? 'enemy_tps' : 'enemy_fps';
+        const maxActiveEnemies = gameMode === 'fps_turret' ? 6 : 4;
+        const spawnChance = gameMode === 'fps_turret' ? 0.05 : 0.03;
+
+        if(Math.random() < spawnChance && entities.filter(e=>e.type===enemyType).length < maxActiveEnemies) {
             let g, col;
-            if (gameMode === 'fps_defense') {
-                g = buildStormtrooper();
-                col = new THREE.Mesh(new THREE.BoxGeometry(1.5, 2.5, 1.5), new THREE.MeshBasicMaterial({visible:false}));
-                col.position.y = 1; g.add(col);
-                g.position.set((Math.random()-.5)*20, 0, -60);
+            if (gameMode !== 'fps_turret') {
+                g = buildStormtrooper(); col = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.2, 1.2), new THREE.MeshBasicMaterial({visible:false}));
+                col.position.y = 0.6; g.add(col); g.position.set((Math.random()-.5)*16, 0, -55);
             } else {
-                g = buildTieFighter(false);
-                col = g;
-                g.position.set((Math.random()-.5)*60, (Math.random()-.5)*30, -100);
+                g = buildTieFighter(false); col = g; g.position.set((Math.random()-.5)*50, (Math.random()-.5)*25, -90);
             }
-            scene.add(g);
-            entities.push({type:enemyType, mesh: g, collider: col, nextShoot: Date.now()+1000+Math.random()*2000});
+            scene.add(g); 
+            // 【変更点】TIEファイター(fps_turret)の射撃頻度を半減させるためのタイマー倍増
+            const shootInterval = gameMode === 'fps_turret' ? (2400 + Math.random()*3600) : (1200 + Math.random()*1500);
+            entities.push({type:enemyType, mesh: g, collider: col, nextShoot: Date.now() + shootInterval});
         }
         
         entities.forEach((e, i) => {
             if(e.type === enemyType) {
-                // 敵の動き
-                e.mesh.position.z += gameMode === 'fps_defense' ? 0.1 : 0.8;
-                if(gameMode === 'fps_turret') {
-                    // TIEファイターの蛇行
-                    e.mesh.position.x += Math.sin(Date.now()*0.002 + i) * 0.2;
-                    e.mesh.position.y += Math.cos(Date.now()*0.001 + i) * 0.1;
+                e.mesh.position.z += gameMode === 'fps_turret' ? 0.9 : 0.12;
+                
+                if(gameMode !== 'fps_turret') {
+                    e.mesh.position.y = Math.abs(Math.sin(Date.now()*0.008 + i))*0.15;
+                } else {
+                    e.mesh.position.x += Math.sin(Date.now()*0.003 + i) * 0.25;
+                    e.mesh.position.y += Math.cos(Date.now()*0.002 + i) * 0.15;
+                    e.mesh.rotation.z = Math.sin(Date.now()*0.003 + i)*0.3;
                 }
-
+                
                 if(Date.now() > e.nextShoot) {
-                    // 狙いを少しブレさせる
                     const aim = camera.position.clone().sub(e.mesh.position);
-                    aim.x += (Math.random()-.5)*5; aim.y += (Math.random()-.5)*5;
+                    aim.x += (Math.random()-.5)*4; aim.y += (Math.random()-.5)*4;
                     createLaser(e.mesh.position.clone().add(new THREE.Vector3(0,0,1)), aim.normalize(), false);
-                    e.nextShoot = Date.now() + 1000 + Math.random()*2000;
+                    
+                    // 【変更点】次回発射も遅くする
+                    const shootInterval = gameMode === 'fps_turret' ? (2400 + Math.random()*3600) : (1200 + Math.random()*1800);
+                    e.nextShoot = Date.now() + shootInterval;
                 }
-                if(e.mesh.position.z > 10) { takeDamage(10); e.mesh.position.z = 100; }
+                if(e.mesh.position.z > 8) { takeDamage(15); e.mesh.position.z = 120; }
             }
         });
         
@@ -1120,447 +967,396 @@ function gameLoop() {
         if(raycaster.intersectObjects(colliders, true).length) DOM.fpsCrosshair.classList.add('aiming');
         else DOM.fpsCrosshair.classList.remove('aiming');
     }
-    // ---------------- TPS Flight Modes ----------------
-    else if(gameMode === 'tps_flight' || gameMode === 'tps_trench') {
-        if(gameMode === 'tps_flight') score += 1; // Flight mode is survival based on time/distance
-        updateHUD();
-        const speedMultiplier = gameMode === 'tps_trench' ? 2.0 : 1.5;
+    // TPS(フライト/トレンチ)モード
+    else if(gameMode.startsWith('tps')) {
+        if(gameMode === 'tps_flight') { score += 2; updateHUD(); }
+        const speedFactor = gameMode === 'tps_trench' ? 2.2 : 1.6;
 
         if(playerObj) {
             const mv = getMoveVec();
-            const maxX = gameMode === 'tps_trench' ? 6 : 20; // トレンチ内は移動制限
-            const maxY = gameMode === 'tps_trench' ? 4 : 10;
+            const maxX = gameMode === 'tps_trench' ? 5.5 : 22; const maxY = gameMode === 'tps_trench' ? 3.5 : 12;
+            playerObj.position.x += (mv.x * maxX - playerObj.position.x) * 0.08;
+            playerObj.position.y += (-mv.y * maxY - playerObj.position.y) * 0.08;
             
-            playerObj.position.x += (mv.x * maxX - playerObj.position.x) * 0.1;
-            playerObj.position.y += (-mv.y * maxY - playerObj.position.y) * 0.1;
-            
-            if(Math.abs(mv.x) < 0.1 && Math.abs(mv.y) < 0.1 && !input.joy.active) {
-                playerObj.position.x += (mouse.x * maxX - playerObj.position.x) * 0.1;
-                playerObj.position.y += (mouse.y * maxY - playerObj.position.y) * 0.1;
+            if(Math.abs(mv.x) < 0.05 && Math.abs(mv.y) < 0.05 && !input.joy.active) {
+                playerObj.position.x += (mouse.x * maxX - playerObj.position.x) * 0.08;
+                playerObj.position.y += (mouse.y * maxY - playerObj.position.y) * 0.08;
             }
-
-            // 機体の傾き表現
-            playerObj.rotation.z = -mv.x * 0.8;
-            playerObj.rotation.x = mv.y * 0.3;
+            playerObj.rotation.z = -mv.x * 0.7; playerObj.rotation.x = mv.y * 0.25;
             
-            camera.position.x += (playerObj.position.x * 0.3 - camera.position.x) * 0.1;
-            camera.position.y += (playerObj.position.y * 0.3 + 4 - camera.position.y) * 0.1;
-            camera.lookAt(playerObj.position.x, playerObj.position.y, playerObj.position.z - 40);
+            camera.position.x += (playerObj.position.x * 0.25 - camera.position.x) * 0.08;
+            camera.position.y += (playerObj.position.y * 0.25 + 3.8 - camera.position.y) * 0.08;
+            camera.lookAt(playerObj.position.x, playerObj.position.y, playerObj.position.z - 35);
         }
         
         envBlocks.forEach(b => {
-            b.position.z += 2.0 * speedMultiplier;
-            if(b.position.z > 20) b.position.z -= (gameMode==='tps_trench' ? 200 : 400);
+            b.position.z += 2.2 * speedFactor;
+            if(b.position.z > 20) b.position.z -= (gameMode==='tps_trench' ? 220 : 440);
         });
 
-        // TIEファイター出現
-        if(Math.random() < (gameMode==='tps_trench'?0.02:0.05) && entities.filter(e=>e.type==='enemy_tps').length < (gameMode==='tps_trench'?2:5)) {
-            // トレンチラン中はベイダー機(Advanced)が後ろから来る演出を追加
-            const isAdvanced = gameMode === 'tps_trench' && Math.random() < 0.3;
-            const tie = buildTieFighter(isAdvanced);
-            const spawnX = gameMode === 'tps_trench' ? (Math.random()-.5)*8 : (Math.random()-.5)*40;
-            const spawnY = gameMode === 'tps_trench' ? (Math.random()-.5)*3 : (Math.random()-.5)*20;
+        if(Math.random() < (gameMode==='tps_trench'?0.015:0.04) && entities.filter(e=>e.type==='enemy_tps').length < (gameMode==='tps_trench'?2:4)) {
+            const isVader = gameMode === 'tps_trench' && Math.random() < 0.4;
+            const tie = buildTieFighter(isVader);
+            const sx = gameMode === 'tps_trench' ? (Math.random()-.5)*7 : (Math.random()-.5)*35;
+            const sy = gameMode === 'tps_trench' ? (Math.random()-.5)*3 : (Math.random()-.5)*15;
             
-            if(isAdvanced) {
-                tie.position.set(spawnX, spawnY+5, 30); // 後ろから
-                entities.push({type:'enemy_tps', mesh: tie, isVader: true, tz: -50});
-            } else {
-                tie.position.set(spawnX, spawnY, -200); // 前から
-                entities.push({type:'enemy_tps', mesh: tie});
-            }
+            if(isVader) { tie.position.set(sx, sy+4, 25); entities.push({type:'enemy_tps', mesh: tie, isVader: true, tz: -45}); } 
+            else { tie.position.set(sx, sy, -220); entities.push({type:'enemy_tps', mesh: tie}); }
             scene.add(tie);
         }
         
         entities.forEach(e => {
             if(e.type === 'enemy_tps') {
                 if(e.isVader) {
-                    // ベイダー機は自機を追い越して前にいく
-                    e.mesh.position.z -= 0.5 * speedMultiplier;
-                    // 自機を狙う
-                    if(playerObj && e.mesh.position.z > playerObj.position.z && Math.random() < 0.05) {
+                    e.mesh.position.z -= 0.4 * speedFactor;
+                    e.mesh.rotation.z = Math.sin(Date.now()*0.005)*0.25;
+                    // 【変更点】ベイダーの射撃確率を半減
+                    if(playerObj && e.mesh.position.z > playerObj.position.z && Math.random() < 0.03) {
                         createLaser(e.mesh.position, playerObj.position.clone().sub(e.mesh.position).normalize(), false);
                     }
-                } else {
-                    e.mesh.position.z += 1.5 * speedMultiplier;
-                    if(Math.random() < 0.03) createLaser(e.mesh.position, new THREE.Vector3(0,0,1), false);
+                } else if (!e.isPort) {
+                    e.mesh.position.z += 1.6 * speedFactor;
+                    // 【変更点】一般TIEの射撃確率を半減 (0.025 -> 0.012)
+                    if(Math.random() < 0.012) createLaser(e.mesh.position, new THREE.Vector3(0,0,1), false);
                 }
             }
         });
 
-        // トレンチラン特有の進行
         if(gameMode === 'tps_trench') {
             trenchTimer++;
-            
-            // フェーズ1: 接近
-            if(missionPhase === 0 && trenchTimer > 300) {
-                missionPhase = 1;
-                showMissionMessage("USE THE FORCE, LUKE...", 4000);
+            if(missionPhase === 0 && trenchTimer > 320) {
+                missionPhase = 1; showMissionMessage("USE THE FORCE, LUKE...", 4500);
             }
-            // フェーズ2: 排気口捕捉
-            else if(missionPhase === 1 && trenchTimer > 700) {
-                missionPhase = 2;
-                DOM.targetLockHud.classList.remove('hidden');
-                playSound('alarm');
-                showMissionMessage("TARGET LOCKED. FIRE TORPEDO!", 4000);
-            }
-            
-            // 壁からの砲火
-            if(Math.random() < 0.05) {
-                if(playerObj) {
-                    createLaser(new THREE.Vector3(playerObj.position.x + (Math.random()-.5)*10, playerObj.position.y + 5, camera.position.z + 10), new THREE.Vector3(0,-0.5,-1), false);
-                }
+            else if(missionPhase === 1 && trenchTimer > 680) {
+                missionPhase = 2; DOM.targetLockHud.classList.remove('hidden'); playSound('alarm');
+                showMissionMessage("EXHAUST PORT LOCKED. FIRE TORPEDO!", 5000);
             }
         }
     }
 
-    // ---------------- Shared Logic (Lasers & Particles) ----------------
     for(let i=entities.length-1; i>=0; i--) {
-        const e = entities[i];
-        if(!e) continue;
+        const e = entities[i]; if(!e) continue;
         
         if(e.type === 'laser' || e.type === 'torpedo') {
-            e.mesh.position.add(e.dir.clone().multiplyScalar(e.speed));
-            e.life--;
+            e.mesh.position.add(e.dir.clone().multiplyScalar(e.speed)); e.life--;
             if(e.life <= 0) { scene.remove(e.mesh); entities.splice(i,1); continue; }
             
             if(e.isPlayer) {
                 let hit = false;
-                
-                // プロトン魚雷のクリア判定
-                if(e.type === 'torpedo' && e.mesh.position.z < -50) {
+                if(e.type === 'torpedo' && e.mesh.position.z < -60) {
                      createExplosion(e.mesh.position);
-                     createExplosion(e.mesh.position.clone().add(new THREE.Vector3(2,0,0)));
-                     createExplosion(e.mesh.position.clone().add(new THREE.Vector3(-2,0,0)));
-                     score = maxScore; updateHUD(); // クリア条件満たす
-                     scene.remove(e.mesh); entities.splice(i,1);
-                     continue;
+                     createExplosion(e.mesh.position.clone().add(new THREE.Vector3(1.5,0,0)));
+                     createExplosion(e.mesh.position.clone().add(new THREE.Vector3(-1.5,0,0)));
+                     score = maxScore; updateHUD(); scene.remove(e.mesh); entities.splice(i,1); continue;
                 }
-
                 for(let j=entities.length-1; j>=0; j--) {
                     const enemy = entities[j];
-                    if(enemy && enemy.type.startsWith('enemy_') && e.mesh.position.distanceTo(enemy.mesh.position) < (enemy.isVader ? 3.0 : 4.0)) {
-                        if(enemy.isVader) {
-                            // ベイダー機にはダメージエフェクトのみで倒せない設定
-                            createExplosion(e.mesh.position);
-                        } else {
+                    if(enemy && enemy.type.startsWith('enemy_') && e.mesh.position.distanceTo(enemy.mesh.position) < (enemy.isVader ? 2.8 : 3.5)) {
+                        if(enemy.isVader) { createExplosion(e.mesh.position); } 
+                        else if (!enemy.isPort) {
                             createExplosion(enemy.mesh.position);
-                            score += (gameMode === 'tps_flight' ? 50 : 1); updateHUD();
+                            score += (gameMode === 'tps_flight' ? 100 : 1); updateHUD();
                             scene.remove(enemy.mesh); entities.splice(j,1);
                         }
-                        scene.remove(e.mesh); entities.splice(i,1);
-                        hit = true; break;
+                        scene.remove(e.mesh); entities.splice(i,1); hit = true; break;
                     }
                 }
                 if(hit) continue;
             } else {
-                const pPos = (gameMode === 'tps_flight' || gameMode === 'tps_trench') ? playerObj?.position : camera.position;
-                if(pPos && e.mesh.position.distanceTo(pPos) < (gameMode.startsWith('tps') ? 2.5 : 1.5)) {
-                    takeDamage(gameMode === 'tps_trench' ? 20 : 10);
-                    scene.remove(e.mesh); entities.splice(i,1);
-                    continue;
+                const pPos = (gameMode.startsWith('tps')) ? playerObj?.position : camera.position;
+                if(pPos && e.mesh.position.distanceTo(pPos) < (gameMode.startsWith('tps') ? 2.4 : 1.4)) {
+                    takeDamage(gameMode === 'tps_trench' ? 25 : 12); scene.remove(e.mesh); entities.splice(i,1); continue;
                 }
             }
         }
-        
-        if(e.type.startsWith('enemy_') && (e.mesh.position.z > 30 || e.mesh.position.z < -300)) {
+        if(e.type.startsWith('enemy_') && (e.mesh.position.z > 25 || e.mesh.position.z < -280)) {
             scene.remove(e.mesh); entities.splice(i,1);
         }
     }
 
     for(let i=particles.length-1; i>=0; i--) {
-        const p = particles[i];
-        const pos = p.mesh.geometry.attributes.position.array;
+        const p = particles[i]; const pos = p.mesh.geometry.attributes.position.array;
         for(let j=0; j<p.vels.length; j++) {
             pos[j*3] += p.vels[j].x; pos[j*3+1] += p.vels[j].y; pos[j*3+2] += p.vels[j].z;
         }
-        p.mesh.geometry.attributes.position.needsUpdate = true;
-        p.life -= 0.03; p.mesh.material.opacity = p.life;
+        p.mesh.geometry.attributes.position.needsUpdate = true; p.life -= 0.025; p.mesh.material.opacity = p.life;
         if(p.life <= 0) { scene.remove(p.mesh); p.mesh.geometry.dispose(); particles.splice(i,1); }
     }
 
-    if(score >= maxScore && gameActive && !currentMiniGameCompleted) {
-        finishMinigame(true);
-    }
-
+    if(score >= maxScore && gameActive && !currentMiniGameCompleted) { finishMinigame(true); }
     renderer.render(scene, camera);
 }
 
 function startMinigame(mode, target, nextScn, failScn) {
-    minigameNext = nextScn; minigameFail = failScn;
-    gameMode = mode; maxScore = target; score = 0; health = 100; maxHealth = 100;
+    minigameNext = nextScn; minigameFail = failScn; gameMode = mode; maxScore = target; score = 0; health = 100; maxHealth = 100;
     currentMiniGameCompleted = false;
-    
-    setLayerMode('game');
-    init3D(); clear3D();
+    setLayerMode('game'); init3D(); clear3D();
     
     DOM.virtualControls.classList.remove('hidden');
-    if(mode.startsWith('explore')) {
-        DOM.gameHud.classList.add('hidden');
-        DOM.btnShoot.classList.add('hidden');
-    } else {
-        DOM.gameHud.classList.remove('hidden');
-        DOM.btnShoot.classList.remove('hidden');
-    }
+    if(mode.startsWith('explore')) { DOM.gameHud.classList.add('hidden'); DOM.btnShoot.classList.add('hidden'); } 
+    else { DOM.gameHud.classList.remove('hidden'); DOM.btnShoot.classList.remove('hidden'); }
     DOM.btnInteract.classList.remove('show');
 
-    scene.add(new THREE.AmbientLight(0x404040, 2));
-    const dl = new THREE.DirectionalLight(0xffffff, 1); dl.position.set(5,10,5); scene.add(dl);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    const dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(10,25,15); scene.add(dl);
     
-    DOM.gameTargetScore.textContent = maxScore;
-    updateHUD();
-    trenchTimer = 0;
-    missionPhase = 0;
-    DOM.targetLockHud.classList.add('hidden');
-    DOM.missionMessage.classList.add('opacity-0');
+    DOM.gameTargetScore.textContent = maxScore; updateHUD();
+    trenchTimer = 0; trashTimer = 0; missionPhase = 0;
+    DOM.targetLockHud.classList.add('hidden'); DOM.missionMessage.classList.add('opacity-0');
 
+    // モード別：ステージの構築
     if(mode === 'explore_cantina') {
-        camera.position.set(0, 10, 8); camera.rotation.set(-Math.PI/4, 0, 0);
+        camera.position.set(0, 11, 8.5); camera.rotation.set(-Math.PI/3.6, 0, 0);
+        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.5, 8), new THREE.MeshStandardMaterial({color: 0xf8fafc}));
+        playerObj.position.set(0, 0.75, 12); scene.add(playerObj);
         
-        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.5, 8), new THREE.MeshStandardMaterial({color: 0xffffff}));
-        playerObj.position.set(0, 0.75, 10); scene.add(playerObj);
-        
-        const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({color: 0x443322}));
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(45, 45), new THREE.MeshStandardMaterial({color: 0x271a10, roughness: 0.8}));
         floor.rotation.x = -Math.PI/2; scene.add(floor);
-        const wallMat = new THREE.MeshStandardMaterial({color: 0xaa8866});
-        
-        // Large tavern boundary walls
-        const w1 = new THREE.Mesh(new THREE.BoxGeometry(40, 3, 1), wallMat); w1.position.set(0,1.5,-20); w1.isWall = true; scene.add(w1); envBlocks.push(w1);
-        const w2 = new THREE.Mesh(new THREE.BoxGeometry(40, 3, 1), wallMat); w2.position.set(0,1.5,20); w2.isWall = true; scene.add(w2); envBlocks.push(w2);
-        const w3 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 40), wallMat); w3.position.set(-20,1.5,0); w3.isWall = true; scene.add(w3); envBlocks.push(w3);
-        const w4 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 40), wallMat); w4.position.set(20,1.5,0); w4.isWall = true; scene.add(w4); envBlocks.push(w4);
-        
-        const bar = new THREE.Mesh(new THREE.BoxGeometry(10, 1.5, 3), new THREE.MeshStandardMaterial({color: 0x552211}));
-        bar.position.set(10, 0.75, -5); bar.isWall = true; scene.add(bar); envBlocks.push(bar);
-        
-        for(let i=0; i<4; i++) {
-            const tbl = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 1, 16), new THREE.MeshStandardMaterial({color: 0x333333}));
-            const tx = -10 + (i%2)*8; const tz = 5 + Math.floor(i/2)*8;
-            tbl.position.set(tx, 0.5, tz); tbl.isWall = true; scene.add(tbl); envBlocks.push(tbl);
-        }
+        const guideG = new THREE.PlaneGeometry(0.15, 24); const guideM = new THREE.MeshBasicMaterial({color: 0x29b6f6, transparent:true, opacity:0.25});
+        const gl = new THREE.Mesh(guideG, guideM); gl.rotation.x = -Math.PI/2; gl.position.set(-5, 0.01, 0); scene.add(gl);
+
+        const wallMat = new THREE.MeshStandardMaterial({color: 0x634832});
+        const w1 = new THREE.Mesh(new THREE.BoxGeometry(45, 4, 1), wallMat); w1.position.set(0,2,-22.5); w1.isWall = true; scene.add(w1); envBlocks.push(w1);
         
         const han = new THREE.Group();
-        const hBody = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.6, 8), new THREE.MeshStandardMaterial({color: 0x3355aa}));
-        hBody.position.y = 0.8; han.add(hBody);
-        han.position.set(-15, 0, -15); scene.add(han);
-        entities.push({type: 'interactable', mesh: han});
+        const hBody = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 1.55, 8), new THREE.MeshStandardMaterial({color: 0x1e3a8a}));
+        hBody.position.y = 0.77; han.add(hBody); han.position.set(-13, 0, -14); scene.add(han);
+        const marker = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 3.0, 16, 1, true), new THREE.MeshBasicMaterial({color: 0xffe400, transparent: true, opacity: 0.25, side: THREE.DoubleSide}));
+        marker.position.y = 1.5; han.add(marker);
         
-        DOM.gameStartTitle.textContent = "FIND HAN SOLO";
-        DOM.gameStartDesc.innerHTML = "ジョイスティック(またはWASD)で移動<br>広い酒場を探索し、奥にいるハン・ソロを探し出せ！";
+        entities.push({type: 'interactable', mesh: han, marker});
+        DOM.gameStartTitle.textContent = "MISSION: FIND HAN SOLO";
+        DOM.gameStartDesc.innerHTML = "酒場内を移動し、奥の席に佇む<br><span class='text-amber-400 font-bold'>【金色のホログラム光柱】</span>が立つハン・ソロの元へ向かえ！";
+    }
+    // 【新規】タトゥイーンのタスケン回避探索ミッション
+    else if(mode === 'explore_tatooine') {
+        camera.position.set(0, 12, 10); camera.rotation.set(-Math.PI/3.5, 0, 0);
+        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.5, 8), new THREE.MeshStandardMaterial({color: 0xf8fafc}));
+        playerObj.position.set(0, 0.75, 22); scene.add(playerObj); const startPos = playerObj.position.clone();
+        
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 60), new THREE.MeshStandardMaterial({color: 0xc2b280, roughness: 1.0})); // サンドカラー
+        floor.rotation.x = -Math.PI/2; scene.add(floor);
+
+        const rockMat = new THREE.MeshStandardMaterial({color: 0x8b5a2b, roughness: 0.9});
+        for(let i=0; i<8; i++){
+            const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(2), rockMat);
+            rock.position.set((Math.random()-.5)*30, 0, (Math.random()-.5)*40);
+            rock.isWall = true; scene.add(rock); envBlocks.push(rock);
+        }
+
+        const createEnemy = (x, z, dx, dz) => {
+            const en = new THREE.Group(); const eBody = buildTusken(); en.add(eBody);
+            const cone = new THREE.Mesh(new THREE.ConeGeometry(2.2, 5.0, 12), new THREE.MeshBasicMaterial({color: 0xff1744, transparent: true, opacity: 0.18}));
+            cone.rotation.x = Math.PI/2; cone.position.set(0, 0.4, 2.5); en.add(cone); 
+            en.position.set(x, 0, z); scene.add(en);
+            entities.push({type: 'enemy_patrol', mesh: en, dir: new THREE.Vector3(dx, 0, dz), patrolTimer: 100, startPos});
+        };
+        createEnemy(8, 5, -1, 0); createEnemy(-8, -5, 1, 0);
+
+        const r2 = new THREE.Group();
+        const rBody = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.0, 8), new THREE.MeshStandardMaterial({color: 0xdddddd}));
+        rBody.position.y = 0.5; r2.add(rBody); r2.position.set(0, 0, -25); scene.add(r2);
+        const marker = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 3.0, 16, 1, true), new THREE.MeshBasicMaterial({color: 0x29b6f6, transparent: true, opacity: 0.3, side: THREE.DoubleSide}));
+        marker.position.y = 1.5; r2.add(marker);
+
+        entities.push({type: 'interactable', mesh: r2, marker});
+        DOM.gameStartTitle.textContent = "MISSION: STEALTH IN THE DESERT";
+        DOM.gameStartDesc.innerHTML = "タスケン・レイダーの視界（赤いエリア）を避け、<br>最奥に隠れているR2-D2（青い光柱）を見つけ出せ！";
+    }
+    // 【新規】ゴミ圧縮処理室の脱出ミッション
+    else if(mode === 'explore_trash') {
+        camera.position.set(0, 10, 8); camera.rotation.set(-Math.PI/3.5, 0, 0);
+        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.5, 8), new THREE.MeshStandardMaterial({color: 0xf8fafc}));
+        playerObj.position.set(0, 0.75, 18); scene.add(playerObj); const startPos = playerObj.position.clone();
+        
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 50), new THREE.MeshStandardMaterial({color: 0x2d3a22, roughness: 0.2, transparent:true, opacity:0.8})); // 濁水
+        floor.rotation.x = -Math.PI/2; scene.add(floor);
+        
+        const wallMat = new THREE.MeshStandardMaterial({color: 0x4a4a4a, metalness: 0.6, roughness: 0.5});
+        const wL = new THREE.Mesh(new THREE.BoxGeometry(4, 5, 50), wallMat); wL.position.set(-10, 2.5, 0); wL.isWall = true; wL.isCrushingWall = -1; scene.add(wL); envBlocks.push(wL);
+        const wR = new THREE.Mesh(new THREE.BoxGeometry(4, 5, 50), wallMat); wR.position.set(10, 2.5, 0); wR.isWall = true; wR.isCrushingWall = 1; scene.add(wR); envBlocks.push(wR);
+
+        const createTentacle = (x, z) => {
+            const en = new THREE.Group(); const eBody = buildTentacle(); en.add(eBody);
+            en.position.set(x, 0, z); scene.add(en);
+            entities.push({type: 'enemy_patrol', mesh: en, dir: new THREE.Vector3(Math.random()-.5, 0, Math.random()-.5).normalize(), patrolTimer: 60, startPos, isTentacle: true});
+        };
+        createTentacle(3, 5); createTentacle(-4, 0); createTentacle(2, -10);
+
+        const term = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.8, 1.2), new THREE.MeshStandardMaterial({color: 0x555555}));
+        term.position.set(0, 0.9, -23); term.isWall = true; scene.add(term); envBlocks.push(term);
+        const marker = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 4.0, 16, 1, true), new THREE.MeshBasicMaterial({color: 0x29b6f6, transparent: true, opacity: 0.3, side: THREE.DoubleSide}));
+        marker.position.y = 2; term.add(marker);
+        
+        entities.push({type: 'interactable', mesh: term, marker});
+        DOM.gameStartTitle.textContent = "MISSION: TRASH COMPACTOR ESCAPE";
+        DOM.gameStartDesc.innerHTML = "壁が徐々に迫ってくる！水中のダイアノーガ（触手）を避け、<br>最奥にある通信ターミナルにアクセスしろ！";
     }
     else if(mode === 'explore_deathstar') {
-        camera.position.set(0, 10, 8); camera.rotation.set(-Math.PI/4, 0, 0);
+        camera.position.set(0, 12, 9); camera.rotation.set(-Math.PI/3.5, 0, 0);
+        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.5, 8), new THREE.MeshStandardMaterial({color: 0x78350f}));
+        playerObj.position.set(0, 0.75, 22); scene.add(playerObj); const startPos = playerObj.position.clone();
         
-        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.5, 8), new THREE.MeshStandardMaterial({color: 0x8b5a2b}));
-        playerObj.position.set(0, 0.75, 20); scene.add(playerObj);
-        const startPos = playerObj.position.clone();
-        
-        const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 50), new THREE.MeshStandardMaterial({color: 0x222222}));
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(32, 52), new THREE.MeshStandardMaterial({color: 0x0f172a, roughness: 0.4}));
         floor.rotation.x = -Math.PI/2; scene.add(floor);
-        const wallMat = new THREE.MeshStandardMaterial({color: 0xcccccc});
+        const pathG = new THREE.PlaneGeometry(0.12, 40); const pathM = new THREE.MeshBasicMaterial({color: 0x00e676, transparent:true, opacity:0.2});
+        const pl = new THREE.Mesh(pathG, pathM); pl.rotation.x = -Math.PI/2; pl.position.set(-10, 0.01, 0); scene.add(pl);
+
+        const wallMat = new THREE.MeshStandardMaterial({color: 0x334155, metalness: 0.7, roughness: 0.2});
+        const wL = new THREE.Mesh(new THREE.BoxGeometry(1, 4.5, 52), wallMat); wL.position.set(-16, 2.25, 0); wL.isWall = true; scene.add(wL); envBlocks.push(wL);
+        const wR = new THREE.Mesh(new THREE.BoxGeometry(1, 4.5, 52), wallMat); wR.position.set(16, 2.25, 0); wR.isWall = true; scene.add(wR); envBlocks.push(wR);
         
-        const wL = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 50), wallMat); wL.position.set(-15, 2, 0); wL.isWall = true; scene.add(wL); envBlocks.push(wL);
-        const wR = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 50), wallMat); wR.position.set(15, 2, 0); wR.isWall = true; scene.add(wR); envBlocks.push(wR);
-        const wT = new THREE.Mesh(new THREE.BoxGeometry(30, 4, 1), wallMat); wT.position.set(0, 2, -25); wT.isWall = true; scene.add(wT); envBlocks.push(wT);
-        const wB = new THREE.Mesh(new THREE.BoxGeometry(30, 4, 1), wallMat); wB.position.set(0, 2, 25); wB.isWall = true; scene.add(wB); envBlocks.push(wB);
-        
-        // Maze walls inside Death Star corridor
-        const m1 = new THREE.Mesh(new THREE.BoxGeometry(20, 4, 1), wallMat); m1.position.set(-5, 2, 10); m1.isWall = true; scene.add(m1); envBlocks.push(m1);
-        const m2 = new THREE.Mesh(new THREE.BoxGeometry(20, 4, 1), wallMat); m2.position.set(5, 2, 0); m2.isWall = true; scene.add(m2); envBlocks.push(m2);
-        const m3 = new THREE.Mesh(new THREE.BoxGeometry(15, 4, 1), wallMat); m3.position.set(-8, 2, -10); m3.isWall = true; scene.add(m3); envBlocks.push(m3);
-        const m4 = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 10), wallMat); m4.position.set(0, 2, -15); m4.isWall = true; scene.add(m4); envBlocks.push(m4);
-        
-        const createEnemy = (x, z, dirX, dirZ) => {
-            const enemy = new THREE.Group();
-            const eBody = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.6, 8), new THREE.MeshStandardMaterial({color: 0xffffff}));
-            eBody.position.y = 0.8; enemy.add(eBody);
-            const cone = new THREE.Mesh(new THREE.ConeGeometry(2.5, 5, 8), new THREE.MeshBasicMaterial({color: 0xff0000, transparent: true, opacity: 0.2}));
-            cone.rotation.x = Math.PI/2; cone.position.set(0, 0.5, 2.5); enemy.add(cone);
-            enemy.position.set(x, 0, z); scene.add(enemy);
-            entities.push({type: 'enemy_patrol', mesh: enemy, dir: new THREE.Vector3(dirX, 0, dirZ), patrolTimer: 100, startPos: startPos});
+        const createEnemy = (x, z, dx, dz) => {
+            const en = new THREE.Group(); const eBody = buildStormtrooper(); en.add(eBody);
+            const cone = new THREE.Mesh(new THREE.ConeGeometry(2.2, 5.0, 12), new THREE.MeshBasicMaterial({color: 0xff1744, transparent: true, opacity: 0.18}));
+            cone.rotation.x = Math.PI/2; cone.position.set(0, 0.4, 2.5); en.add(cone);
+            en.position.set(x, 0, z); scene.add(en);
+            entities.push({type: 'enemy_patrol', mesh: en, dir: new THREE.Vector3(dx, 0, dz), patrolTimer: 100, startPos});
         };
-        createEnemy(8, 5, -1, 0);
-        createEnemy(-8, -5, 1, 0);
-        createEnemy(10, -15, 0, 1);
+        createEnemy(7, 4, -1, 0); createEnemy(-7, -8, 1, 0);
         
-        const term = new THREE.Mesh(new THREE.BoxGeometry(1.5, 2, 1), new THREE.MeshStandardMaterial({color: 0x0055ff, emissive: 0x0022aa}));
-        term.position.set(-12, 1, -22); term.isWall = true; scene.add(term); envBlocks.push(term);
-        entities.push({type: 'interactable', mesh: term});
+        const term = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.8, 1.2), new THREE.MeshStandardMaterial({color: 0x0284c7, emissive: 0x0369a1}));
+        term.position.set(-12, 0.9, -23); term.isWall = true; scene.add(term); envBlocks.push(term);
+        const marker = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 4.0, 16, 1, true), new THREE.MeshBasicMaterial({color: 0x29b6f6, transparent: true, opacity: 0.3, side: THREE.DoubleSide}));
+        marker.position.y = 2; term.add(marker);
         
-        DOM.gameStartTitle.textContent = "SNEAK MISSION";
-        DOM.gameStartDesc.innerHTML = "ジョイスティック(またはWASD)で移動<br>迷路を抜け、敵の視界(赤色)を避け、奥の青いターミナルを操作せよ！";
+        entities.push({type: 'interactable', mesh: term, marker});
+        DOM.gameStartTitle.textContent = "MISSION: SECURITY INFILTRATION";
+        DOM.gameStartDesc.innerHTML = "ストームトルーパーの赤半透明の警戒視界を避け、<br>最奥にある発光する青い端末基盤をハッキングせよ！";
     }
-    else if(mode === 'fps_defense' || mode === 'fps_turret') {
-        camera.position.set(0, 2, 0); camera.rotation.set(0,0,0);
+    // FPSモード各種統合
+    else if(mode.startsWith('fps')) {
+        camera.position.set(0, 2.2, 0); camera.rotation.set(0,0,0);
         DOM.fpsCrosshair.classList.remove('hidden');
         
-        if (mode === 'fps_defense') {
-            // デススター内部・タンティヴィIV内部風の廊下
-            const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 100), new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.2}));
-            floor.rotation.x = -Math.PI/2; floor.position.z = -40; scene.add(floor); envBlocks.push(floor);
+        if (mode === 'fps_defense' || mode === 'fps_defense_cell' || mode === 'fps_escape') {
+            let flColor = 0xe2e8f0; let wlColor = 0xf1f5f9; // Default Tantive IV / Cell
+            if (mode === 'fps_escape') { flColor = 0xc2b280; wlColor = 0xa0522d; } // Tatooine Bay 94 colors
             
-            const wallMat = new THREE.MeshStandardMaterial({color: 0xeeeeee, metalness: 0.5});
-            const wL = new THREE.Mesh(new THREE.BoxGeometry(2, 10, 100), wallMat); wL.position.set(-15, 5, -40); scene.add(wL); envBlocks.push(wL);
-            const wR = new THREE.Mesh(new THREE.BoxGeometry(2, 10, 100), wallMat); wR.position.set(15, 5, -40); scene.add(wR); envBlocks.push(wR);
-            const ceil = new THREE.Mesh(new THREE.PlaneGeometry(30, 100), wallMat); ceil.rotation.x = Math.PI/2; ceil.position.set(0, 10, -40); scene.add(ceil); envBlocks.push(ceil);
+            const floor = new THREE.Mesh(new THREE.PlaneGeometry(26, 110), new THREE.MeshStandardMaterial({color: flColor, roughness: 0.3}));
+            floor.rotation.x = -Math.PI/2; floor.position.z = -45; scene.add(floor); envBlocks.push(floor);
+            const wallMat = new THREE.MeshStandardMaterial({color: wlColor, metalness: 0.2});
+            const wL = new THREE.Mesh(new THREE.BoxGeometry(1.5, 11, 110), wallMat); wL.position.set(-13, 5.5, -45); scene.add(wL); envBlocks.push(wL);
+            const wR = new THREE.Mesh(new THREE.BoxGeometry(1.5, 11, 110), wallMat); wR.position.set(13, 5.5, -45); scene.add(wR); envBlocks.push(wR);
             
-            // 蛍光灯風のライト
-            for(let i=0; i<5; i++) {
-                const light = new THREE.PointLight(0xffffff, 0.5, 30);
-                light.position.set(0, 9, -10 - i*15);
-                scene.add(light);
-            }
-        } else {
-            // ファルコン砲座風
-            const starGeo = new THREE.BufferGeometry();
-            const starPos = new Float32Array(1500 * 3);
-            for(let i=0; i<1500; i++) {
-                starPos[i*3] = (Math.random()-.5)*300; starPos[i*3+1] = (Math.random()-.5)*300; starPos[i*3+2] = -Math.random()*400 - 50;
-            }
-            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-            scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.5})));
-            
-            // 窓枠
-            const windowFrame = new THREE.Mesh(new THREE.RingGeometry(15, 25, 32), new THREE.MeshStandardMaterial({color: 0x222222, side: THREE.DoubleSide}));
-            windowFrame.position.z = -20; scene.add(windowFrame);
-        }
-        
-        DOM.gameStartTitle.textContent = mode === 'fps_defense' ? "DEFEND THE POSITION" : "TURRET DEFENSE";
-        DOM.gameStartDesc.innerHTML = "ジョイスティックで照準<br>FIREボタンで帝国軍を迎撃せよ！";
-    }
-    else if (mode === 'tps_flight' || mode === 'tps_trench') {
-        camera.position.set(0, 4, 15);
-        DOM.fpsCrosshair.classList.add('hidden');
-        
-        playerObj = buildXWing();
-        playerObj.position.set(0, 0, -5);
-        scene.add(playerObj);
-        
-        if (mode === 'tps_trench') {
-            const matWall = new THREE.MeshStandardMaterial({color: 0x555555, roughness: 0.8, metalness: 0.2});
-            const matDetail = new THREE.MeshStandardMaterial({color: 0x333333});
-            
-            const buildTrenchSegment = (zPos) => {
-                const group = new THREE.Group();
-                // 溝の底
-                const floor = new THREE.Mesh(new THREE.BoxGeometry(20, 2, 20), matWall);
-                floor.position.set(0, -5, 0); group.add(floor);
-                // 左右の壁
-                const wL = new THREE.Mesh(new THREE.BoxGeometry(10, 20, 20), matWall);
-                wL.position.set(-15, 4, 0); group.add(wL);
-                const wR = new THREE.Mesh(new THREE.BoxGeometry(10, 20, 20), matWall);
-                wR.position.set(15, 4, 0); group.add(wR);
-                
-                // ディテール（表面の凹凸）
-                for(let i=0; i<5; i++) {
-                    const d1 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 2), matDetail);
-                    d1.position.set(-9.5, (Math.random()-.5)*10 + 4, (Math.random()-.5)*18); group.add(d1);
-                    const d2 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 2), matDetail);
-                    d2.position.set(9.5, (Math.random()-.5)*10 + 4, (Math.random()-.5)*18); group.add(d2);
-                    const d3 = new THREE.Mesh(new THREE.BoxGeometry(2, 1, 2), matDetail);
-                    d3.position.set((Math.random()-.5)*18, -3.5, (Math.random()-.5)*18); group.add(d3);
-                }
-                group.position.z = zPos;
-                return group;
-            };
+            DOM.gameStartTitle.textContent = mode === 'fps_escape' ? "MISSION: DOCKING BAY FIREFIGHT" : "MISSION: BLOCKADE DEFENSE";
+            DOM.gameStartDesc.innerHTML = "通路の奥から次々と攻め寄せる帝国の白兵集団、<br>ストームトルーパーを正確に捕捉し撃退せよ。";
+        } else if (mode === 'fps_turret') {
+            const starsGeo = new THREE.BufferGeometry(); const starsPos = [];
+            for(let i=0; i<1200; i++) { starsPos.push((Math.random()-0.5)*500, (Math.random()-0.5)*500, (Math.random()-0.5)*500); }
+            starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(starsPos, 3));
+            scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.6})));
 
-            for(let i=0; i<15; i++) {
-                const seg = buildTrenchSegment(-i * 20);
-                scene.add(seg); envBlocks.push(seg);
-            }
-        } else {
-            // デス・スター表面上空
-            const dsSurface = new THREE.Mesh(new THREE.PlaneGeometry(800, 800, 32, 32), new THREE.MeshStandardMaterial({color: 0x444444, wireframe: true}));
-            dsSurface.rotation.x = -Math.PI/2; dsSurface.position.y = -20;
-            scene.add(dsSurface); envBlocks.push(dsSurface);
+            DOM.gameStartTitle.textContent = "MISSION: TURRET AIR COMBAT";
+            DOM.gameStartDesc.innerHTML = "ファルコン号の4連レーザー砲座を操作し、<br>超高速で急襲を仕掛けてくるTIEファイターを撃破せよ！";
         }
-        
-        const starGeo = new THREE.BufferGeometry();
-        const starPos = new Float32Array(2000 * 3);
-        for(let i=0; i<2000; i++) {
-            starPos[i*3] = (Math.random()-.5)*400; starPos[i*3+1] = (Math.random()-.5)*400; starPos[i*3+2] = -Math.random()*500 - 100;
-        }
-        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.5}));
-        scene.add(stars);
+    } else if(mode.startsWith('tps')) {
+        camera.position.set(0, 3.8, 14); playerObj = buildXWing(); playerObj.position.set(0, 0, 0); scene.add(playerObj);
 
-        DOM.gameStartTitle.textContent = mode === 'tps_flight' ? "SURFACE ATTACK" : "TRENCH RUN";
-        DOM.gameStartDesc.innerHTML = mode === 'tps_flight' 
-            ? "ジョイスティックで操縦<br>FIREボタンで攻撃！デス・スター表面の防衛網を突破せよ！" 
-            : "フォースを信じろ<br>トレンチを抜け、ターゲット・ロックオン後にプロトン魚雷を撃ち込め！";
+        if (mode === 'tps_flight') {
+            const starsGeo = new THREE.BufferGeometry(); const starsPos = [];
+            for(let i=0; i<1200; i++) { starsPos.push((Math.random()-0.5)*500, (Math.random()-0.5)*500, (Math.random()-0.5)*500); }
+            starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(starsPos, 3));
+            scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.5})));
+            
+            for(let i=0; i<35; i++) {
+                const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(Math.random()*2.5+1.2), new THREE.MeshStandardMaterial({color: 0x475569, roughness: 0.9}));
+                rock.position.set((Math.random()-0.5)*80, (Math.random()-0.5)*50, -Math.random()*400 - 30); scene.add(rock); envBlocks.push(rock);
+            }
+            DOM.gameStartTitle.textContent = "MISSION: YAVIN METEOR BATTLE";
+            DOM.gameStartDesc.innerHTML = "迫りくる漆黒の小惑星帯を縦横無尽に回避しながら、<br>帝国護衛艦隊のTIEファイター群を邀撃せよ！";
+        } else {
+            const wallMat = new THREE.MeshStandardMaterial({color: 0x475569, roughness: 0.7});
+            const floor = new THREE.Mesh(new THREE.PlaneGeometry(16, 300), wallMat); floor.rotation.x = -Math.PI/2; floor.position.y = -4; scene.add(floor); envBlocks.push(floor);
+            const wL = new THREE.Mesh(new THREE.BoxGeometry(6, 16, 300), wallMat); wL.position.set(-11, 4, 0); scene.add(wL); envBlocks.push(wL);
+            const wR = new THREE.Mesh(new THREE.BoxGeometry(6, 16, 300), wallMat); wR.position.set(11, 4, 0); scene.add(wR); envBlocks.push(wR);
+            
+            for(let i=0; i<20; i++) {
+                const b = new THREE.Mesh(new THREE.BoxGeometry(3, 8, 3), wallMat);
+                b.position.set((Math.random()>0.5?1:-1)*(Math.random()*3+4), -4, -Math.random()*300); scene.add(b); envBlocks.push(b);
+            }
+
+            const portGroup = new THREE.Group();
+            const portCore = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.4, 16), new THREE.MeshBasicMaterial({color: 0xff1744}));
+            const portGlow = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, 0.2, 16), new THREE.MeshBasicMaterial({color: 0xff1744, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending}));
+            portGroup.add(portCore, portGlow); portGroup.position.set(0, -3.8, -65); portGroup.rotation.x = Math.PI/2;
+            scene.add(portGroup); entities.push({type: 'enemy_tps', mesh: portGroup, isPort: true});
+
+            DOM.gameStartTitle.textContent = "MISSION: THE TRENCH RUN";
+            DOM.gameStartDesc.innerHTML = "要塞溝壁の障害物とダース・ベイダーの猛追を回避せよ。<br><span class='text-red-500 font-bold'>【LOCK ON】検出のシグナル後、最奥の排気口へプロトン魚雷を叩き込め！</span>";
+        }
     }
 
-    renderer.render(scene, camera);
-    
     DOM.gameStartOverlay.classList.remove('hidden');
-
-    bindSafeButton(DOM.btnStartMission, () => {
-        playSound('click');
-        playSound('saber');
-        DOM.gameStartOverlay.classList.add('hidden');
-        gameActive = true;
-        startBGM(140);
-        lastShoot = Date.now();
+    bindSafeButton(DOM.btnStartMission, async () => {
+        await initAudio(); DOM.gameStartOverlay.classList.add('hidden'); gameActive = true;
+        if(mode.startsWith('tps') || mode.startsWith('fps')) startBGM(135);
         gameLoop();
     });
 }
 
 function finishMinigame(success) {
-    if(currentMiniGameCompleted) return;
-    currentMiniGameCompleted = true;
-    gameActive = false;
+    if(currentMiniGameCompleted) return; currentMiniGameCompleted = true;
+    gameActive = false; stopBGM();
     
-    stopBGM();
-    DOM.virtualControls.classList.add('hidden');
-    DOM.targetLockHud.classList.add('hidden');
-    DOM.missionMessage.classList.add('opacity-0');
-    DOM.gameCanvasContainer.classList.add('opacity-0');
-    
-    setTimeout(() => {
-        clear3D();
-        showResult(success ? 'MISSION CLEAR' : 'MISSION FAILED', success ? '見事な腕前だ。' : 'フォースと共にあらんことを...', success, () => renderScene(success ? minigameNext : minigameFail));
-    }, 500);
+    if(success) {
+        playSound('saber'); 
+        setTimeout(() => showResult("MISSION CLEARED", "戦術目標の完全達成に成功した。フォースが共にある。", true, () => {
+            clear3D(); renderScene(minigameNext);
+        }), 1000);
+    } else {
+        playSound('explosion');
+        setTimeout(() => showResult("MISSION FAILED", "作戦継続不能。自軍の防衛線、または機体が大破した。", false, () => {
+            clear3D(); renderScene(minigameFail);
+        }), 1000);
+    }
 }
 
 function showResult(title, desc, success, callback) {
-    setLayerMode('result');
-    DOM.resultTitle.textContent = title;
-    DOM.resultTitle.style.color = success ? '#fce300' : '#e74c3c';
-    DOM.resultDesc.textContent = desc;
-    
-    const newBtn = DOM.resultNextBtn.cloneNode(true);
-    DOM.resultNextBtn.replaceWith(newBtn);
-    DOM.resultNextBtn = newBtn;
-    bindSafeButton(DOM.resultNextBtn, () => {
-        playSound('click');
-        callback();
-    });
+    setLayerMode('result'); DOM.resultTitle.textContent = title;
+    DOM.resultTitle.style.color = success ? "var(--sw-yellow)" : "var(--sw-red)"; DOM.resultDesc.innerHTML = desc;
+    DOM.resultNextBtn.className = `sw-btn w-full py-4 rounded-xl font-bold tracking-widest text-lg ${success ? 'btn-gold' : 'btn-sith'}`;
+    DOM.resultNextBtn.textContent = success ? "CONTINUE PROCEED >>" : "RETRY MISSION";
+    bindSafeButton(DOM.resultNextBtn, () => { playSound('click'); callback(); });
 }
 
-// ==========================================
-// 6. BOOT
-// ==========================================
 bindSafeButton(DOM.btnBegin, async () => {
-    await initAudio(); playSound('click'); playSound('saber');
-    DOM.startOverlay.classList.add('opacity-0');
-    setTimeout(() => { setLayerMode('crawl'); DOM.startOverlay.classList.add('hidden'); }, 700);
-    setTimeout(() => skipCrawl(), 50000);
-});
-
-bindSafeButton(DOM.btnContinue, async () => {
     await initAudio(); playSound('click');
-    loadGame(); renderScene(state.currentScene);
+    state = { currentScene: "prologue", location: "Tantive IV" }; saveGame();
+    
+    setLayerMode("crawl");
+    const fav = document.getElementById("far-away-text");
+    const logo = document.getElementById("crawl-logo");
+    const win = document.getElementById("crawl-window");
+    const content = document.getElementById("crawl-content");
+    
+    fav.style.opacity = "0"; logo.style.opacity = "0"; logo.style.transform = "scale(4)";
+    win.style.opacity = "0"; content.classList.remove("crawl-scroll-anim");
+    
+    setTimeout(() => { fav.style.opacity = "1"; }, 500);
+    
+    setTimeout(() => {
+        fav.style.opacity = "0";
+        setTimeout(() => {
+            startBGM(95); 
+            logo.style.opacity = "1"; logo.style.transform = "scale(0.12)";
+            setTimeout(() => { logo.style.opacity = "0"; }, 7500);
+        }, 1500);
+    }, 4500);
+    
+    setTimeout(() => {
+        win.style.opacity = "1"; content.classList.add("crawl-scroll-anim");
+    }, 12500);
 });
 
-bindSafeButton(DOM.skipCrawlBtn, () => { playSound('click'); skipCrawl(); });
-function skipCrawl() { setLayerMode('app'); renderScene('prologue'); }
+bindSafeButton(DOM.btnContinue, async () => { await initAudio(); playSound('click'); renderScene(state.currentScene); });
+bindSafeButton(DOM.skipCrawlBtn, () => { playSound('click'); stopBGM(); renderScene(state.currentScene); });
+document.getElementById("crawl-content").addEventListener('animationend', () => { if(!DOM.crawlContainer.classList.contains('hidden')) { stopBGM(); renderScene(state.currentScene); } });
 
-if(hasSave()) DOM.btnContinue.classList.remove('hidden');
-
-document.body.addEventListener('pointerdown', async () => {
-    if(!audioCtxReady) await initAudio();
-    if(Tone.context.state !== 'running') Tone.context.resume();
-}, {once: true});
-
+window.onload = () => {
+    loadGame(); if(hasSave()) { DOM.btnContinue.classList.remove('hidden'); }
+    setLayerMode("start");
+};
 </script>
 </body>
 </html>

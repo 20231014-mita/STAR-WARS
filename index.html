@@ -144,6 +144,7 @@
         }
         .crosshair::before { top: 14px; left: 0; width: 30px; height: 2px; }
         .crosshair::after { top: 0; left: 14px; width: 2px; height: 30px; }
+        .crosshair.aiming::before, .crosshair.aiming::after { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 8px red; }
         
         .damage-overlay {
             position: absolute; inset: 0; background: red; opacity: 0; pointer-events: none;
@@ -170,7 +171,7 @@
     </div>
 
     <!-- メインHUD (テキストRPG UI) -->
-    <main id="app-container" class="flex-1 w-full max-w-5xl mx-auto my-0 md:my-6 flex flex-col game-panel md:rounded-2xl overflow-hidden relative z-10 transition-all duration-1000 opacity-0 pointer-events-none cursor-pointer">
+    <main id="app-container" class="flex-1 w-full max-w-5xl mx-auto my-0 md:my-6 flex flex-col game-panel md:rounded-2xl overflow-hidden relative z-10 transition-all duration-1000 opacity-0 pointer-events-none">
         <header class="flex-none bg-black/60 border-b border-[rgba(252,227,0,0.2)] p-4 flex justify-between items-center relative overflow-hidden z-20 pointer-events-none">
             <div class="flex items-center space-x-3 z-10">
                 <i class="fab fa-galactic-republic text-[#fce300] text-2xl opacity-80"></i>
@@ -295,7 +296,7 @@
             prologue: {
                 bg: 'from-gray-700/50 to-black', icon: 'fa-space-shuttle text-gray-400', alignTone: 'rebel',
                 text: "反乱軍の外交船タンティヴィIVが、巨大なスター・デストロイヤーに拿捕された。<br>船内の白い通路に、ストームトルーパーたちが雪崩れ込んでくる！<br>レイア姫が極秘設計図をR2-D2に託す間、ブラスターで迎撃せよ！",
-                minigame: 'fps_defense', targetScore: 5, next: 'droids_desert'
+                minigame: 'fps_defense', targetScore: 15, next: 'droids_desert'
             },
             droids_desert: {
                 bg: 'from-yellow-700/40 to-black', icon: 'fa-sun text-yellow-500', alignTone: 'light',
@@ -438,29 +439,42 @@
         let currentAdvanceHandler = null;
         function renderChoices(choices, nextSceneId) {
             DOM.choicesContainer.innerHTML = '';
-            if (currentAdvanceHandler) { DOM.appContainer.removeEventListener('click', currentAdvanceHandler); currentAdvanceHandler = null; }
+            
+            // 以前の画面全体クリックハンドラがある場合は削除
+            if (currentAdvanceHandler) { 
+                DOM.appContainer.removeEventListener('click', currentAdvanceHandler); 
+                currentAdvanceHandler = null; 
+            }
 
             if (nextSceneId) {
                 DOM.choicesContainer.className = "flex justify-center w-full z-10";
-                const btn = document.createElement('div');
-                btn.className = "w-full max-w-md py-4 rounded-lg text-sm font-bold tracking-widest uppercase flex flex-col items-center opacity-0 transform translate-y-4 transition-all duration-500 bg-[rgba(252,227,0,0.05)] border border-[#fce300]/30 text-[#fce300] shadow-[0_0_15px_rgba(252,227,0,0.1)] pointer-events-none";
+                const btn = document.createElement('button');
+                // ボタン自体をクリックできるようにスタイルを変更
+                btn.className = "w-full max-w-md py-4 rounded-lg text-sm font-bold tracking-widest uppercase flex flex-col items-center opacity-0 transform translate-y-4 transition-all duration-500 bg-[rgba(252,227,0,0.05)] border border-[#fce300]/30 text-[#fce300] shadow-[0_0_15px_rgba(252,227,0,0.1)] hover:bg-[rgba(252,227,0,0.2)] hover:border-[#fce300] cursor-pointer pointer-events-auto";
                 btn.innerHTML = `<span>TAP TO CONTINUE</span><i class="fas fa-chevron-down animate-bounce mt-2"></i>`;
-                DOM.choicesContainer.appendChild(btn);
                 
-                currentAdvanceHandler = () => {
-                    if (isAnimating) return; playSound('click');
-                    DOM.appContainer.removeEventListener('click', currentAdvanceHandler);
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (isAnimating) return; 
+                    playSound('click');
                     renderScene(nextSceneId);
                 };
-                setTimeout(() => { DOM.appContainer.addEventListener('click', currentAdvanceHandler); btn.classList.remove('opacity-0', 'translate-y-4'); }, 300);
+                
+                DOM.choicesContainer.appendChild(btn);
+                
+                setTimeout(() => { 
+                    btn.classList.remove('opacity-0', 'translate-y-4'); 
+                }, 300);
             } else if (choices) {
                 DOM.choicesContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full z-10";
                 choices.forEach((choice, idx) => {
                     const btn = document.createElement('button');
-                    btn.className = `w-full p-4 rounded-sm text-sm font-bold tracking-widest uppercase flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-500 ${choice.style || 'sw-btn text-gray-300'}`;
+                    btn.className = `w-full p-4 rounded-sm text-sm font-bold tracking-widest uppercase flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-500 ${choice.style || 'sw-btn text-gray-300'} cursor-pointer pointer-events-auto`;
                     btn.innerHTML = choice.text;
                     btn.onclick = (e) => {
-                        e.stopPropagation(); if (isAnimating) return; playSound('click');
+                        e.stopPropagation(); 
+                        if (isAnimating) return; 
+                        playSound('click');
                         if (choice.align) state.alignment += choice.align;
                         renderScene(choice.action);
                     };
@@ -510,6 +524,11 @@
         let particles = [];
         let mouse = new THREE.Vector2();
         let raycaster = new THREE.Raycaster();
+
+        let playerWeapon = null;
+        let lastShootTime = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
         
         // 汎用マテリアル
         const matRedLaser = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
@@ -556,10 +575,15 @@
             // 正規化デバイス座標 (-1 to +1)
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // カメラの目標回転角度を計算 (感度を大幅に上げる)
+            targetRotationY = -mouse.x * (Math.PI / 1.5); 
+            targetRotationX = mouse.y * (Math.PI / 4);
         }
 
         function onPointerDown(event) {
             if (!gameActive) return;
+            // FPSはオート射撃だが、タップでも手動発射可能にしておく
             if (gameMode === 'fps_defense') playerShootFPS();
             if (gameMode === 'tps_flight') playerShootTPS();
         }
@@ -587,22 +611,57 @@
             const matArmor = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
             const matBlack = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
             
-            // 胴体 (白い装甲)
-            const body = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 0.8), matArmor);
-            body.position.y = 0.9;
-            // 頭 (白い装甲)
-            const head = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), matArmor);
-            head.position.y = 2.2;
-            // バイザー (黒)
-            const visor = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.2, 0.1), matBlack);
-            visor.position.set(0, 2.3, 0.4);
+            // 頭
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), matArmor);
+            head.position.y = 2.6;
+            // バイザー
+            const visor = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.15, 0.2), matBlack);
+            visor.position.set(0, 2.65, 0.3);
+            // 胴体
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.3, 1.0, 8), matArmor);
+            body.position.y = 1.7;
+            
+            // 右腕 (銃を構える)
+            const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 1.0, 8), matArmor);
+            armR.position.set(-0.5, 1.7, 0.2);
+            armR.rotation.x = -Math.PI / 2.5; 
+            
+            // 左腕 (銃に添える)
+            const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 1.0, 8), matArmor);
+            armL.position.set(0.5, 1.7, 0.2);
+            armL.rotation.x = -Math.PI / 2.5;
+            armL.rotation.z = Math.PI / 6;
 
-            group.add(body); group.add(head); group.add(visor);
+            // 脚
+            const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.1, 1.2, 8), matArmor);
+            legR.position.set(-0.2, 0.6, 0);
+            const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.1, 1.2, 8), matArmor);
+            legL.position.set(0.2, 0.6, 0);
+
+            // ブラスター（黒い銃）
+            const blaster = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.15, 0.7), matBlack);
+            blaster.position.set(-0.3, 1.7, 0.6);
+
+            group.add(head); group.add(visor); group.add(body);
+            group.add(armR); group.add(armL); group.add(legR); group.add(legL);
+            group.add(blaster);
             group.position.set(x, 0, z);
+            
+            // 当たり判定用の見えないボックス (大きめにして当てやすく)
+            const colliderGeo = new THREE.BoxGeometry(1.5, 3.5, 1.5);
+            const colliderMat = new THREE.MeshBasicMaterial({visible: false});
+            const collider = new THREE.Mesh(colliderGeo, colliderMat);
+            collider.position.y = 1.5;
+            group.add(collider);
+            
             scene.add(group);
             
-            // 難易度調整: スピードを遅く、射撃間隔を長く設定
-            entities.push({ type: 'enemy_fps', mesh: group, hp: 1, speed: 0.02 + Math.random()*0.02, nextShoot: Date.now() + 2000 + Math.random()*3000 });
+            entities.push({ 
+                type: 'enemy_fps', mesh: group, collider: collider, hp: 1, 
+                speed: 0.03 + Math.random()*0.02, 
+                nextShoot: Date.now() + 1000 + Math.random()*2000,
+                legR: legR, legL: legL, timeOffset: Math.random() * Math.PI * 2
+            });
         }
 
         function createTieFighter(x, y, z) {
@@ -676,21 +735,54 @@
 
         // FPS 防衛モード
         function playerShootFPS() {
-            raycaster.setFromCamera(mouse, camera);
-            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.5,0)), raycaster.ray.direction, true);
+            if(!playerWeapon || !camera) return;
+            // 銃口付近から、カメラの向いている方向へ
+            const worldDir = new THREE.Vector3();
+            camera.getWorldDirection(worldDir);
+            
+            const startPos = new THREE.Vector3();
+            // 子要素[2]のmuzzle（銃口）の位置を取得
+            playerWeapon.children[2].getWorldPosition(startPos); 
+            
+            createLaser(startPos, worldDir, true);
         }
 
         function updateFPS() {
-            // 敵のスポーン (通路の幅に合わせてX座標を絞る, 同時出現数を減らす)
-            if(Math.random() < 0.015 && entities.filter(e=>e.type==='enemy_fps').length < 3) {
-                createEnemyStormtrooper((Math.random()-0.5)*6, -30 - Math.random()*10);
+            // スムーズなカメラ回転
+            camera.rotation.y += (targetRotationY - camera.rotation.y) * 0.15;
+            camera.rotation.x += (targetRotationX - camera.rotation.x) * 0.15;
+
+            // 武器の反動戻し
+            if (playerWeapon) {
+                playerWeapon.position.z += (-0.5 - playerWeapon.position.z) * 0.1;
+                playerWeapon.rotation.x += (0 - playerWeapon.rotation.x) * 0.1;
             }
-            
-            // カメラの微妙な揺れ(狙いやすくするために揺れを軽減)
-            const t = Date.now() * 0.001;
-            camera.position.y = 2 + Math.sin(t*2) * 0.02;
-            camera.rotation.y = -mouse.x * 0.05;
-            camera.rotation.x = mouse.y * 0.05;
+
+            // オートエイム & オート射撃
+            const colliders = entities.filter(e => e.type === 'enemy_fps').map(e => e.collider);
+            if(colliders.length > 0) {
+                raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+                const intersects = raycaster.intersectObjects(colliders);
+                if(intersects.length > 0) {
+                    DOM.fpsCrosshair.classList.add('aiming');
+                    if(Date.now() - lastShootTime > 150) { // 連射
+                        playerShootFPS();
+                        lastShootTime = Date.now();
+                        // 射撃の反動
+                        playerWeapon.position.z = -0.3;
+                        playerWeapon.rotation.x = 0.05;
+                    }
+                } else {
+                    DOM.fpsCrosshair.classList.remove('aiming');
+                }
+            } else {
+                DOM.fpsCrosshair.classList.remove('aiming');
+            }
+
+            // 敵のスポーン (討伐数15に合わせて出現頻度と最大数を上昇)
+            if(Math.random() < 0.03 && entities.filter(e=>e.type==='enemy_fps').length < 6) {
+                createEnemyStormtrooper((Math.random()-0.5)*5, -30 - Math.random()*10);
+            }
         }
 
         // TPS フライトモード
@@ -799,12 +891,19 @@
                 if (e.type === 'enemy_fps') {
                     e.mesh.position.z += e.speed;
                     e.mesh.lookAt(camera.position.x, 0, camera.position.z);
+                    
+                    // 歩行アニメーション
+                    const t = Date.now() * 0.005 + e.timeOffset;
+                    e.legR.rotation.x = Math.sin(t) * 0.5;
+                    e.legL.rotation.x = -Math.sin(t) * 0.5;
+
                     if (Date.now() > e.nextShoot) {
                         const dir = camera.position.clone().sub(e.mesh.position).normalize();
-                        createLaser(e.mesh.position.clone().add(new THREE.Vector3(0,1,0)), dir, false);
+                        const startPos = e.mesh.position.clone().add(new THREE.Vector3(-0.3, 1.7, 0.6));
+                        createLaser(startPos, dir, false);
                         e.nextShoot = Date.now() + 1500 + Math.random()*2000;
                     }
-                    if(e.mesh.position.z > 5) { // 通過されたらダメージ
+                    if(e.mesh.position.z > 5) {
                         takeDamage(10);
                         scene.remove(e.mesh); entities.splice(i, 1);
                     }
@@ -878,8 +977,31 @@
             
             if (mode === 'fps_defense') {
                 camera.position.set(0, 2, 0);
+                camera.rotation.set(0, 0, 0);
+                targetRotationX = 0; targetRotationY = 0;
                 DOM.fpsCrosshair.classList.remove('hidden');
+                DOM.gameInstructions.innerText = 'AIM TO AUTO-FIRE';
                 
+                // --- プレイヤーのブラスター (自分の目線) ---
+                playerWeapon = new THREE.Group();
+                const matBlack = new THREE.MeshStandardMaterial({color: 0x111111, roughness: 0.5});
+                const matMetal = new THREE.MeshStandardMaterial({color: 0x888888, metalness: 0.8});
+                
+                const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.0, 8), matBlack);
+                barrel.rotation.x = Math.PI / 2;
+                barrel.position.set(0, 0, -0.5);
+                const scope = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.3, 8), matBlack);
+                scope.rotation.x = Math.PI / 2;
+                scope.position.set(0, 0.08, -0.3);
+                const muzzle = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.2, 8), matMetal);
+                muzzle.rotation.x = Math.PI / 2;
+                muzzle.position.set(0, 0, -1.0);
+                
+                playerWeapon.add(barrel); playerWeapon.add(scope); playerWeapon.add(muzzle);
+                playerWeapon.position.set(0.4, -0.4, -0.5); // 画面の右下に構える
+                camera.add(playerWeapon);
+                scene.add(camera);
+
                 // タンティヴィIVの象徴的な白い通路を生成
                 const matWall = new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.8});
                 const matFloor = new THREE.MeshStandardMaterial({color: 0x333333, roughness: 0.9});

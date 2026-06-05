@@ -3,572 +3,1564 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Star Wars: A New Hope - Ultimate Enhanced V2</title>
+<title>Star Wars: A New Hope - Ultimate Enhanced V5</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <style>
+:root{--sw-yellow:#fce300;--sw-blue:#3498db;--sw-red:#e74c3c;--sw-green:#2ecc71}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#e2e8f0;font-family:'Noto Sans JP',sans-serif;touch-action:none;overscroll-behavior:none}
-body{position:fixed;inset:0}.font-starwars{font-family:'Oswald',sans-serif;letter-spacing:3px}button{pointer-events:auto!important;touch-action:manipulation;cursor:pointer}
+body{position:fixed;inset:0}.font-starwars{font-family:'Oswald',sans-serif;letter-spacing:3px}
+button{pointer-events:auto!important;touch-action:manipulation;cursor:pointer;outline:none}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.3)}::-webkit-scrollbar-thumb{background:rgba(252,227,0,.35);border-radius:10px}
-#star-container{position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at center,#151515 0%,#000 100%);overflow:hidden;pointer-events:none}.layer{position:absolute;width:200vw;height:200vh;pointer-events:none}.stars-sm{background-image:radial-gradient(1px 1px at 20px 30px,#eee,rgba(0,0,0,0)),radial-gradient(1px 1px at 40px 70px,#fff,rgba(0,0,0,0)),radial-gradient(1px 1px at 50px 160px,#ddd,rgba(0,0,0,0));background-repeat:repeat;background-size:200px 200px;animation:slowPan 120s linear infinite}.stars-md{background-image:radial-gradient(2px 2px at 150px 150px,#fff,rgba(0,0,0,0)),radial-gradient(2px 2px at 60px 120px,#eee,rgba(0,0,0,0));background-repeat:repeat;background-size:300px 300px;animation:slowPan 80s linear infinite}@keyframes slowPan{0%{transform:translate(0,0)}100%{transform:translate(-50vw,-50vh)}}.hyperspace-active #star-container{animation:stretchStars 2.5s forwards cubic-bezier(.4,0,.2,1)}@keyframes stretchStars{0%{transform:scale(1);filter:blur(0);opacity:1}40%{transform:scale(4) translateZ(100px);filter:blur(5px) brightness(2.5);opacity:.9}100%{transform:scale(20) translateZ(500px);filter:blur(20px) brightness(4);opacity:0}}
-.crt-overlay{position:fixed;inset:0;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.22) 50%),linear-gradient(90deg,rgba(255,0,0,.05),rgba(0,255,0,.02),rgba(0,0,255,.05));background-size:100% 4px,3px 100%;z-index:100;pointer-events:none;opacity:.25}.game-panel{background:linear-gradient(135deg,rgba(15,15,22,.95) 0%,rgba(5,5,10,.98) 100%);backdrop-filter:blur(12px);border:1px solid rgba(252,227,0,.15);box-shadow:0 0 50px rgba(0,0,0,1),inset 0 0 30px rgba(255,255,255,.03)}
-.sw-btn{position:relative;overflow:hidden;transition:all .22s cubic-bezier(.25,.8,.25,1);background:linear-gradient(180deg,rgba(30,30,30,.86) 0%,rgba(10,10,10,.94) 100%);border:1px solid #333;transform:translateZ(0);z-index:999}.sw-btn::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);transition:.45s;pointer-events:none}.sw-btn:hover::after{left:100%}.sw-btn:hover{transform:translateY(-2px) scale(1.015);border-color:rgba(252,227,0,.85);box-shadow:0 8px 20px rgba(0,0,0,.5),0 0 15px rgba(252,227,0,.3)}.sw-btn:active{transform:translateY(1px) scale(.98)}.btn-jedi{border-left:5px solid #2ecc71;color:#b8ffd8}.btn-sith{border-left:5px solid #e74c3c;color:#ffc2c2}.btn-rebel{border-left:5px solid #3498db;color:#c4e6ff}.btn-gold{border-left:5px solid #fce300;color:#fff6a7}
-#crawl-container{position:absolute;inset:0;background:#000;z-index:70;display:flex;justify-content:center;overflow:hidden;perspective:500px;pointer-events:auto}#crawl-container.hidden,#start-overlay.hidden{display:none!important;pointer-events:none!important}#crawl-container.opacity-0,#start-overlay.opacity-0{pointer-events:none!important}#crawl-content{position:relative;width:85%;max-width:900px;color:#fce300;font-size:clamp(1.25rem,3.8vw,2.2rem);font-weight:700;text-align:justify;letter-spacing:clamp(2px,.8vw,6px);line-height:1.7;transform-origin:50% 100%;animation:crawlAnim 55s linear forwards;text-shadow:0 0 8px rgba(252,227,0,.5);pointer-events:none}.crawl-subtitle{text-align:center;font-size:3em;margin-bottom:40px;text-transform:uppercase}@keyframes crawlAnim{0%{transform:rotateX(25deg) translateY(100vh);opacity:1}85%{opacity:1}100%{transform:rotateX(25deg) translateY(-3000px);opacity:0}}
-#app-container{z-index:10}#app-container.pointer-events-none{pointer-events:none!important}#app-container.pointer-events-auto{pointer-events:auto!important}#story-scroll-area,#choices-container,#choices-container button{pointer-events:auto!important;position:relative;z-index:999}.status-chip{background:rgba(0,0,0,.45);border:1px solid rgba(252,227,0,.18);border-radius:999px;padding:.35rem .7rem;font-size:.72rem;letter-spacing:.08em;color:#dfeaff}.story-key{color:#fce300;font-weight:800}.story-paragraph strong{color:#fce300}
-#game-canvas-container{position:absolute;inset:0;z-index:60;background:#000;display:none;opacity:0;transition:opacity .55s;pointer-events:auto}#game-canvas-container.hidden{pointer-events:none!important}#game-canvas-container canvas{display:block;width:100%;height:100%;outline:none;touch-action:none}#game-hud{pointer-events:none}.crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;pointer-events:none}.crosshair::before,.crosshair::after{content:'';position:absolute;background:rgba(255,255,255,.7)}.crosshair::before{top:16px;left:0;width:34px;height:2px}.crosshair::after{top:0;left:16px;width:2px;height:34px}.crosshair.aiming::before,.crosshair.aiming::after{background:rgba(255,40,40,.9);box-shadow:0 0 10px red}.damage-overlay{position:absolute;inset:0;background:red;opacity:0;pointer-events:none;transition:opacity .08s;z-index:45;mix-blend-mode:overlay}.flash-active{opacity:.42}.screen-shake{animation:shake .18s linear 1}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(4px,-3px)}50%{transform:translate(-5px,3px)}75%{transform:translate(3px,4px)}100%{transform:translate(0,0)}}
-#start-overlay{position:absolute;inset:0;background:#050505;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);pointer-events:auto}.save-card{background:rgba(10,10,16,.72);border:1px solid rgba(252,227,0,.22);box-shadow:0 0 25px rgba(0,0,0,.7);border-radius:14px;padding:14px;min-width:min(92vw,480px)}
-#result-overlay,#negotiation-overlay{position:absolute;inset:0;z-index:95;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);pointer-events:auto}.result-panel,.dialog-panel{width:min(92vw,720px);background:linear-gradient(135deg,rgba(12,14,22,.96),rgba(0,0,0,.98));border:1px solid rgba(252,227,0,.28);box-shadow:0 0 40px rgba(252,227,0,.12),0 0 60px rgba(0,0,0,.9);border-radius:18px;padding:22px}.rank-letter{font-size:5rem;line-height:1;font-weight:900;color:#fce300;text-shadow:0 0 20px rgba(252,227,0,.7)}.dialog-choice{width:100%;text-align:left;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);transition:.2s}.dialog-choice:hover{border-color:#fce300;background:rgba(252,227,0,.11)}.trustbar{height:10px;background:#1f2937;border:1px solid #4b5563;border-radius:999px;overflow:hidden}.trustfill{height:100%;background:linear-gradient(90deg,#ef4444,#fce300,#22c55e);width:50%;transition:.35s}.mini-help{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(0,0,0,.58);border:1px solid rgba(255,255,255,.15);padding:10px 14px;border-radius:999px;color:#fff;font-size:.85rem;text-align:center;max-width:92vw;white-space:nowrap}.hud-card{background:rgba(0,0,0,.54);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 12px}.combo-pop{font-size:1.8rem;color:#fce300;text-shadow:0 0 15px rgba(252,227,0,.9)}
-@media(max-width:640px){.status-chip{font-size:.62rem;padding:.28rem .5rem}.rank-letter{font-size:4rem}.mini-help{font-size:.72rem;bottom:16px}.dialog-panel,.result-panel{padding:16px}.sw-btn{font-size:.78rem}}
+
+/* --- Space Background --- */
+#star-container{position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at center,#0a0a0f 0%,#000 100%);overflow:hidden;pointer-events:none}
+.layer{position:absolute;width:200vw;height:200vh;pointer-events:none}
+.stars-sm{background-image:radial-gradient(1px 1px at 20px 30px,#fff,rgba(0,0,0,0)),radial-gradient(1px 1px at 40px 70px,#ddd,rgba(0,0,0,0)),radial-gradient(1.5px 1.5px at 90px 160px,#fff,rgba(0,0,0,0));background-repeat:repeat;background-size:250px 250px;animation:slowPan 150s linear infinite}
+@keyframes slowPan{0%{transform:translate(0,0)}100%{transform:translate(-50vw,-50vh)}}
+
+/* --- UI Overlays (Hologram / CRT) --- */
+.crt-overlay{position:fixed;inset:0;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.3) 50%);background-size:100% 4px;z-index:100;pointer-events:none;opacity:.3}
+.scanline{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,rgba(252,227,0,.1) 10%,transparent 100%);height:10%;animation:scan 8s linear infinite;pointer-events:none;z-index:101}
+@keyframes scan{0%{top:-10%}100%{top:110%}}
+.game-panel{background:linear-gradient(135deg,rgba(15,15,22,.9) 0%,rgba(5,5,10,.95) 100%);backdrop-filter:blur(8px);border:1px solid rgba(252,227,0,.15);box-shadow:0 0 40px rgba(0,0,0,1),inset 0 0 20px rgba(255,255,255,.03)}
+
+/* --- Buttons --- */
+.sw-btn{position:relative;overflow:hidden;transition:all .2s cubic-bezier(.25,.8,.25,1);background:linear-gradient(180deg,rgba(30,30,30,.8) 0%,rgba(10,10,10,.9) 100%);border:1px solid #333;transform:translateZ(0)}
+.sw-btn::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:.4s;pointer-events:none}
+.sw-btn:hover::after{left:100%}
+.sw-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.5)}
+.sw-btn:active{transform:translateY(1px) scale(.98)}
+.sw-btn:disabled {opacity: 0.5; cursor: not-allowed; pointer-events: none;}
+
+.btn-jedi{border-left:4px solid var(--sw-blue);color:#b8e2ff;text-shadow:0 0 5px var(--sw-blue)}
+.btn-jedi:hover{border-color:var(--sw-blue);box-shadow:0 0 20px rgba(52,152,219,.4)}
+.btn-sith{border-left:4px solid var(--sw-red);color:#ffc2c2;text-shadow:0 0 5px var(--sw-red)}
+.btn-sith:hover{border-color:var(--sw-red);box-shadow:0 0 20px rgba(231,76,60,.4)}
+.btn-rebel{border-left:4px solid var(--sw-green);color:#c4e6ff;text-shadow:0 0 5px var(--sw-green)}
+.btn-rebel:hover{border-color:var(--sw-green);box-shadow:0 0 20px rgba(46,204,113,.4)}
+.btn-gold{border-left:4px solid var(--sw-yellow);color:#fff6a7;text-shadow:0 0 5px var(--sw-yellow)}
+.btn-gold:hover{border-color:var(--sw-yellow);box-shadow:0 0 20px rgba(252,227,0,.4)}
+.btn-action{background:linear-gradient(180deg,rgba(252,227,0,.2) 0%,rgba(20,20,0,.9) 100%);border:1px solid var(--sw-yellow);color:var(--sw-yellow);animation:pulse-btn 2s infinite}
+@keyframes pulse-btn{0%{box-shadow:0 0 5px rgba(252,227,0,.2)}50%{box-shadow:0 0 20px rgba(252,227,0,.6)}100%{box-shadow:0 0 5px rgba(252,227,0,.2)}}
+
+/* --- Crawl --- */
+#crawl-container{position:absolute;inset:0;background:#000;z-index:70;display:flex;justify-content:center;overflow:hidden;perspective:500px;pointer-events:auto}
+#crawl-content{position:relative;width:85%;max-width:900px;color:var(--sw-yellow);font-size:clamp(1.2rem,3.5vw,2rem);font-weight:700;text-align:justify;letter-spacing:clamp(1px,.5vw,4px);line-height:1.6;transform-origin:50% 100%;animation:crawlAnim 50s linear forwards;text-shadow:0 0 8px rgba(252,227,0,.6)}
+.crawl-subtitle{text-align:center;font-size:2.5em;margin-bottom:30px;text-transform:uppercase}
+@keyframes crawlAnim{0%{transform:rotateX(25deg) translateY(100vh);opacity:1}85%{opacity:1}100%{transform:rotateX(25deg) translateY(-2500px);opacity:0}}
+
+/* --- UI Elements --- */
+.status-chip{background:rgba(0,0,0,.6);border:1px solid rgba(252,227,0,.2);border-radius:4px;padding:.2rem .6rem;font-size:.7rem;letter-spacing:.1em;color:#dfeaff;box-shadow:inset 0 0 10px rgba(255,255,255,.05)}
+.story-paragraph strong{color:var(--sw-yellow)}
+.story-key{color:var(--sw-yellow);font-weight:800;text-shadow:0 0 5px var(--sw-yellow)}
+
+/* --- Game Canvas --- */
+#game-canvas-container{position:absolute;inset:0;z-index:60;background:#000;transition:opacity .5s;pointer-events:auto}
+.crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border:2px solid rgba(255,255,255,.4);border-radius:50%;pointer-events:none;transition:.2s}
+.crosshair::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;background:white;border-radius:50%}
+.crosshair.aiming{border-color:red;box-shadow:0 0 15px red;transform:translate(-50%,-50%) scale(0.8)}
+.crosshair.aiming::after{background:red}
+.damage-overlay{position:absolute;inset:0;background:radial-gradient(circle,transparent 30%,rgba(255,0,0,.6) 100%);opacity:0;pointer-events:none;transition:opacity .1s;z-index:45}
+.flash-active{opacity:1}
+.screen-shake{animation:shake .2s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes shake{10%,90%{transform:translate3d(-2px,1px,0)}20%,80%{transform:translate3d(3px,-2px,0)}30%,50%,70%{transform:translate3d(-4px,3px,0)}40%,60%{transform:translate3d(4px,-1px,0)}}
+
+/* --- Virtual Controls --- */
+#virtual-controls{position:absolute;inset:0;pointer-events:none;z-index:75;display:flex;justify-content:space-between;align-items:flex-end;padding:8vw;padding-bottom:12vh}
+.joystick-base{width:130px;height:130px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.3);border-radius:50%;position:relative;pointer-events:auto;touch-action:none;backdrop-filter:blur(4px)}
+.joystick-stick{width:50px;height:50px;background:rgba(252,227,0,0.6);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px rgba(252,227,0,0.5)}
+.action-btn-group{display:flex;gap:20px;pointer-events:auto}
+.action-btn{width:85px;height:85px;border-radius:50%;background:rgba(200,30,30,0.5);border:2px solid rgba(255,50,50,0.7);color:white;font-weight:bold;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,0,0,0.3);touch-action:none;backdrop-filter:blur(4px);transition:transform 0.1s}
+.action-btn:active{background:rgba(200,30,30,0.8);transform:scale(0.9)}
+.interact-btn{background:rgba(30,150,200,0.5);border:2px solid rgba(50,200,255,0.7);box-shadow:0 0 15px rgba(0,150,255,0.3);display:none}
+.interact-btn.show{display:flex}
+@media (min-width: 768px) { #virtual-controls { padding: 50px; } .joystick-base{width:160px;height:160px;} .action-btn{width:100px;height:100px;} .joystick-stick{width:70px;height:70px;} }
+
+/* Utilities */
+.hidden{display:none!important}
+.opacity-0{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body class="flex flex-col h-screen w-screen relative">
-<div id="star-container"><div class="layer stars-sm"></div><div class="layer stars-md"></div></div>
-<div class="crt-overlay"></div>
 
+<!-- Backgrounds -->
+<div id="star-container"><div class="layer stars-sm"></div></div>
+<div class="crt-overlay"></div>
+<div class="scanline"></div>
+
+<!-- Start Overlay -->
+<div id="start-overlay" class="absolute inset-0 bg-[#050505] z-80 flex flex-col items-center justify-center backdrop-blur-md pointer-events-auto transition-opacity duration-700" style="z-index: 80;">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+    <h1 class="text-5xl md:text-8xl text-[#fce300] font-starwars mb-4 tracking-widest drop-shadow-[0_0_20px_rgba(252,227,0,0.6)] text-center relative z-10">STAR WARS</h1>
+    <p class="text-blue-400 mb-12 font-sans tracking-[0.4em] text-sm md:text-lg uppercase text-center relative z-10 font-bold drop-shadow-[0_0_8px_blue]">Ultimate Enhanced V4</p>
+    
+    <div class="bg-black/80 border border-blue-500/30 rounded-2xl p-8 min-w-[320px] md:min-w-[450px] shadow-[0_0_40px_rgba(0,0,0,0.8)] relative z-10 space-y-6">
+        <button id="btn-begin" class="sw-btn btn-gold w-full px-6 py-5 rounded-lg font-bold text-xl uppercase tracking-widest text-center shadow-[0_0_15px_rgba(252,227,0,0.3)]">NEW GAME</button>
+        <button id="btn-continue" class="sw-btn btn-jedi w-full px-6 py-5 rounded-lg font-bold text-xl uppercase tracking-widest text-center hidden">CONTINUE</button>
+    </div>
+    <div id="audio-warning" class="absolute bottom-8 text-gray-500 text-sm tracking-widest flex items-center gap-2"><i class="fas fa-headphones"></i> SOUND REQUIRED</div>
+</div>
+
+<!-- Opening Crawl -->
 <div id="crawl-container" class="hidden">
     <div id="crawl-content">
-        <div class="text-center mb-10 font-starwars text-xl">EPISODE IV</div>
-        <div class="crawl-subtitle font-starwars">A New Hope</div>
-        <p>内戦の時代である。反乱軍の宇宙船は秘密基地から奇襲をかけ、邪悪な銀河帝国に対し初めての勝利を収めた。</p><br>
+        <div class="text-center mb-8 font-starwars text-xl opacity-80">EPISODE IV</div>
+        <div class="crawl-subtitle font-starwars text-[#fce300]">A New Hope</div>
+        <p>内戦 of the Galaxyである。反乱軍の宇宙船は秘密基地から奇襲をかけ、邪悪な銀河帝国に対し初めての勝利を収めた。</p><br>
         <p>その戦闘中、反乱軍のスパイは帝国の究極兵器「デス・スター」の極秘設計図を盗み出すことに成功した。</p><br>
         <p>帝国に追われながらも、レイア姫は盗み出した設計図を携え、人々を救い、銀河に自由を取り戻すために進んでいた……。</p>
     </div>
-    <button id="skip-crawl-btn" type="button" class="absolute bottom-8 right-8 md:bottom-12 md:right-12 bg-black/60 border border-[#fce300]/50 text-[#fce300] hover:bg-[#fce300] hover:text-black z-[999] uppercase tracking-widest text-base md:text-lg font-starwars px-6 py-3 rounded shadow-[0_0_15px_rgba(252,227,0,0.3)] transition-all duration-300">Skip >></button>
+    <button id="skip-crawl-btn" class="absolute bottom-10 right-10 z-[999] bg-black/50 border border-gray-500 text-gray-300 hover:text-white hover:border-white px-6 py-3 rounded-lg font-starwars tracking-widest text-base transition-all">SKIP >></button>
 </div>
 
-<main id="app-container" class="flex-1 w-full max-w-6xl mx-auto my-0 md:my-4 flex flex-col game-panel md:rounded-2xl overflow-hidden relative transition-all duration-700 opacity-0 pointer-events-none">
-    <header class="flex-none bg-black/70 border-b border-[rgba(252,227,0,0.2)] p-3 md:p-4 relative overflow-hidden z-20 pointer-events-none">
-        <div class="flex justify-between items-center gap-3">
-            <div class="flex items-center space-x-3 z-10">
-                <i class="fab fa-galactic-republic text-[#fce300] text-2xl opacity-80"></i>
-                <h1 class="text-xl md:text-2xl text-[#fce300] font-starwars uppercase tracking-widest drop-shadow-[0_0_10px_rgba(252,227,0,0.6)]">STAR WARS</h1>
-            </div>
-            <div class="flex flex-wrap justify-end gap-2 md:gap-3 z-10">
-                <div class="status-chip">現在地: <span id="ui-location">Tantive IV</span></div>
-                <div class="status-chip">属性: <span id="ui-force-mode">Neutral</span></div>
-                <div class="status-chip">保存: <span id="ui-save-status">READY</span></div>
-            </div>
+<!-- Main UI -->
+<main id="app-container" class="flex-1 w-full max-w-5xl mx-auto flex flex-col game-panel md:my-auto md:max-h-[90vh] md:rounded-2xl shadow-2xl overflow-hidden relative transition-all duration-700 opacity-0 pointer-events-none" style="z-index: 10;">
+    <!-- Header -->
+    <header class="flex-none bg-black/80 border-b border-gray-800 p-4 md:p-5 z-20 pointer-events-none flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <i class="fab fa-galactic-republic text-[#fce300] text-3xl drop-shadow-[0_0_5px_#fce300]"></i>
+            <h1 class="text-xl md:text-2xl text-[#fce300] font-starwars tracking-widest drop-shadow-[0_0_8px_rgba(252,227,0,0.6)]">STAR WARS</h1>
         </div>
-        <div class="mt-3 flex items-center gap-3">
-            <span class="text-[10px] text-red-300 uppercase tracking-widest">Dark</span>
-            <div class="flex-1 h-3 bg-gray-900 rounded-full flex relative overflow-hidden border border-gray-700 shadow-inner">
-                <div class="w-1/2 bg-gradient-to-r from-red-900 to-red-500 h-full opacity-90"></div>
-                <div class="w-1/2 bg-gradient-to-l from-blue-900 to-blue-400 h-full opacity-90"></div>
-                <div id="alignment-marker" class="absolute top-0 w-[4px] h-full bg-white shadow-[0_0_8px_white] transition-all duration-700 ease-out" style="left:50%;transform:translateX(-50%)"></div>
-            </div>
-            <span class="text-[10px] text-blue-300 uppercase tracking-widest">Light</span>
+        <div class="flex gap-2">
+            <div class="status-chip py-1 px-3 text-sm">LOC: <span id="ui-location" class="font-bold text-white">Tantive IV</span></div>
         </div>
     </header>
 
-    <div class="flex-none h-32 md:h-52 bg-black relative border-b border-[rgba(255,255,255,0.05)] overflow-hidden flex items-center justify-center pointer-events-none">
-        <div id="scene-bg" class="absolute inset-0 transition-all duration-1500 opacity-40 bg-gradient-to-b from-gray-900/40 to-black"></div>
-        <div id="scene-icon" class="text-7xl md:text-9xl text-white z-10 transition-all duration-1000 transform scale-100 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]"></div>
-        <div class="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,1)] z-20"></div>
+    <!-- Scene Banner -->
+    <div class="flex-none h-32 md:h-48 bg-black relative border-b border-gray-800 overflow-hidden flex items-center justify-center pointer-events-none">
+        <div id="scene-bg" class="absolute inset-0 transition-all duration-1000 opacity-40 bg-gradient-to-b from-gray-900 to-black"></div>
+        <div id="scene-icon" class="text-6xl md:text-8xl text-white z-10 transition-all duration-700 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"></div>
+        <div class="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,1)] z-20"></div>
     </div>
 
-    <div id="story-scroll-area" class="flex-1 overflow-y-auto p-5 md:p-9 relative scroll-smooth bg-[rgba(0,0,0,0.2)] pointer-events-auto">
-        <div id="story-text" class="text-base md:text-lg text-gray-200 min-h-full flex flex-col justify-end space-y-5 md:space-y-7 pb-4 font-medium"></div>
+    <!-- Story Text -->
+    <div id="story-scroll-area" class="flex-1 overflow-y-auto p-5 md:p-8 relative scroll-smooth bg-black/40 pointer-events-auto">
+        <div id="story-text" class="text-sm md:text-base text-gray-200 min-h-full flex flex-col justify-end space-y-4 pb-4 leading-relaxed font-medium"></div>
     </div>
 
-    <div class="flex-none bg-black/85 border-t border-[rgba(252,227,0,0.2)] p-4 md:p-6 min-h-[120px] flex flex-col justify-center relative pointer-events-auto z-30">
-        <div id="choices-container" class="grid grid-cols-1 gap-4 w-full z-10 transition-all duration-500 pointer-events-auto"></div>
+    <!-- Choices / Actions -->
+    <div class="flex-none bg-black/90 border-t border-gray-800 p-4 md:p-6 min-h-[120px] flex flex-col justify-center relative pointer-events-auto z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.9)]">
+        <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-4xl mx-auto z-10 transition-all duration-300"></div>
     </div>
 </main>
 
-<div id="game-canvas-container" class="hidden">
+<!-- Mini Game Overlay -->
+<div id="game-canvas-container" class="hidden opacity-0">
     <div id="damage-overlay" class="damage-overlay"></div>
-    <div id="game-hud" class="absolute inset-0 z-50 flex flex-col">
-        <div class="p-3 md:p-4 flex justify-between items-start gap-2">
-            <div class="hud-card text-[#fce300] font-starwars text-lg md:text-2xl drop-shadow-md">
-                <div id="game-mission-title" class="text-xs text-white/80 font-sans tracking-widest mb-1">MISSION</div>
+    
+    <!-- Virtual Controls -->
+    <div id="virtual-controls" class="hidden">
+        <div id="joystick-zone" class="joystick-base">
+            <div id="joystick-stick" class="joystick-stick"></div>
+        </div>
+        <div class="action-btn-group">
+            <button id="btn-interact" class="action-btn interact-btn font-starwars tracking-widest text-sm">ACT</button>
+            <button id="btn-shoot" class="action-btn font-starwars tracking-widest">FIRE</button>
+        </div>
+    </div>
+
+    <!-- Target Lock HUD (New) -->
+    <div id="target-lock-hud" class="absolute inset-0 pointer-events-none hidden flex items-center justify-center z-40">
+        <div class="w-64 h-64 border-2 border-red-500 rounded-full animate-pulse flex items-center justify-center">
+             <div class="w-1/2 h-1/2 border border-red-400 rounded-full relative">
+                <div class="absolute top-0 left-1/2 w-1 h-2 bg-red-500 -translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-1/2 w-1 h-2 bg-red-500 -translate-x-1/2"></div>
+                <div class="absolute left-0 top-1/2 h-1 w-2 bg-red-500 -translate-y-1/2"></div>
+                <div class="absolute right-0 top-1/2 h-1 w-2 bg-red-500 -translate-y-1/2"></div>
+             </div>
+        </div>
+    </div>
+
+    <!-- Game HUD (In-Game) -->
+    <div id="game-hud" class="absolute inset-0 z-50 flex flex-col pointer-events-none hidden">
+        <div class="p-4 flex justify-between items-start">
+            <div class="bg-black/60 border border-[#fce300]/40 rounded px-4 py-2 text-[#fce300] font-starwars text-xl drop-shadow-md backdrop-blur">
                 SCORE: <span id="game-score">0</span> / <span id="game-target-score">10</span>
             </div>
-            <div class="hud-card flex flex-col items-end min-w-[170px] md:min-w-[230px]">
-                <span class="text-white text-xs font-bold mb-1 tracking-widest">SHIELDS</span>
-                <div class="w-full h-4 bg-gray-800 border border-gray-600 rounded overflow-hidden">
-                    <div id="game-health" class="h-full bg-blue-500 w-full transition-all duration-200"></div>
+            <div class="bg-black/60 border border-blue-500/40 rounded px-4 py-2 flex flex-col items-end min-w-[200px] backdrop-blur">
+                <span class="text-blue-300 text-xs font-bold mb-1 tracking-widest drop-shadow-[0_0_5px_blue]">SHIELDS</span>
+                <div class="w-full h-3 bg-gray-900 border border-gray-700 rounded overflow-hidden">
+                    <div id="game-health" class="h-full bg-gradient-to-r from-blue-600 to-blue-400 w-full transition-all duration-200 shadow-[0_0_8px_blue]"></div>
                 </div>
-                <div class="mt-2 text-xs text-gray-200">命中率 <span id="hud-accuracy">0%</span> / 撃破 <span id="hud-kills">0</span></div>
             </div>
         </div>
-        <div class="flex-1 relative">
+        <div class="flex-1 relative flex flex-col justify-end pb-8 items-center">
             <div id="fps-crosshair" class="crosshair hidden"></div>
-            <div id="combo-display" class="absolute top-[18%] left-1/2 -translate-x-1/2 combo-pop hidden">COMBO x1</div>
+            <div id="mission-message" class="text-[#fce300] font-starwars text-2xl tracking-widest drop-shadow-[0_0_10px_rgba(252,227,0,1)] bg-black/50 px-6 py-2 rounded-lg opacity-0 transition-opacity duration-500"></div>
         </div>
-        <div id="game-instructions" class="p-8 text-center text-white text-lg bg-gradient-to-t from-black to-transparent">TAP TO PLAY</div>
+    </div>
+
+    <!-- Game Start Confirmation Overlay -->
+    <div id="game-start-overlay" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md pointer-events-auto hidden">
+        <div class="bg-black/80 border border-[#fce300]/30 p-8 md:p-12 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col items-center max-w-lg w-[90%]">
+            <h2 id="game-start-title" class="text-4xl md:text-5xl text-[#fce300] font-starwars mb-6 tracking-widest drop-shadow-[0_0_15px_rgba(252,227,0,0.6)] text-center">MISSION</h2>
+            <p id="game-start-desc" class="text-white text-lg md:text-xl mb-10 font-bold tracking-widest text-center leading-relaxed"></p>
+            <button id="btn-start-mission" class="sw-btn btn-action w-full px-10 py-5 rounded-lg text-xl font-bold tracking-widest shadow-[0_0_20px_rgba(252,227,0,0.5)]">
+                挑戦する (START)
+            </button>
+        </div>
     </div>
 </div>
 
-<div id="result-overlay">
-    <div class="result-panel text-center">
-        <div class="font-starwars text-[#fce300] text-2xl md:text-3xl mb-2" id="result-title">MISSION CLEAR</div>
-        <div class="rank-letter" id="result-rank">A</div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 text-sm md:text-base my-5">
-            <div class="status-chip rounded-lg">命中率<br><b id="result-acc">0%</b></div>
-            <div class="status-chip rounded-lg">残りHP<br><b id="result-hp">100%</b></div>
-            <div class="status-chip rounded-lg">時間<br><b id="result-time">0.0s</b></div>
-            <div class="status-chip rounded-lg">最大コンボ<br><b id="result-combo">0</b></div>
-        </div>
-        <div id="result-bonus" class="text-gray-300 text-sm mb-5"></div>
-        <button id="result-next-btn" type="button" class="sw-btn btn-gold w-full py-4 rounded-lg font-bold tracking-widest">CONTINUE</button>
-    </div>
-</div>
-
-<div id="negotiation-overlay">
-    <div class="dialog-panel">
-        <div class="flex justify-between items-center mb-3 gap-3">
+<!-- Negotiation Overlay -->
+<div id="negotiation-overlay" class="absolute inset-0 z-[95] hidden items-center justify-center bg-black/80 backdrop-blur-md pointer-events-auto">
+    <div class="w-[95%] md:w-[80%] max-w-[700px] bg-gradient-to-b from-gray-900 to-black border border-gray-700 rounded-2xl p-6 md:p-10 shadow-[0_0_50px_rgba(0,0,0,1)] relative overflow-hidden my-auto">
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-20"></div>
+        <div class="flex justify-between items-end border-b border-gray-700 pb-3 mb-5 relative z-10">
             <div>
-                <div class="font-starwars text-[#fce300] text-2xl">CANTINA NEGOTIATION</div>
-                <div id="dialog-round" class="text-xs text-gray-400 tracking-widest">ROUND 1 / 3</div>
+                <div class="font-starwars text-[#fce300] text-2xl">NEGOTIATION</div>
+                <div id="dialog-speaker" class="text-blue-400 text-sm tracking-widest font-bold drop-shadow-[0_0_3px_blue]">HAN SOLO</div>
             </div>
-            <div class="text-right text-xs text-gray-400">信頼度</div>
+            <div class="text-right">
+                <div class="text-xs text-gray-400 tracking-widest mb-1">TRUST</div>
+                <div class="w-32 h-2 bg-gray-800 rounded-full overflow-hidden border border-gray-600">
+                    <div id="trust-fill" class="h-full bg-[#fce300] w-1/2 transition-all duration-300"></div>
+                </div>
+            </div>
         </div>
-        <div class="trustbar mb-5"><div id="trust-fill" class="trustfill"></div></div>
-        <div id="dialog-speaker" class="text-blue-300 text-sm font-bold mb-2">HAN SOLO</div>
-        <div id="dialog-text" class="text-white text-lg md:text-xl leading-relaxed mb-5"></div>
-        <div id="dialog-choices" class="space-y-3"></div>
+        <div id="dialog-text" class="text-gray-200 text-lg md:text-xl leading-relaxed italic mb-8 min-h-[80px] relative z-10"></div>
+        <div id="dialog-choices" class="space-y-3 relative z-10"></div>
     </div>
 </div>
 
-<div id="start-overlay">
-    <h1 class="text-6xl md:text-8xl text-[#fce300] font-starwars mb-2 tracking-[0.1em] drop-shadow-[0_0_20px_rgba(252,227,0,0.6)] text-center">STAR WARS</h1>
-    <p class="text-gray-400 mb-6 font-sans tracking-[0.3em] text-sm md:text-lg uppercase text-center">Enhanced 3D Adventure V2</p>
-    <div class="save-card space-y-3 text-center">
-        <button id="btn-begin" type="button" class="sw-btn btn-gold w-full px-8 py-4 rounded-lg font-bold text-lg uppercase tracking-widest">NEW GAME</button>
-        <button id="btn-continue" type="button" class="sw-btn btn-rebel w-full px-8 py-4 rounded-lg font-bold text-lg uppercase tracking-widest">CONTINUE</button>
-        <button id="btn-reset-save" type="button" class="w-full px-8 py-3 rounded-lg border border-red-500/40 text-red-300 hover:bg-red-500/10 font-bold tracking-widest">RESET SAVE</button>
-        <p id="save-summary" class="text-gray-400 text-sm">保存データを確認中...</p>
+<!-- Results Overlay -->
+<div id="result-overlay" class="absolute inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-lg pointer-events-auto">
+    <div class="text-center p-10 border border-gray-800 bg-gray-900/80 rounded-2xl shadow-2xl max-w-md w-[90%]">
+        <div id="result-title" class="font-starwars text-4xl md:text-5xl mb-6 drop-shadow-[0_0_15px_currentColor]">MISSION CLEAR</div>
+        <div id="result-desc" class="text-gray-300 mb-10 text-base md:text-lg leading-relaxed"></div>
+        <button id="result-next-btn" class="sw-btn btn-gold w-full py-5 rounded-lg font-bold tracking-widest text-xl shadow-[0_0_20px_rgba(252,227,0,0.3)]">CONTINUE >></button>
     </div>
 </div>
 
 <script>
 "use strict";
 
-const SAVE_KEY = "sw_interactive_ultimate_enhanced_v2";
-let state = {
-    alignment: 50,
-    currentScene: "prologue",
-    location: "Tantive IV",
-    minigameCallback: null,
-    minigameFailScene: "game_over_minigame",
-    completedMissions: {},
-    bestRanks: {},
-    bestScores: {},
-    lastSavedAt: null
-};
+const SAVE_KEY = "sw_interactive_v4";
+let state = { currentScene: "prologue", location: "Tantive IV" };
 
 const DOM = {
-    startOverlay: document.getElementById("start-overlay"),
-    btnBegin: document.getElementById("btn-begin"),
-    btnContinue: document.getElementById("btn-continue"),
-    btnResetSave: document.getElementById("btn-reset-save"),
-    saveSummary: document.getElementById("save-summary"),
-    crawlContainer: document.getElementById("crawl-container"),
-    skipCrawlBtn: document.getElementById("skip-crawl-btn"),
-    appContainer: document.getElementById("app-container"),
-    storyScrollArea: document.getElementById("story-scroll-area"),
-    storyText: document.getElementById("story-text"),
-    choicesContainer: document.getElementById("choices-container"),
-    alignmentMarker: document.getElementById("alignment-marker"),
-    sceneIcon: document.getElementById("scene-icon"),
-    sceneBg: document.getElementById("scene-bg"),
-    uiLocation: document.getElementById("ui-location"),
-    uiForceMode: document.getElementById("ui-force-mode"),
-    uiSaveStatus: document.getElementById("ui-save-status"),
-    body: document.body,
-    gameCanvasContainer: document.getElementById("game-canvas-container"),
-    gameScore: document.getElementById("game-score"),
-    gameTargetScore: document.getElementById("game-target-score"),
-    gameHealth: document.getElementById("game-health"),
-    gameMissionTitle: document.getElementById("game-mission-title"),
-    hudAccuracy: document.getElementById("hud-accuracy"),
-    hudKills: document.getElementById("hud-kills"),
-    fpsCrosshair: document.getElementById("fps-crosshair"),
-    comboDisplay: document.getElementById("combo-display"),
-    gameInstructions: document.getElementById("game-instructions"),
-    damageOverlay: document.getElementById("damage-overlay"),
-    resultOverlay: document.getElementById("result-overlay"),
-    resultTitle: document.getElementById("result-title"),
-    resultRank: document.getElementById("result-rank"),
-    resultAcc: document.getElementById("result-acc"),
-    resultHp: document.getElementById("result-hp"),
-    resultTime: document.getElementById("result-time"),
-    resultCombo: document.getElementById("result-combo"),
-    resultBonus: document.getElementById("result-bonus"),
-    resultNextBtn: document.getElementById("result-next-btn"),
-    negotiationOverlay: document.getElementById("negotiation-overlay"),
-    dialogRound: document.getElementById("dialog-round"),
-    trustFill: document.getElementById("trust-fill"),
-    dialogSpeaker: document.getElementById("dialog-speaker"),
-    dialogText: document.getElementById("dialog-text"),
-    dialogChoices: document.getElementById("dialog-choices")
+    startOverlay: document.getElementById("start-overlay"), btnBegin: document.getElementById("btn-begin"), btnContinue: document.getElementById("btn-continue"),
+    crawlContainer: document.getElementById("crawl-container"), crawlContent: document.getElementById("crawl-content"), skipCrawlBtn: document.getElementById("skip-crawl-btn"),
+    appContainer: document.getElementById("app-container"), storyText: document.getElementById("story-text"), storyScrollArea: document.getElementById("story-scroll-area"),
+    choicesContainer: document.getElementById("choices-container"), sceneIcon: document.getElementById("scene-icon"), sceneBg: document.getElementById("scene-bg"),
+    uiLocation: document.getElementById("ui-location"), gameCanvasContainer: document.getElementById("game-canvas-container"),
+    gameScore: document.getElementById("game-score"), gameTargetScore: document.getElementById("game-target-score"), gameHealth: document.getElementById("game-health"),
+    fpsCrosshair: document.getElementById("fps-crosshair"), damageOverlay: document.getElementById("damage-overlay"),
+    gameHud: document.getElementById("game-hud"), gameStartOverlay: document.getElementById("game-start-overlay"), gameStartTitle: document.getElementById("game-start-title"), gameStartDesc: document.getElementById("game-start-desc"), btnStartMission: document.getElementById("btn-start-mission"),
+    resultOverlay: document.getElementById("result-overlay"), resultTitle: document.getElementById("result-title"), resultDesc: document.getElementById("result-desc"), resultNextBtn: document.getElementById("result-next-btn"),
+    negotiationOverlay: document.getElementById("negotiation-overlay"), dialogSpeaker: document.getElementById("dialog-speaker"), trustFill: document.getElementById("trust-fill"), dialogText: document.getElementById("dialog-text"), dialogChoices: document.getElementById("dialog-choices"),
+    virtualControls: document.getElementById("virtual-controls"), joystickZone: document.getElementById("joystick-zone"), joystickStick: document.getElementById("joystick-stick"),
+    btnInteract: document.getElementById("btn-interact"), btnShoot: document.getElementById("btn-shoot"),
+    targetLockHud: document.getElementById("target-lock-hud"), missionMessage: document.getElementById("mission-message")
 };
+
+const input = { keys: { w:false, a:false, s:false, d:false, space:false }, joy: { active:false, x:0, y:0, ox:0, oy:0 }, initialized: false };
+let interactTarget = null;
+let currentMiniGameCompleted = false; // ループ防止フラグ
+let missionPhase = 0; // ミッション進行管理
+
+window.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+    if(k==='w'||k==='arrowup') input.keys.w = true;
+    if(k==='a'||k==='arrowleft') input.keys.a = true;
+    if(k==='s'||k==='arrowdown') input.keys.s = true;
+    if(k==='d'||k==='arrowright') input.keys.d = true;
+    if(k===' ') { input.keys.space = true; if(gameActive && (gameMode.startsWith('fps') || gameMode.startsWith('tps'))) playerShoot(); }
+});
+window.addEventListener('keyup', e => {
+    const k = e.key.toLowerCase();
+    if(k==='w'||k==='arrowup') input.keys.w = false;
+    if(k==='a'||k==='arrowleft') input.keys.a = false;
+    if(k==='s'||k==='arrowdown') input.keys.s = false;
+    if(k==='d'||k==='arrowright') input.keys.d = false;
+    if(k===' ') input.keys.space = false;
+});
+window.addEventListener('keyup', e => {
+    const k = e.key.toLowerCase();
+    if(k==='w'||k==='arrowup') input.keys.w = false;
+    if(k==='a'||k==='arrowleft') input.keys.a = false;
+    if(k==='s'||k==='arrowdown') input.keys.s = false;
+    if(k==='d'||k==='arrowright') input.keys.d = false;
+});
+
+function initJoystick() {
+    if(input.initialized) return;
+    input.initialized = true;
+    const zone = DOM.joystickZone, stick = DOM.joystickStick;
+    const handleMove = (cx, cy) => {
+        const maxR = zone.offsetWidth/2 - stick.offsetWidth/2;
+        const dx = cx - input.joy.ox, dy = cy - input.joy.oy;
+        const dist = Math.min(Math.hypot(dx, dy), maxR);
+        const ang = Math.atan2(dy, dx);
+        const nx = Math.cos(ang)*dist, ny = Math.sin(ang)*dist;
+        stick.style.transform = `translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`;
+        input.joy.x = nx / maxR; input.joy.y = ny / maxR;
+    };
+    zone.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; const r = zone.getBoundingClientRect(); input.joy.active=true; input.joy.ox = r.left+r.width/2; input.joy.oy = r.top+r.height/2; handleMove(t.clientX, t.clientY); }, {passive:false});
+    zone.addEventListener('touchmove', e => { e.preventDefault(); if(input.joy.active) handleMove(e.touches[0].clientX, e.touches[0].clientY); }, {passive:false});
+    zone.addEventListener('touchend', e => { e.preventDefault(); input.joy.active=false; input.joy.x=0; input.joy.y=0; stick.style.transform='translate(-50%,-50%)'; }, {passive:false});
+    zone.addEventListener('mousedown', e => { const r = zone.getBoundingClientRect(); input.joy.active=true; input.joy.ox = r.left+r.width/2; input.joy.oy = r.top+r.height/2; handleMove(e.clientX, e.clientY); });
+    document.addEventListener('mousemove', e => { if(input.joy.active) handleMove(e.clientX, e.clientY); });
+    document.addEventListener('mouseup', () => { input.joy.active=false; input.joy.x=0; input.joy.y=0; stick.style.transform='translate(-50%,-50%)'; });
+
+    bindSafeButton(DOM.btnShoot, () => { if(gameActive && (gameMode.startsWith('fps') || gameMode.startsWith('tps'))) playerShoot(); });
+    bindSafeButton(DOM.btnInteract, () => { if(gameActive && gameMode.startsWith('explore') && interactTarget) finishMinigame(true); });
+}
+
+function getMoveVec() {
+    let vx=0, vy=0;
+    if(input.keys.a) vx-=1; if(input.keys.d) vx+=1;
+    if(input.keys.w) vy-=1; if(input.keys.s) vy+=1;
+    if(input.joy.active) { vx = input.joy.x; vy = input.joy.y; }
+    const len = Math.hypot(vx,vy);
+    if(len>1) { vx/=len; vy/=len; }
+    return {x:vx, y:vy};
+}
 
 function bindSafeButton(btn, handler) {
-    if (!btn) return;
-    btn.type = "button";
-    btn.style.pointerEvents = "auto";
+    if(!btn) return;
     let locked = false;
     const run = async (e) => {
-        if (e) { e.preventDefault(); e.stopPropagation(); }
-        if (locked) return;
+        if(e) { e.preventDefault(); e.stopPropagation(); }
+        if(locked) return;
         locked = true;
-        try { await handler(e); } catch (err) { console.error("Button error:", err); }
-        setTimeout(() => locked = false, 220);
+        try { await handler(e); } catch(err) { console.error(err); }
+        setTimeout(() => locked = false, 300);
     };
-    btn.addEventListener("pointerup", run, { passive: false });
-    btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); if (!window.PointerEvent) run(e); }, { passive: false });
-    btn.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") run(e); });
+    btn.onclick = run;
+    btn.ontouchend = run;
 }
 
-function getForceProfile() {
-    const a = state.alignment;
-    if (a >= 70) return { id:"light", name:"Light Side", color:"#60a5fa", maxHealth:125, damageMult:1.0, scoreMult:1.05, note:"ライトサイド: HPが増え、味方の支援を受けやすい" };
-    if (a <= 30) return { id:"dark", name:"Dark Side", color:"#ef4444", maxHealth:85, damageMult:1.45, scoreMult:1.0, note:"ダークサイド: 攻撃力は高いが、シールドが低い" };
-    return { id:"neutral", name:"Neutral", color:"#fce300", maxHealth:105, damageMult:1.12, scoreMult:1.12, note:"中立: スコア補正と安定性のバランス型" };
-}
-
-function saveGame() {
-    try {
-        state.lastSavedAt = new Date().toISOString();
-        localStorage.setItem(SAVE_KEY, JSON.stringify({ ...state, minigameCallback: null }));
-        DOM.uiSaveStatus.textContent = "SAVED";
-        setTimeout(() => DOM.uiSaveStatus.textContent = "READY", 1200);
-        updateStartSaveUI();
-    } catch (e) {
-        console.warn("Save failed", e);
-        DOM.uiSaveStatus.textContent = "FAILED";
-    }
-}
-
-function loadGame() {
-    try {
-        const raw = localStorage.getItem(SAVE_KEY);
-        if (!raw) return false;
-        const loaded = JSON.parse(raw);
-        state = { ...state, ...loaded, minigameCallback: null };
-        return true;
-    } catch (e) {
-        console.warn("Load failed", e);
-        return false;
-    }
-}
-
-function resetSave() {
-    localStorage.removeItem(SAVE_KEY);
-    state = {
-        alignment: 50,
-        currentScene: "prologue",
-        location: "Tantive IV",
-        minigameCallback: null,
-        minigameFailScene: "game_over_minigame",
-        completedMissions: {},
-        bestRanks: {},
-        bestScores: {},
-        lastSavedAt: null
-    };
-    updateStartSaveUI();
-}
-
-function updateStartSaveUI() {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) {
-        DOM.btnContinue.style.display = "none";
-        DOM.saveSummary.textContent = "保存データなし。NEW GAMEから開始。";
-        return;
-    }
-    try {
-        const s = JSON.parse(raw);
-        DOM.btnContinue.style.display = "block";
-        const loc = s.location || "不明";
-        const sceneName = s.currentScene || "prologue";
-        const rankCount = Object.keys(s.bestRanks || {}).length;
-        DOM.saveSummary.textContent = `続きあり：${loc} / Scene: ${sceneName} / 評価記録 ${rankCount}件`;
-    } catch {
-        DOM.btnContinue.style.display = "none";
-        DOM.saveSummary.textContent = "保存データが壊れています。RESET推奨。";
-    }
-}
+function saveGame() { try{ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e){} }
+function loadGame() { try{ const raw = localStorage.getItem(SAVE_KEY); if(raw) state = {...state, ...JSON.parse(raw)}; } catch(e){} }
+function hasSave() { return !!localStorage.getItem(SAVE_KEY); }
 
 function setLayerMode(mode) {
-    DOM.resultOverlay.style.display = "none";
-    DOM.negotiationOverlay.style.display = "none";
-    if (mode === "start") {
-        DOM.startOverlay.classList.remove("hidden", "opacity-0");
-        DOM.startOverlay.style.pointerEvents = "auto";
-        DOM.crawlContainer.classList.add("hidden");
-        DOM.crawlContainer.style.pointerEvents = "none";
-        DOM.appContainer.classList.add("opacity-0", "pointer-events-none");
-        DOM.appContainer.classList.remove("opacity-100", "pointer-events-auto");
-        DOM.gameCanvasContainer.classList.add("hidden");
-        DOM.gameCanvasContainer.style.display = "none";
-        DOM.gameCanvasContainer.style.pointerEvents = "none";
-    }
-    if (mode === "crawl") {
-        DOM.startOverlay.style.pointerEvents = "none";
-        DOM.crawlContainer.classList.remove("hidden", "opacity-0");
-        DOM.crawlContainer.style.pointerEvents = "auto";
-        DOM.appContainer.classList.add("opacity-0", "pointer-events-none");
-        DOM.appContainer.classList.remove("opacity-100", "pointer-events-auto");
-        DOM.gameCanvasContainer.classList.add("hidden");
-        DOM.gameCanvasContainer.style.display = "none";
-    }
-    if (mode === "app") {
-        DOM.startOverlay.classList.add("hidden");
-        DOM.startOverlay.style.pointerEvents = "none";
-        DOM.crawlContainer.classList.add("hidden");
-        DOM.crawlContainer.style.pointerEvents = "none";
-        DOM.gameCanvasContainer.classList.add("hidden");
-        DOM.gameCanvasContainer.style.opacity = "0";
-        DOM.gameCanvasContainer.style.display = "none";
-        DOM.gameCanvasContainer.style.pointerEvents = "none";
-        DOM.appContainer.classList.remove("opacity-0", "pointer-events-none");
-        DOM.appContainer.classList.add("opacity-100", "pointer-events-auto");
-    }
-    if (mode === "game") {
-        DOM.startOverlay.classList.add("hidden");
-        DOM.startOverlay.style.pointerEvents = "none";
-        DOM.crawlContainer.classList.add("hidden");
-        DOM.crawlContainer.style.pointerEvents = "none";
-        DOM.appContainer.classList.add("opacity-0", "pointer-events-none");
-        DOM.appContainer.classList.remove("opacity-100", "pointer-events-auto");
-        DOM.gameCanvasContainer.classList.remove("hidden");
-        DOM.gameCanvasContainer.style.display = "block";
-        DOM.gameCanvasContainer.style.pointerEvents = "auto";
-        setTimeout(() => DOM.gameCanvasContainer.style.opacity = "1", 30);
-    }
+    [DOM.startOverlay, DOM.crawlContainer, DOM.appContainer, DOM.gameCanvasContainer, DOM.negotiationOverlay, DOM.resultOverlay].forEach(el => {
+        if(el) { el.classList.add('hidden', 'opacity-0'); el.style.pointerEvents = 'none'; }
+    });
+
+    const show = (el) => { 
+        el.classList.remove('hidden'); 
+        requestAnimationFrame(()=> {
+            el.classList.remove('opacity-0');
+            el.style.pointerEvents = 'auto';
+        }); 
+    };
+
+    if(mode === "start") show(DOM.startOverlay);
+    else if(mode === "crawl") show(DOM.crawlContainer);
+    else if(mode === "app") show(DOM.appContainer);
+    else if(mode === "game") show(DOM.gameCanvasContainer);
+    else if(mode === "negotiation") { show(DOM.appContainer); show(DOM.negotiationOverlay); }
+    else if(mode === "result") show(DOM.resultOverlay);
 }
 
+// ==========================================
+// 2. AUDIO SYSTEM (Tone.js)
+// ==========================================
 let audioCtxReady = false;
 const sfx = {};
-async function initAudio() {
-    if (audioCtxReady || typeof Tone === "undefined") return;
-    await Tone.start(); audioCtxReady = true;
-    sfx.click = new Tone.MembraneSynth({ pitchDecay:.01, octaves:2, oscillator:{type:"square"}, envelope:{attack:.001,decay:.1,sustain:0,release:.01} }).toDestination();
-    sfx.saber = new Tone.Synth({ oscillator:{type:"sawtooth"}, envelope:{attack:.05,decay:.25,sustain:0,release:.1} }).toDestination();
-    sfx.blaster = new Tone.MembraneSynth({ pitchDecay:.05, octaves:8, oscillator:{type:"square"}, envelope:{attack:.001,decay:.16,sustain:0,release:.08} }).toDestination();
-    sfx.enemyBlaster = new Tone.MembraneSynth({ pitchDecay:.1, octaves:4, oscillator:{type:"triangle"}, envelope:{attack:.01,decay:.2,sustain:0,release:.1} }).toDestination();
-    sfx.r2d2 = new Tone.Synth({ oscillator:{type:"sine"}, envelope:{attack:.01,decay:.1,sustain:.45,release:.1} }).toDestination();
-    sfx.vader = new Tone.NoiseSynth({ noise:{type:'pink'}, envelope:{attack:.8,decay:.4,sustain:1,release:1} }).toDestination();
-    sfx.explosion = new Tone.NoiseSynth({ noise:{type:'brown'}, envelope:{attack:.01,decay:.75,sustain:0,release:.1} }).toDestination();
-    sfx.click.volume.value=-20; sfx.blaster.volume.value=-15; sfx.enemyBlaster.volume.value=-20; sfx.explosion.volume.value=-10;
-}
-async function safeInitAudio(){try{await initAudio()}catch(e){console.warn("Audio failed",e)}}
-function playSound(type){ if(!audioCtxReady) return; try{ switch(type){case"click":sfx.click?.triggerAttackRelease("C3","32n");break;case"saber":sfx.saber?.triggerAttackRelease("C2","8n");break;case"blaster":sfx.blaster?.triggerAttackRelease("C4","16n");break;case"enemyBlaster":sfx.enemyBlaster?.triggerAttackRelease("G3","16n");break;case"explosion":sfx.explosion?.triggerAttackRelease("4n");break;case"vader":sfx.vader?.triggerAttackRelease("2n");break;case"r2d2":for(let i=0;i<3;i++)setTimeout(()=>sfx.r2d2?.triggerAttackRelease(["C6","E6","G6"][Math.floor(Math.random()*3)],"32n"),i*90);break;case"hyperspace":new Tone.NoiseSynth({noise:{type:"brown"},envelope:{attack:.01,decay:.7,sustain:0,release:.1}}).toDestination().triggerAttackRelease("1n");break;} }catch(e){} }
+let bgmSynth, bgmLoop;
 
+async function initAudio() {
+    if (audioCtxReady) return;
+    try {
+        await Tone.start();
+        audioCtxReady = true;
+
+        sfx.click = new Tone.Synth({ oscillator:{type:"sine"}, envelope:{attack:.01,decay:.1,sustain:0,release:.01} }).toDestination();
+        sfx.click.volume.value = -15;
+
+        sfx.saber = new Tone.MembraneSynth({ pitchDecay: 0.1, octaves: 4, oscillator:{type:"sawtooth"}, envelope:{attack:0.1, decay:0.4, sustain:0, release:0.5} }).toDestination();
+        sfx.saber.volume.value = -5;
+        
+        const dist = new Tone.Distortion(0.4).toDestination();
+        sfx.blaster = new Tone.Synth({ oscillator:{type:"sawtooth"}, envelope:{attack:0.01, decay:0.1, sustain:0, release:0.1} }).connect(dist);
+        sfx.blaster.volume.value = -10;
+
+        sfx.enemyBlaster = new Tone.Synth({ oscillator:{type:"square"}, envelope:{attack:0.01, decay:0.15, sustain:0, release:0.1} }).toDestination();
+        sfx.enemyBlaster.volume.value = -12;
+
+        sfx.explosion = new Tone.NoiseSynth({ noise:{type:'brown'}, envelope:{attack:.01,decay:.6,sustain:0,release:.2} }).toDestination();
+        sfx.explosion.volume.value = -5;
+
+        sfx.alarm = new Tone.Synth({ oscillator:{type:"square"}, envelope:{attack:0, decay:0.5, sustain:0, release:0.1} }).toDestination();
+        sfx.alarm.volume.value = -15;
+
+        bgmSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+        bgmSynth.volume.value = -20;
+        bgmLoop = new Tone.Loop(time => {
+            bgmSynth.triggerAttackRelease("C2", "8n", time);
+        }, "2n");
+    } catch(e) { console.warn("Audio init failed", e); }
+}
+
+function playSound(type) {
+    if(!audioCtxReady) return;
+    try {
+        if(Tone.context.state !== 'running') Tone.context.resume();
+        if(type === 'click') sfx.click.triggerAttackRelease("C5", "32n");
+        if(type === 'saber') sfx.saber.triggerAttackRelease("C2", "8n");
+        if(type === 'blaster') { sfx.blaster.frequency.setValueAtTime(800, Tone.now()); sfx.blaster.frequency.exponentialRampToValueAtTime(100, Tone.now()+0.1); sfx.blaster.triggerAttackRelease("C4", "16n"); }
+        if(type === 'enemyBlaster') { sfx.enemyBlaster.frequency.setValueAtTime(600, Tone.now()); sfx.enemyBlaster.frequency.exponentialRampToValueAtTime(200, Tone.now()+0.15); sfx.enemyBlaster.triggerAttackRelease("G3", "16n"); }
+        if(type === 'explosion') sfx.explosion.triggerAttackRelease("4n");
+        if(type === 'alarm') { sfx.alarm.frequency.setValueAtTime(800, Tone.now()); sfx.alarm.frequency.linearRampToValueAtTime(400, Tone.now()+0.5); sfx.alarm.triggerAttackRelease("C4", "8n"); }
+    } catch(e) {}
+}
+
+function startBGM(bpm) {
+    if(!audioCtxReady || !bgmLoop) return;
+    Tone.Transport.bpm.value = bpm;
+    Tone.Transport.start();
+    bgmLoop.start(0);
+}
+function stopBGM() {
+    if(!audioCtxReady) return;
+    if(bgmLoop) bgmLoop.stop();
+    Tone.Transport.stop();
+}
+
+// ==========================================
+// 3. STORY DATA
+// ==========================================
 const storyNodes = {
-    prologue:{location:"Tantive IV",bg:'from-gray-700/50 to-black',icon:'fa-space-shuttle text-gray-400',alignTone:'rebel',text:"反乱軍の外交船タンティヴィIVが、巨大なスター・デストロイヤーに拿捕された。<br>船内の白い通路に、ストームトルーパーたちが雪崩れ込んでくる！<br><span class='story-key'>銃撃戦ミッション</span>でR2-D2の脱出を守れ。",minigame:'fps_defense',targetScore:15,fail:'game_over_minigame',next:'tutorial'},
-    tutorial:{location:"System",bg:'from-blue-900/40 to-black',icon:'fa-info-circle text-blue-400',alignTone:'light',text:"【チュートリアル】<br><br>この強化版では、場面ごとに違うミニゲームが入る。<br><br>・砂漠探索：ポインターや指の位置へ移動<br>・交渉：正しい会話を選ぶ<br>・潜入：見つからずに出口へ進む<br>・戦闘：照準を合わせて撃つ<br><br>さらに、<span class='story-key'>セーブ機能・属性分岐・ステージ評価</span>が追加された。",next:'droids_desert_intro'},
-    droids_desert_intro:{location:"Tatooine Desert",bg:'from-yellow-700/40 to-black',icon:'fa-sun text-yellow-500',alignTone:'light',text:"R2-D2とC-3POは脱出ポッドで砂漠の惑星タトゥイーンへ。<br>しかし広大な砂漠では、すぐに見失ってしまう。<br><span class='story-key'>砂漠探索ミッション</span>：青い通信ビーコンを集めてR2-D2の位置を探せ。",onEnter:()=>playSound('r2d2'),minigame:'desert_search',targetScore:5,fail:'droids_desert_intro',next:'luke_farm'},
-    luke_farm:{location:"Lars Homestead",bg:'from-orange-800/40 to-black',icon:'fa-home text-orange-400',alignTone:'light',text:"ビーコンの信号を追い、R2-D2を発見した。<br>整備中、美しい女性のホログラム映像が再生される。翌朝、R2-D2は「オビ＝ワン」を探すために単独で逃げ出した。",choices:[{text:"スピーダーに乗ってR2-D2を捜索する",action:'find_r2',style:'btn-jedi',align:+5},{text:"厄介ごとを嫌い、農場の仕事に戻る",action:'bad_end_farm',style:'text-gray-500',align:-10}]},
-    bad_end_farm:{location:"Lars Homestead",bg:'from-red-900/50 to-black',icon:'fa-skull text-gray-500',alignTone:'dark',text:"農場に残ることを選んだルーク。しかし帝国軍の追跡により、希望は途切れてしまった。<br><br><span class='text-red-500 font-bold'>【BAD END: 失われた希望】</span>",onEnter:()=>playSound('vader'),choices:[{text:"RETRY",action:'luke_farm',style:'btn-rebel'}]},
-    game_over_minigame:{location:"Mission Failed",bg:'from-red-900/70 to-black',icon:'fa-heart-crack text-red-500',alignTone:'dark',text:"シールドが尽き、作戦は失敗した。<br>だが希望はまだ消えていない。もう一度挑戦しよう。<br><br><span class='text-red-500 font-bold'>【MISSION FAILED】</span>",choices:[{text:"RETRY FROM CURRENT MISSION",action:'prologue',style:'btn-rebel'}]},
-    find_r2:{location:"Jundland Wastes",bg:'from-blue-900/30 to-black',icon:'fa-jedi text-blue-400',alignTone:'light',text:"荒野でR2-D2を見つけたルークは、オビ＝ワン・ケノービと出会う。<br>彼は父のライトセーバーを渡し、ルークに道を示す。",onEnter:()=>playSound('saber'),choices:[{text:"復讐心を燃やし、帝国を倒すため同行する",action:'mos_eisley',style:'btn-sith',align:-5},{text:"悲しみを胸に秘め、ジェダイになる決意をする",action:'mos_eisley',style:'btn-jedi',align:+10}]},
-    mos_eisley:{location:"Mos Eisley Cantina",bg:'from-yellow-700/30 to-black',icon:'fa-beer-mug-empty text-orange-400',alignTone:'rebel',text:"モス・アイズリーの酒場で、密輸業者ハン・ソロとチューバッカに出会う。<br>ここでは銃よりも会話が大事だ。<br><span class='story-key'>交渉ミッション</span>：ハンの信頼を得て、ファルコン号に乗せてもらえ。",minigame:'negotiation',targetScore:3,fail:'start_spaceport_battle',next:'escape_stealth'},
-    escape_stealth:{location:"Mos Eisley Hangar",bg:'from-blue-900/40 to-black',icon:'fa-eye-slash text-blue-300',alignTone:'light',text:"交渉は成功。ハンは少し笑って言った。『いいだろう。だが急げ、帝国が来る』<br>一行はファルコン号へ向かい、宇宙へ飛び出した。",onEnter:()=>{DOM.body.classList.add('hyperspace-active');playSound('hyperspace');setTimeout(()=>DOM.body.classList.remove('hyperspace-active'),2500)},next:'arrive_death_star'},
-    start_spaceport_battle:{location:"Mos Eisley Hangar",bg:'from-red-800/50 to-black',icon:'fa-crosshairs text-red-400',alignTone:'rebel',text:"交渉に手間取り、トルーパーに発見された！<br>ハン・ソロと共に強行突破するしかない。",minigame:'fps_defense',targetScore:15,fail:'mos_eisley',next:'arrive_death_star'},
-    arrive_death_star:{location:"Death Star",bg:'from-gray-900/80 to-black',icon:'fa-moon text-gray-500',alignTone:'dark',text:"オルデラン座標に到着したが、星はすでに破壊されていた。<br>さらにファルコン号はデス・スターの格納庫へ引きずり込まれる。<br>今度は撃ち合いではなく、見つからずに進む必要がある。",onEnter:()=>playSound('vader'),choices:[{text:"レイア姫を救うため、潜入ルートを進む",action:'death_star_stealth',style:'btn-rebel',align:+10},{text:"危険すぎる。船のロック解除だけを狙う",action:'coward_route',style:'text-gray-500',align:-20}]},
-    coward_route:{location:"Death Star",bg:'from-gray-800/80 to-black',icon:'fa-lock text-gray-500',alignTone:'dark',text:"レイア姫を見捨てた一行。しかしベイダーに感知され、格納庫で包囲されてしまう。<br><br><span class='text-red-500 font-bold'>【BAD END: 絶望の要塞】</span>",choices:[{text:"RETRY",action:'arrive_death_star',style:'btn-rebel'}]},
-    death_star_stealth:{location:"Death Star Corridors",bg:'from-slate-900/80 to-black',icon:'fa-user-secret text-gray-300',alignTone:'rebel',text:"監房区画へ向かう白い通路。<br>巡回するトルーパーの視界に入らないように進め。<br><span class='story-key'>潜入ミッション</span>：赤い視界を避け、出口まで到達せよ。",minigame:'stealth',targetScore:1,fail:'death_star_stealth',next:'cell_block'},
-    cell_block:{location:"Detention Block",bg:'from-red-900/30 to-black',icon:'fa-door-closed text-gray-300',alignTone:'rebel',text:"潜入成功。監房ブロックに入り、レイア姫の独房を開けることに成功した。<br>しかし異変に気付いたトルーパーが押し寄せる！一行は急いで格納庫へ向かう。",onEnter:()=>playSound('blaster'),next:'vader_duel'},
-    vader_duel:{location:"Death Star Hangar",bg:'from-red-900/60 to-black',icon:'fa-mask text-red-600',alignTone:'dark',text:"格納庫の目前。オビ＝ワンとダース・ベイダーがライトセーバーで決闘していた。<br>ルークの怒りをよそに、追撃のTIEファイターが迫る。",onEnter:()=>playSound('saber'),choices:[{text:"ファルコン号の銃座に乗り込み、敵機を迎撃する",action:'yavin_base',style:'btn-rebel'}]},
-    yavin_base:{location:"Yavin Base",bg:'from-green-900/30 to-black',icon:'fa-map-location-dot text-green-500',alignTone:'rebel',text:"ヤヴィンの反乱軍基地へ到着。設計図の分析により、デス・スターの弱点『熱排気口』が判明した。<br>ルークはXウィングに乗り込み、決死の攻撃隊に参加する。",next:'trench_run_start'},
-    trench_run_start:{location:"Death Star Trench",bg:'from-red-900/40 to-black',icon:'fa-rocket text-orange-400',alignTone:'rebel',text:"最後の作戦が始まる。<br>トレンチの中を突き進み、TIEファイターを撃墜しながら目標距離まで到達せよ。<br><span class='story-key'>本格3Dシューティング</span>：移動・射撃・回避で生き残れ。",minigame:'tps_flight',targetScore:2000,fail:'trench_run_start',next:'trench_run_climax'},
-    trench_run_climax:{location:"Death Star Trench",bg:'from-red-900/60 to-black',icon:'fa-fighter-jet text-red-500',alignTone:'dark',text:"背後からベイダーの専用機が迫る。<br>絶体絶命のその時、オビ＝ワンの声が響いた。<br><br>『ルーク、フォースを使え。直感を信じるのだ……』",onEnter:()=>playSound('vader'),choices:[{text:"照準コンピューターを切り、フォースに身を委ねる",action:'victory',style:'btn-jedi',align:+30},{text:"機械を信じ、照準器に頼ったまま引き金を引く",action:'fail_run',style:'btn-sith',align:-20}]},
-    fail_run:{location:"Death Star Trench",bg:'from-red-900/80 to-black',icon:'fa-explosion text-orange-500',alignTone:'dark',text:"魚雷は排気口を外れた。次の瞬間、ベイダーの砲撃が機体を捉える。<br><br><span class='text-red-500 font-bold'>【GAME OVER: 帝国の支配】</span>",choices:[{text:"RETRY",action:'trench_run_climax',style:'btn-rebel'}]},
-    victory:{location:"Yavin Ceremony",bg:'from-yellow-600/30 to-black',icon:'fa-trophy text-yellow-500',alignTone:'light',text:()=>{const f=getForceProfile(); if(f.id==='dark')return"ルークは強い怒りを力に変え、排気口へ魚雷を撃ち込んだ。デス・スターは破壊されたが、心には暗い火が残っている。<br><br><span class='text-[#fce300] font-starwars text-4xl md:text-5xl mt-8 mb-2 block text-center'>DARK HERO END</span>"; if(f.id==='neutral')return"ハンの援護、仲間との判断、そしてフォース。すべての力が重なり、魚雷は排気口へ吸い込まれた。<br><br><span class='text-[#fce300] font-starwars text-4xl md:text-5xl mt-8 mb-2 block text-center'>FREE PILOT END</span>"; return"ルークはフォースの導きに従い、魚雷を排気口へ撃ち込んだ。デス・スターは大爆発を起こし、銀河に新たなる希望が生まれた。<br><br><span class='text-[#fce300] font-starwars text-4xl md:text-5xl mt-8 mb-2 block text-center'>MAY THE FORCE<br>BE WITH YOU.</span>"},onEnter:()=>playSound('hyperspace'),choices:[{text:"RESTART SYSTEM",action:'prologue',style:'btn-gold'}]}
+    prologue: {
+        location: "Tantive IV", bg: 'from-gray-800 to-black', icon: 'fa-space-shuttle text-gray-300',
+        text: "反乱軍の外交船タンティヴィIVが、巨大なスター・デストロイヤーのトラクタービームに捕らえられた。<br><br>通路の隔壁が爆破され、白い装装のストームトルーパーたちが雪崩れ込んでくる！<br><span class='story-key'>レイア姫がR2-D2に「デス・スター」の設計図を託す時間を稼ぐため、防衛線を死守せよ。</span>",
+        choices: [{ text: "ブラスターを構え、防衛戦を開始する", action: 'PLAY_fps_defense', targetScore: 15, next: 'r2_escape', fail: 'prologue', style: 'btn-action' }]
+    },
+    r2_escape: {
+        location: "Escape Pod", bg: 'from-gray-900 to-black', icon: 'fa-rocket text-gray-400',
+        text: "「助けてオビ＝ワン・ケノービ、あなただけが頼りです」<br><br>レイア姫はR2-D2にデス・スターの設計図とメッセージを託した。R2はC-3POと共に脱出ポッドに乗り込み、眼下の砂漠の惑星タトゥイーンへと射出された。<br><br>帝国軍の砲手は「生命反応がない」としてポッドへの砲撃を中止する。これが銀河の運命を変えることとなる。",
+        choices: [{ text: "タトゥイーンへ降下する", action: 'jawa_capture', style: 'btn-rebel' }]
+    },
+    jawa_capture: {
+        location: "Tatooine Desert", bg: 'from-yellow-900/80 to-orange-900/50', icon: 'fa-sun text-yellow-500',
+        text: "灼熱の砂漠をさまよう2体のドロイドは、廃品回収業者のジャワ族に捕らえられてしまった。<br><br>巨大なサンドクローラーで運ばれた先は、水分農夫のラーズ家。そこで若きルーク・スカイウォーカーと叔父のオーウェンによって購入される。",
+        choices: [{ text: "ルークの作業場へ", action: 'r2_runaway', style: 'btn-jedi' }]
+    },
+    r2_runaway: {
+        location: "Lars Homestead", bg: 'from-orange-800/60 to-black', icon: 'fa-house text-orange-400',
+        text: "ルークがR2-D2の整備中、偶然レイア姫のホログラム・メッセージの一部が再生される。「オビ＝ワン」という名前にルークは老隠遁者ベン・ケノービを思い出す。<br><br>夜になり、使命を帯びたR2は単独で砂漠へ逃げ出してしまった。翌朝、R2を追って砂漠の奥深くに入ったルークとC-3POは、凶暴なタスケン・レイダーの襲撃を受ける。",
+        choices: [{ text: "襲撃を切り抜ける", action: 'meet_obiwan', style: 'btn-sith' }]
+    },
+    meet_obiwan: {
+        location: "Jundland Wastes", bg: 'from-orange-900/60 to-black', icon: 'fa-user-ninja text-gray-400',
+        text: "クレイト・ドラゴンの鳴き真似でタスケンを追い払ったのは、フードを被ったベン・ケノービだった。<br>「オビ＝ワン・ケノービ。それは私が生まれる前からの名前だ」<br><br>彼はルークの父アナキンのライトセーバーを託し、フォースの道を説く。そしてR2のメッセージを再生し、オルデランへの同行をルークに求める。",
+        choices: [{ text: "モス・アイズリー宇宙港へ向かう", action: 'cantina', style: 'btn-rebel' }]
+    },
+    cantina: {
+        location: "Mos Eisley", bg: 'from-yellow-900/60 to-black', icon: 'fa-beer-mug-empty text-yellow-500',
+        text: "「宇宙港モス・アイズリー。これほど悪党が密集している場所は他にない」<br><br>ストームトルーパーの検問をオビ＝ワンの「マインド・トリック」で切り抜け、酒場（カンティーナ）に到着した。密輸業者のハン・ソロを探し出し、船のチャーターを交渉しよう。",
+        choices: [{ text: "酒場に入り、ハン・ソロを探す", action: 'PLAY_explore_cantina', targetScore: 1, next: 'cantina_nego', fail: 'cantina', style: 'btn-action' }]
+    },
+    cantina_nego: {
+        location: "Mos Eisley Cantina", bg: 'from-yellow-900/60 to-black', icon: 'fa-user-astronaut text-gray-400',
+        text: "酒場の奥でウーキー族のチューバッカ、そしてハン・ソロと出会った。<br><br>「俺はハン・ソロ。ミレニアム・ファルコンの船長だ」<br>オルデランまでの船のチャーターを持ちかける。一筋縄ではいかない彼らとの交渉を成功させねばならない。",
+        choices: [{ text: "ハン・ソロと交渉を開始する", action: 'PLAY_negotiation', next: 'falcon_escape', fail: 'cantina_nego', style: 'btn-action' }]
+    },
+    falcon_escape: {
+        location: "Mos Eisley Spaceport", bg: 'from-gray-800 to-black', icon: 'fa-plane-departure text-gray-400',
+        text: "交渉は成立したが、ハンがジャバ・ザ・ハットの賞金稼ぎグリードを始末した直後、帝国軍のストームトルーパーがドロイドの捜索に駆けつけてきた！<br><br>銃撃戦の中、一行は「銀河系最速のガラクタ」ミレニアム・ファルコン号に乗り込み、強引に離陸する。追撃してくるスター・デストロイヤーを振り切り、ハイパースペースへジャンプせよ！",
+        choices: [{ text: "ハイパースペース・ジャンプ", action: 'alderaan_destroyed', style: 'btn-jedi' }]
+    },
+    alderaan_destroyed: {
+        location: "Alderaan System", bg: 'from-blue-900/50 to-black', icon: 'fa-meteor text-blue-300',
+        text: "オルデランの座標に到着したが、そこにあるはずの惑星は完全に消滅し、無数の岩石が漂う小惑星帯と化していた。グランド・モフ・ターキンによって、レイア姫の目の前でデス・スターのスーパーレーザーの標的にされたのだ。<br><br>そしてファルコン号は、近くに潜んでいた帝国軍のTIEファイターを追ううちに、巨大な宇宙ステーションの強力なトラクタービームに捕らえられてしまう。",
+        choices: [{ text: "密輸用の隠し区画に身を潜める", action: 'ds_infiltration', style: 'btn-rebel' }]
+    },
+    ds_infiltration: {
+        location: "Death Star", bg: 'from-gray-900 to-black', icon: 'fa-shield-halved text-gray-500',
+        text: "格納庫（ドッキング・ベイ327）に引き込まれた一行は、船内を捜索しに来たストームトルーパーを倒し、その装甲服を奪って変装した。<br><br>オビ＝ワンは単独でトラクタービームの電源ユニットへ向かう。見回りの帝国兵の視界を避け、ターミナルに到達しシステムを無効化せよ。",
+        choices: [{ text: "オビ＝ワン：ターミナルへ潜入する (ステルス)", action: 'PLAY_explore_deathstar', targetScore: 1, next: 'rescue_leia', fail: 'ds_infiltration', style: 'btn-jedi' }]
+    },
+    rescue_leia: {
+        location: "Detention Block AA-23", bg: 'from-gray-800 to-black', icon: 'fa-unlock-keyhole text-gray-400',
+        text: "R2-D2のデータ検索により、レイア姫がこのステーションで処刑を待っていることが判明。ルークとハンはチューバッカを捕虜に見せかけて監房ブロックAA-23に潜入する。<br><br>看守を奇襲しレイアを救出したのも束の間、騒ぎに気づいた増援部隊が押し寄せてきた。退路を断たれた一行は、レイアの機転でダストシュートへと飛び込む！",
+        choices: [{ text: "追手を迎え撃ち、ダストシュートへ飛び込む", action: 'PLAY_fps_defense', targetScore: 20, next: 'trash_compactor', fail: 'rescue_leia', style: 'btn-action' }]
+    },
+    trash_compactor: {
+        location: "Trash Compactor 3263827", bg: 'from-green-900/80 to-black', icon: 'fa-dumpster text-green-600',
+        text: "ダストシュートの先はゴミ圧縮機の中だった。水中に潜むダイアノーガ（触手生物）にルークが引きずり込まれかける。さらに最悪なことに、壁が動き出し彼らを押し潰そうと迫りくる！<br><br>「R2、通信機を切れ！圧縮機を止めるんだ！！」<br>間一髪でR2-D2がシステムをハッキングし、一行は難を逃れた。",
+        choices: [{ text: "ファルコン号へ急ぐ", action: 'obiwan_sacrifice', style: 'btn-rebel' }]
+    },
+    obiwan_sacrifice: {
+        location: "Death Star Hangar", bg: 'from-gray-900 to-black', icon: 'fa-jedi text-blue-400',
+        text: "トラクタービームを停止させたオビ＝ワンは、ファルコン号へ戻る途中でかつての弟子、ダース・ベイダーと対峙する。<br><br>ルークたちの脱出の隙を作るため、オビ＝ワンは自らライトセーバーを止め、ベイダーの刃を受けてフォースと一体となった。「ベン！」と叫ぶルークをよそに、一行はファルコン号でデス・スターを強行脱出する。",
+        choices: [{ text: "迫り来るTIEファイターを砲座で迎撃する", action: 'PLAY_fps_turret', targetScore: 15, next: 'yavin_briefing', fail: 'obiwan_sacrifice', style: 'btn-action' }]
+    },
+    yavin_briefing: {
+        location: "Yavin 4 Base", bg: 'from-green-900/40 to-black', icon: 'fa-map-location-dot text-green-400',
+        text: "一行は反乱軍の秘密基地があるヤヴィン第4衛星に到着。しかし、ファルコン号に仕掛けられた追跡装置により、デス・スターはヤヴィンの位置を突き止め接近していた。<br><br>R2-D2のデータから、デス・スターの唯一の弱点が、反応炉に直結する幅わずか2メートルの「熱排気口」であることが判明する。ルークはXウィング（レッド5）に搭乗し、反乱同盟軍の決死の反攻作戦に参加する。",
+        choices: [{ text: "Xウィングに搭乗し、デス・スターへ出撃", action: 'PLAY_tps_flight', targetScore: 3000, next: 'trench_run', fail: 'yavin_briefing', style: 'btn-action' }]
+    },
+    trench_run: {
+        location: "Death Star Trench", bg: 'from-gray-900 to-black', icon: 'fa-fighter-jet text-gray-500',
+        text: "表面の防衛線を突破した反乱軍は、赤道上のトレンチ（溝）への爆撃行（トレンチ・ラン）を開始する。しかし後方から、ダース・ベイダー自らが操縦するTIEアドバンストx1が迫り、僚機を次々と撃墜していく。<br><br>いよいよルークの番だ。『ルーク、フォースを使え。己を信じるのだ』オビ＝ワンの声を聞いたルークは、照準コンピューターを切った。背後にはベイダーが迫る。極限の集中で排気口を狙え！",
+        choices: [{ text: "トレンチ・ランを完遂し、プロトン魚雷を発射する", action: 'PLAY_tps_trench', targetScore: 1, next: 'ending', fail: 'trench_run', style: 'btn-action' }]
+    },
+    ending: {
+        location: "Victory Celebration", bg: 'from-yellow-800/40 to-black', icon: 'fa-medal text-yellow-400',
+        text: "間一髪で現れたハン・ソロのファルコン号がベイダーの機体を弾き飛ばした。ルークがフォースの導きで放ったプロトン魚雷は、見事に排気口へと吸い込まれていく。<br><br>大爆発と共にデス・スターは宇宙の塵となり、ヤヴィン基地に歓声が響き渡った。大講堂での表彰式で、ルークとハンはレイア姫から勇気を称えるメダルを授与される。銀河に新たなる希望が生まれたのだ。<br><br><span class='text-blue-400 font-starwars text-4xl block text-center mt-6'>MAY THE FORCE<br>BE WITH YOU.</span>",
+        choices: [{ text: "MAIN MENU", action: 'prologue', style: 'btn-gold' }]
+    }
 };
 
-function updateHUD() {
-    const f = getForceProfile();
-    DOM.alignmentMarker.style.left = `${Math.max(0, Math.min(100, state.alignment))}%`;
-    DOM.uiLocation.textContent = state.location || "Unknown";
-    DOM.uiForceMode.textContent = f.name;
-    DOM.uiForceMode.style.color = f.color;
+let isAnimating = false;
+
+async function renderScene(sceneId) {
+    if(isAnimating) return;
+    const data = storyNodes[sceneId];
+    if(!data) return;
+
+    state.currentScene = sceneId;
+    state.location = data.location;
+    saveGame();
+    missionPhase = 0; // Reset mission phase
+
+    setLayerMode("app");
+    
+    if(sceneId === 'prologue') DOM.storyText.innerHTML = '';
+    DOM.choicesContainer.innerHTML = '';
+    DOM.uiLocation.textContent = state.location;
+    
+    DOM.sceneBg.className = `absolute inset-0 transition-all duration-1000 opacity-50 bg-gradient-to-b ${data.bg}`;
+    DOM.sceneIcon.className = `text-6xl md:text-8xl text-white z-10 transition-all duration-700 opacity-0 transform scale-50 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.5)] fas ${data.icon}`;
+    
+    requestAnimationFrame(() => {
+        DOM.sceneIcon.classList.remove('opacity-0', 'scale-50');
+    });
+
+    if(data.onEnter) data.onEnter();
+
+    isAnimating = true;
+    const p = document.createElement('div');
+    p.className = `story-paragraph relative pl-4 py-3 border-l-4 border-[#fce300] opacity-0 transform translate-y-4 transition-all duration-700 bg-black/50 rounded-r mb-4 shadow-md`;
+    p.innerHTML = data.text;
+    DOM.storyText.appendChild(p);
+    
+    setTimeout(() => {
+        p.classList.remove('opacity-0','translate-y-4');
+        DOM.storyScrollArea.scrollTo({top: DOM.storyScrollArea.scrollHeight, behavior: 'smooth'});
+    }, 50);
+
+    setTimeout(() => {
+        isAnimating = false;
+        data.choices.forEach((choice, idx) => {
+            const btn = document.createElement('button');
+            btn.className = `sw-btn w-full p-4 rounded text-sm md:text-base font-bold tracking-widest uppercase opacity-0 transform translate-y-4 transition-all duration-500 ${choice.style}`;
+            btn.innerHTML = choice.text;
+            
+            bindSafeButton(btn, () => {
+                if(isAnimating) return;
+                playSound('click');
+                handleAction(choice);
+            });
+            
+            DOM.choicesContainer.appendChild(btn);
+            setTimeout(() => btn.classList.remove('opacity-0','translate-y-4'), 100 * (idx + 1));
+        });
+    }, 1000);
 }
 
-let isAnimating = false;
-function showStoryText(sceneData) {
-    return new Promise((resolve) => {
-        isAnimating = true;
-        const p = document.createElement('div');
-        let bc = 'border-gray-500';
-        if(sceneData.alignTone==='light') bc='border-blue-400';
-        if(sceneData.alignTone==='dark') bc='border-red-500';
-        if(sceneData.alignTone==='rebel') bc='border-[#fce300]';
-        const text = typeof sceneData.text === "function" ? sceneData.text() : sceneData.text;
-        p.className = `story-paragraph relative pl-5 py-2 border-l-2 opacity-0 transform translate-y-6 transition-all duration-[700ms] ${bc} mb-4`;
-        p.innerHTML = text;
-        DOM.storyText.appendChild(p);
-        requestAnimationFrame(()=>setTimeout(()=>{
-            p.classList.remove('opacity-0','translate-y-6');
-            DOM.storyScrollArea.scrollTo({top:DOM.storyScrollArea.scrollHeight,behavior:'smooth'});
-            setTimeout(()=>{isAnimating=false;resolve()},760);
-        },40));
-        setTimeout(()=>{isAnimating=false;resolve()},1900);
+function handleAction(choice) {
+    if(choice.action.startsWith('PLAY_')) {
+        const mode = choice.action.replace('PLAY_', '');
+        if(mode === 'negotiation') {
+            startNegotiation(choice.next, choice.fail);
+        } else {
+            startMinigame(mode, choice.targetScore, choice.next, choice.fail);
+        }
+    } else {
+        renderScene(choice.action);
+    }
+}
+
+// ==========================================
+// 4. NEGOTIATION SYSTEM
+// ==========================================
+const negoQ = [
+    { text: '「俺はハン・ソロ。ミレニアム・ファルコンの船長だ。お前さんたち、オルデランに行きたいそうだな？」', choices: [['帝国に知られずに頼む。速い船が必要だ', 20], ['いくら出せばいい？', -10], ['帝国軍が追っている。急いでくれ', -20]] },
+    { text: '「俺の船は早いぜ。ケッセル・ランを12パーセクで飛んだんだ。で、金はいくら出せる？」', choices: [['前金で2千、着いたら1万5千だ。それでどうだ？', 30], ['1万だ、全て前金で払う', -10], ['金はない。フォースの導きだ', -30]] },
+    { text: '「1万7千！これで自分の船が買えるぜ。よし、乗せてやろう。トラブルはご免だぜ？」', choices: [['帝国軍の巡洋艦（クルーザー）から逃げる必要がある', -10], ['荷物（ドロイド）と一緒に静かに旅したいだけだ', 20], ['任せておけ、ジェダイの騎士がついている', 10]] }
+];
+let nRound = 0, trust = 50, nSuccess = null, nFail = null;
+
+function startNegotiation(nextScn, failScn) {
+    nSuccess = nextScn; nFail = failScn;
+    nRound = 0; trust = 50;
+    setLayerMode('negotiation');
+    startBGM(80);
+    renderNegoRound();
+}
+
+function renderNegoRound() {
+    if(nRound >= negoQ.length) {
+        stopBGM();
+        const success = trust >= 60;
+        showResult(success ? 'NEGOTIATION SUCCESS' : 'NEGOTIATION FAILED', success ? 'ハン・ソロが仲間になった！' : '交渉決裂...', success, () => renderScene(success ? nSuccess : nFail));
+        return;
+    }
+    const q = negoQ[nRound];
+    DOM.trustFill.style.width = `${Math.max(0, Math.min(100, trust))}%`;
+    DOM.trustFill.style.background = trust < 40 ? "red" : trust < 70 ? "#fce300" : "#2ecc71";
+    
+    DOM.dialogText.innerHTML = '';
+    DOM.dialogChoices.innerHTML = '';
+    
+    let txt = q.text, i = 0;
+    function type() {
+        if(i < txt.length) { DOM.dialogText.innerHTML += txt.charAt(i); i++; setTimeout(type, 30); }
+        else {
+            q.choices.forEach(([lbl, val], idx) => {
+                const b = document.createElement('button');
+                b.className = 'w-full text-left p-3 border border-gray-600 rounded bg-gray-800/50 hover:bg-gray-700 text-white font-bold opacity-0 transition-all';
+                b.textContent = lbl;
+                bindSafeButton(b, () => {
+                    playSound('click'); trust += val; nRound++;
+                    if(trust < 40) startBGM(120);
+                    renderNegoRound();
+                });
+                DOM.dialogChoices.appendChild(b);
+                setTimeout(()=>b.classList.remove('opacity-0'), 100*idx);
+            });
+        }
+    }
+    type();
+}
+
+// ==========================================
+// 5. THREE.JS MINIGAMES
+// ==========================================
+let scene, camera, renderer;
+let gameActive = false, gameMode = null, animId = null;
+let score = 0, maxScore = 0, health = 100, maxHealth = 100;
+let entities = [], particles = [], envBlocks = [];
+let mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
+let playerObj = null, lastShoot = 0;
+let minigameNext = null, minigameFail = null;
+let trenchTimer = 0; // トレンチラン用タイマー
+let showMessageTimer = null;
+
+function showMissionMessage(text, duration = 3000) {
+    if(showMessageTimer) clearTimeout(showMessageTimer);
+    DOM.missionMessage.innerHTML = text;
+    DOM.missionMessage.classList.remove('opacity-0');
+    showMessageTimer = setTimeout(() => {
+        DOM.missionMessage.classList.add('opacity-0');
+    }, duration);
+}
+
+function init3D() {
+    if(renderer) return;
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
+    
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true}); 
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+    DOM.gameCanvasContainer.insertBefore(renderer.domElement, DOM.gameCanvasContainer.firstChild);
+
+    initJoystick();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const updateMouse = (e) => {
+        if(e.target.closest('#virtual-controls')) return;
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    DOM.gameCanvasContainer.addEventListener('pointermove', e => {
+        if(!gameActive) return;
+        if(e.target.closest('#virtual-controls')) return;
+        updateMouse(e);
+    });
+    DOM.gameCanvasContainer.addEventListener('pointerdown', e => {
+        if(!gameActive) return;
+        if(e.target.closest('#virtual-controls')) return;
+        if(e.cancelable) e.preventDefault();
+        updateMouse(e);
     });
 }
 
-function renderChoices(choices,nextSceneId){
-    DOM.choicesContainer.innerHTML='';
-    if(nextSceneId){
-        DOM.choicesContainer.className="flex justify-center w-full z-10 pointer-events-auto";
-        const btn=document.createElement('button');
-        btn.className="sw-btn btn-gold w-full max-w-md py-4 rounded-lg text-sm md:text-base font-bold tracking-widest uppercase flex flex-col items-center opacity-0 transform translate-y-4 transition-all duration-500";
-        btn.innerHTML=`<span>TAP TO CONTINUE <span class="text-xs text-gray-400 normal-case ml-2">(次へ)</span></span><i class="fas fa-chevron-down animate-bounce mt-2"></i>`;
-        bindSafeButton(btn,()=>{if(isAnimating)return;playSound('click');renderScene(nextSceneId)});
-        DOM.choicesContainer.appendChild(btn); setTimeout(()=>btn.classList.remove('opacity-0','translate-y-4'),250); return;
+function clear3D() {
+    gameActive = false;
+    currentMiniGameCompleted = false;
+    if(animId) { cancelAnimationFrame(animId); animId = null; }
+    
+    entities.forEach(e => { if(e.mesh) { scene.remove(e.mesh); if(e.mesh.geometry) e.mesh.geometry.dispose(); }});
+    particles.forEach(p => { if(p.mesh) { scene.remove(p.mesh); if(p.mesh.geometry) p.mesh.geometry.dispose(); }});
+    envBlocks.forEach(b => { scene.remove(b); if(b.geometry) b.geometry.dispose(); });
+    
+    entities = []; particles = []; envBlocks = []; playerObj = null;
+    
+    const toRemove = [];
+    scene.children.forEach(c => { if(c.type !== 'AmbientLight' && c.type !== 'DirectionalLight') toRemove.push(c); });
+    toRemove.forEach(c => scene.remove(c));
+}
+
+function updateHUD() {
+    DOM.gameScore.textContent = score;
+    DOM.gameHealth.style.width = Math.max(0, (health/maxHealth)*100) + "%";
+    DOM.gameHealth.className = health < 30 ? "h-full bg-gradient-to-r from-red-600 to-red-400 w-full transition-all" : "h-full bg-gradient-to-r from-blue-600 to-blue-400 w-full transition-all";
+}
+
+function takeDamage(amt) {
+    if(!gameActive || currentMiniGameCompleted) return;
+    health -= amt; updateHUD();
+    DOM.damageOverlay.classList.add('flash-active');
+    DOM.gameCanvasContainer.classList.remove('screen-shake');
+    void DOM.gameCanvasContainer.offsetWidth;
+    DOM.gameCanvasContainer.classList.add('screen-shake');
+    setTimeout(() => DOM.damageOverlay.classList.remove('flash-active'), 100);
+    if(health <= 0) finishMinigame(false);
+}
+
+const laserGeo = new THREE.CylinderGeometry(0.1, 0.1, 2, 8);
+laserGeo.rotateX(Math.PI/2);
+const matRedLaser = new THREE.MeshBasicMaterial({color: 0xff3333, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.9}); 
+const matGreenLaser = new THREE.MeshBasicMaterial({color: 0x33ff33, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.9});
+
+function createLaser(pos, dir, isPlayer, isProtonTorpedo = false) {
+    if(!isProtonTorpedo) playSound(isPlayer ? 'blaster' : 'enemyBlaster');
+    else playSound('explosion'); // 代替音
+    
+    const mesh = new THREE.Group();
+    if (isProtonTorpedo) {
+        const core = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({color: 0x00ffff}));
+        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 8), new THREE.MeshBasicMaterial({color: 0x0088ff, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.8}));
+        mesh.add(core, glow);
+    } else {
+        const core = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2, 4), new THREE.MeshBasicMaterial({color: 0xffffff}));
+        core.rotateX(Math.PI/2);
+        const glow = new THREE.Mesh(laserGeo, isPlayer ? matRedLaser : matGreenLaser);
+        glow.scale.set(1.5, 1.5, 1.2);
+        mesh.add(core, glow);
     }
-    if(choices?.length){
-        DOM.choicesContainer.className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto w-full z-10 pointer-events-auto";
-        choices.forEach((choice,idx)=>{
-            const btn=document.createElement('button');
-            const custom=(choice.style||'text-gray-300').replace('sw-btn','').trim();
-            btn.className=`sw-btn w-full p-4 md:p-5 rounded-lg text-sm md:text-base font-bold tracking-widest uppercase flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-500 ${custom}`;
-            btn.innerHTML=choice.text;
-            bindSafeButton(btn,()=>{if(isAnimating)return;playSound('click');if(choice.align)state.alignment+=choice.align;renderScene(choice.action)});
-            DOM.choicesContainer.appendChild(btn); setTimeout(()=>btn.classList.remove('opacity-0','translate-y-4'),130*(idx+1));
+    
+    mesh.position.copy(pos);
+    const nd = dir.clone().normalize();
+    if(!isProtonTorpedo) mesh.lookAt(pos.clone().add(nd));
+    scene.add(mesh);
+    
+    const speed = isProtonTorpedo ? 1.5 : (isPlayer ? 4 : 2); // 弾速調整
+    entities.push({type: isProtonTorpedo ? 'torpedo' : 'laser', mesh, dir: nd, speed: speed, isPlayer, life: 100});
+}
+
+function checkCollision(pos, radius) {
+    for(const b of envBlocks) {
+        if(!b.isWall) continue;
+        const box = new THREE.Box3().setFromObject(b);
+        const closestX = Math.max(box.min.x, Math.min(pos.x, box.max.x));
+        const closestZ = Math.max(box.min.z, Math.min(pos.z, box.max.z));
+        const dist = Math.hypot(pos.x - closestX, pos.z - closestZ);
+        if(dist < radius) {
+            const pushDir = new THREE.Vector3(pos.x - closestX, 0, pos.z - closestZ).normalize();
+            if(pushDir.lengthSq() === 0) pushDir.set(1,0,0);
+            pos.x = closestX + pushDir.x * radius;
+            pos.z = closestZ + pushDir.z * radius;
+        }
+    }
+}
+
+function createExplosion(pos) {
+    playSound('explosion');
+    const count = 30;
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const vels = [];
+    for(let i=0; i<count; i++) {
+        positions[i*3] = pos.x; positions[i*3+1] = pos.y; positions[i*3+2] = pos.z;
+        vels.push(new THREE.Vector3((Math.random()-.5)*2, (Math.random()-.5)*2, (Math.random()-.5)*2).normalize().multiplyScalar(0.5));
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const mat = new THREE.PointsMaterial({size: 1.5, color: new THREE.Color(1, 0.5, 0.1), blending: THREE.AdditiveBlending, transparent: true});
+    const pts = new THREE.Points(geo, mat);
+    scene.add(pts);
+    particles.push({mesh: pts, vels, life: 1});
+}
+
+// リアルなTIEファイター (原作準拠の形状に近づける)
+function buildTieFighter(isAdvanced = false) {
+    const group = new THREE.Group();
+    const matDark = new THREE.MeshStandardMaterial({color: 0x333333, roughness: 0.7, metalness: 0.2}); // わずかに青みがかったグレー
+    const matCockpit = new THREE.MeshStandardMaterial({color: 0x111111, roughness: 0.2, metalness: 0.8});
+    const matPanel = new THREE.MeshStandardMaterial({color: 0x050505, roughness: 0.9, metalness: 0.1}); // ソーラーパネルの黒
+    const matEdge = new THREE.MeshStandardMaterial({color: 0x444444});
+    
+    // コックピット球体
+    const cockpit = new THREE.Mesh(new THREE.SphereGeometry(1.0, 16, 16), matDark);
+    const window = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.2, 8), matCockpit);
+    window.rotation.x = Math.PI/2; window.position.z = 0.95;
+    cockpit.add(window);
+
+    // アーム
+    const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.5, 8), matDark); armL.rotation.z = Math.PI/2; armL.position.x = -1.2;
+    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 1.5, 8), matDark); armR.rotation.z = Math.PI/2; armR.position.x = 1.2;
+    
+    if (isAdvanced) {
+        // ダース・ベイダーのTIEアドバンストx1 (折れ曲がった翼と延長された後部)
+        const rearBody = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.2, 2.5), matDark);
+        rearBody.position.set(0, 0, -1.0);
+        
+        // 折れ曲がった翼 (上半分と下半分を組み合わせる)
+        const buildWing = () => {
+            const wGroup = new THREE.Group();
+            const panelGeo = new THREE.BoxGeometry(0.1, 3, 4);
+            const edgeGeo = new THREE.BoxGeometry(0.2, 3.2, 4.2);
+            
+            const topPanel = new THREE.Mesh(panelGeo, matPanel);
+            const topEdge = new THREE.Mesh(edgeGeo, matEdge);
+            topPanel.position.set(0, 1.3, 0); topEdge.position.set(0, 1.3, 0);
+            topPanel.rotation.z = -Math.PI/6; topEdge.rotation.z = -Math.PI/6;
+            
+            const botPanel = new THREE.Mesh(panelGeo, matPanel);
+            const botEdge = new THREE.Mesh(edgeGeo, matEdge);
+            botPanel.position.set(0, -1.3, 0); botEdge.position.set(0, -1.3, 0);
+            botPanel.rotation.z = Math.PI/6; botEdge.rotation.z = Math.PI/6;
+
+            wGroup.add(topEdge, topPanel, botEdge, botPanel);
+            return wGroup;
+        };
+
+        const wL = buildWing(); wL.position.x = -2.5;
+        const wR = buildWing(); wR.position.x = 2.5;
+        // 反転
+        wR.children[0].rotation.z = Math.PI/6; wR.children[1].rotation.z = Math.PI/6;
+        wR.children[2].rotation.z = -Math.PI/6; wR.children[3].rotation.z = -Math.PI/6;
+
+        group.add(cockpit, rearBody, armL, armR, wL, wR);
+    } else {
+        // 通常のTIEファイター (六角形の翼)
+        const buildWing = () => {
+            const wGroup = new THREE.Group();
+            // 六角形を作るためのシリンダー
+            const panelGeo = new THREE.CylinderGeometry(2.5, 2.5, 0.1, 6);
+            panelGeo.rotateX(Math.PI/2); panelGeo.rotateZ(Math.PI/2);
+            const edgeGeo = new THREE.CylinderGeometry(2.6, 2.6, 0.15, 6);
+            edgeGeo.rotateX(Math.PI/2); edgeGeo.rotateZ(Math.PI/2);
+
+            const panel = new THREE.Mesh(panelGeo, matPanel);
+            const edge = new THREE.Mesh(edgeGeo, matEdge);
+            
+            // 縦の骨組み
+            const strut1 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 0.2), matEdge);
+            const strut2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 0.2), matEdge); strut2.rotation.x = Math.PI/3;
+            const strut3 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 0.2), matEdge); strut3.rotation.x = -Math.PI/3;
+
+            wGroup.add(edge, panel, strut1, strut2, strut3);
+            return wGroup;
+        };
+
+        const wL = buildWing(); wL.position.x = -2.0;
+        const wR = buildWing(); wR.position.x = 2.0;
+        group.add(cockpit, armL, armR, wL, wR);
+    }
+
+    return group;
+}
+
+// リアルなXウィング
+function buildXWing() {
+    const group = new THREE.Group();
+    const matBody = new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.6});
+    const matRed = new THREE.MeshStandardMaterial({color: 0xaa2222, roughness: 0.7});
+    const matEngine = new THREE.MeshStandardMaterial({color: 0x444444});
+    const matGlow = new THREE.MeshBasicMaterial({color: new THREE.Color(1, 0.4, 0.8), blending: THREE.AdditiveBlending});
+
+    // 機首
+    const nose = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.6, 6, 8), matBody);
+    nose.rotation.x = Math.PI/2; nose.position.z = -2;
+    // コックピット
+    const cockpit = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 2), new THREE.MeshStandardMaterial({color: 0x222222}));
+    cockpit.position.set(0, 0.6, 0.5);
+    // アストロメク・ドロイド (R2)
+    const r2 = new THREE.Mesh(new THREE.SphereGeometry(0.25), new THREE.MeshStandardMaterial({color: 0x2244aa}));
+    r2.position.set(0, 0.8, 1.5);
+    // 胴体後部
+    const bodyRear = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.0, 3), matBody);
+    bodyRear.position.set(0, 0, 2);
+
+    group.add(nose, cockpit, r2, bodyRear);
+
+    // 翼とエンジン (X字に展開)
+    const wingLength = 4;
+    const angle = Math.PI/10; // Xの開き具合
+
+    const buildWing = (isRight, isTop) => {
+        const wGroup = new THREE.Group();
+        // 翼本体
+        const wing = new THREE.Mesh(new THREE.BoxGeometry(wingLength, 0.1, 1.5), matBody);
+        wing.position.set(wingLength/2, 0, 0);
+        // 赤いライン
+        if(isTop) {
+            const stripe = new THREE.Mesh(new THREE.BoxGeometry(1, 0.12, 0.8), matRed);
+            stripe.position.set(wingLength/2, 0, 0);
+            wGroup.add(stripe);
+        }
+        // レーザーキャノン (翼の先端)
+        const cannon = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 3, 8), matBody);
+        cannon.rotation.x = Math.PI/2; cannon.position.set(wingLength, 0, -1);
+        // エンジン
+        const engine = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 2, 8), matEngine);
+        engine.rotation.x = Math.PI/2; engine.position.set(0.5, 0, 0.5);
+        // エンジンの光
+        const glow = new THREE.Mesh(new THREE.SphereGeometry(0.35), matGlow);
+        glow.position.set(0.5, 0, 1.5);
+
+        wGroup.add(wing, cannon, engine, glow);
+        
+        // 配置と回転
+        const pivotX = isRight ? 0.6 : -0.6;
+        wGroup.position.set(pivotX, 0, 2);
+        if(!isRight) wGroup.rotation.z = Math.PI; // 左側は反転
+        
+        // X字に開く
+        wGroup.rotation.x = isTop ? angle : -angle;
+
+        return wGroup;
+    };
+
+    group.add(buildWing(true, true), buildWing(true, false), buildWing(false, true), buildWing(false, false));
+    return group;
+}
+
+// ストームトルーパー
+function buildStormtrooper() {
+    const g = new THREE.Group();
+    const matArmor = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 0.3});
+    const matBlack = new THREE.MeshStandardMaterial({color: 0x111111});
+    
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.2, 8), matArmor);
+    body.position.y = 0.6;
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), matArmor);
+    head.position.y = 1.4;
+    // バイザー
+    const visor = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.1, 0.4), matBlack);
+    visor.position.set(0, 1.4, 0.2);
+    // 腕と足
+    const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1, 8), matArmor); armL.position.set(-0.6, 0.6, 0);
+    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1, 8), matArmor); armR.position.set(0.6, 0.6, 0);
+    // ブラスター構え
+    armR.rotation.x = -Math.PI/2; armR.position.set(0.4, 0.8, -0.4);
+    const blaster = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.6), matBlack);
+    blaster.position.set(0.4, 0.8, -0.8);
+    
+    g.add(body, head, visor, armL, armR, blaster);
+    return g;
+}
+
+
+function playerShoot() {
+    const now = Date.now();
+    if(now - lastShoot < 250 || !gameActive || currentMiniGameCompleted) return; // 連射速度調整
+    lastShoot = now;
+    
+    if(gameMode === 'fps_defense' || gameMode === 'fps_turret') {
+        const dir = new THREE.Vector3();
+        camera.getWorldDirection(dir);
+        dir.x += mouse.x * 0.5; dir.y += mouse.y * 0.5; dir.normalize();
+        
+        // 砲座モードは連装砲をイメージ
+        if(gameMode === 'fps_turret') {
+            createLaser(camera.position.clone().add(new THREE.Vector3(-1,-0.5,-1)), dir, true);
+            createLaser(camera.position.clone().add(new THREE.Vector3(1,-0.5,-1)), dir, true);
+        } else {
+            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.5,-1)), dir, true);
+        }
+        
+        raycaster.setFromCamera(mouse, camera);
+        const enemyType = gameMode === 'fps_defense' ? 'enemy_fps' : 'enemy_tps';
+        const colliders = entities.filter(e => e.type === enemyType).map(e => e.collider || e.mesh);
+        const hit = raycaster.intersectObjects(colliders, true);
+        if(hit.length) {
+            let tgtObj = hit[0].object;
+            while(tgtObj.parent && tgtObj.parent.type !== 'Scene') { tgtObj = tgtObj.parent; }
+            createLaser(camera.position.clone().add(new THREE.Vector3(0,-0.5,-1)), tgtObj.position.clone().sub(camera.position).normalize(), true);
+        }
+    } else if(gameMode === 'tps_flight' || gameMode === 'tps_trench') {
+        if(playerObj) {
+            if(gameMode === 'tps_trench' && missionPhase === 2) {
+                // プロトン魚雷発射
+                if(score >= maxScore -1) return; // 発射後は無効化
+                createLaser(playerObj.position.clone().add(new THREE.Vector3(0, 0, -2)), new THREE.Vector3(0,-0.1,-1), true, true);
+                showMissionMessage("TORPEDO AWAY!", 2000);
+            } else {
+                // Xウィングの4連レーザー
+                createLaser(playerObj.position.clone().add(new THREE.Vector3(-2, 1, -2)), new THREE.Vector3(0,0,-1), true);
+                createLaser(playerObj.position.clone().add(new THREE.Vector3(2, 1, -2)), new THREE.Vector3(0,0,-1), true);
+                setTimeout(() => {
+                    if(!gameActive) return;
+                    createLaser(playerObj.position.clone().add(new THREE.Vector3(-2, -1, -2)), new THREE.Vector3(0,0,-1), true);
+                    createLaser(playerObj.position.clone().add(new THREE.Vector3(2, -1, -2)), new THREE.Vector3(0,0,-1), true);
+                }, 100);
+            }
+        }
+    }
+}
+
+function gameLoop() {
+    if(!gameActive) return;
+    animId = requestAnimationFrame(gameLoop);
+    
+    if(currentMiniGameCompleted) return; // ループ防止
+
+    // ---------------- Explore Modes ----------------
+    if(gameMode.startsWith('explore')) {
+        const mv = getMoveVec();
+        if(playerObj) {
+            const speed = 0.15;
+            playerObj.position.x += mv.x * speed;
+            playerObj.position.z += mv.y * speed;
+            checkCollision(playerObj.position, 0.4);
+            
+            if(mv.x !== 0 || mv.y !== 0) {
+                playerObj.rotation.y = Math.atan2(mv.x, mv.y);
+            }
+
+            camera.position.x += (playerObj.position.x - camera.position.x) * 0.1;
+            camera.position.z += (playerObj.position.z + 8 - camera.position.z) * 0.1;
+            camera.lookAt(playerObj.position);
+
+            interactTarget = null;
+            entities.forEach(e => {
+                if(e.type === 'interactable') {
+                    if(playerObj.position.distanceTo(e.mesh.position) < 2.5) interactTarget = e;
+                }
+                if(e.type === 'enemy_patrol') {
+                    e.mesh.position.add(e.dir.clone().multiplyScalar(0.05));
+                    e.patrolTimer--;
+                    if(e.patrolTimer <= 0) {
+                        e.dir.negate(); e.patrolTimer = 100;
+                        e.mesh.rotation.y += Math.PI;
+                    }
+                    const toPlayer = playerObj.position.clone().sub(e.mesh.position);
+                    const dist = toPlayer.length();
+                    toPlayer.normalize();
+                    const angle = e.dir.angleTo(toPlayer);
+                    if(dist < 5 && angle < Math.PI/4) {
+                        playSound('enemyBlaster');
+                        takeDamage(20);
+                        playerObj.position.copy(e.startPos); 
+                    }
+                }
+            });
+
+            if(interactTarget) DOM.btnInteract.classList.add('show');
+            else DOM.btnInteract.classList.remove('show');
+        }
+    }
+    // ---------------- FPS Modes ----------------
+    else if(gameMode === 'fps_defense' || gameMode === 'fps_turret') {
+        const mv = getMoveVec();
+        
+        // Adjusting sensitivity to be heavy and smooth for fine aiming
+        camera.rotation.y -= mv.x * 0.015;
+        camera.rotation.x -= mv.y * 0.015;
+        
+        if(Math.abs(mv.x) < 0.1 && Math.abs(mv.y) < 0.1 && !input.joy.active) {
+            camera.rotation.y += (-mouse.x * 0.8 - camera.rotation.y) * 0.03;
+            camera.rotation.x += (mouse.y * 0.5 - camera.rotation.x) * 0.03;
+        }
+
+        camera.rotation.x = Math.max(-Math.PI/3, Math.min(Math.PI/3, camera.rotation.x));
+        
+        const enemyType = gameMode === 'fps_defense' ? 'enemy_fps' : 'enemy_tps';
+        // 出現率調整
+        if(Math.random() < (gameMode === 'fps_defense' ? 0.04 : 0.06) && entities.filter(e=>e.type===enemyType).length < (gameMode === 'fps_defense' ? 5 : 8)) {
+            let g, col;
+            if (gameMode === 'fps_defense') {
+                g = buildStormtrooper();
+                col = new THREE.Mesh(new THREE.BoxGeometry(1.5, 2.5, 1.5), new THREE.MeshBasicMaterial({visible:false}));
+                col.position.y = 1; g.add(col);
+                g.position.set((Math.random()-.5)*20, 0, -60);
+            } else {
+                g = buildTieFighter(false);
+                col = g;
+                g.position.set((Math.random()-.5)*60, (Math.random()-.5)*30, -100);
+            }
+            scene.add(g);
+            entities.push({type:enemyType, mesh: g, collider: col, nextShoot: Date.now()+1000+Math.random()*2000});
+        }
+        
+        entities.forEach((e, i) => {
+            if(e.type === enemyType) {
+                // 敵の動き
+                e.mesh.position.z += gameMode === 'fps_defense' ? 0.1 : 0.8;
+                if(gameMode === 'fps_turret') {
+                    // TIEファイターの蛇行
+                    e.mesh.position.x += Math.sin(Date.now()*0.002 + i) * 0.2;
+                    e.mesh.position.y += Math.cos(Date.now()*0.001 + i) * 0.1;
+                }
+
+                if(Date.now() > e.nextShoot) {
+                    // 狙いを少しブレさせる
+                    const aim = camera.position.clone().sub(e.mesh.position);
+                    aim.x += (Math.random()-.5)*5; aim.y += (Math.random()-.5)*5;
+                    createLaser(e.mesh.position.clone().add(new THREE.Vector3(0,0,1)), aim.normalize(), false);
+                    e.nextShoot = Date.now() + 1000 + Math.random()*2000;
+                }
+                if(e.mesh.position.z > 10) { takeDamage(10); e.mesh.position.z = 100; }
+            }
         });
+        
+        raycaster.setFromCamera(mouse, camera);
+        const colliders = entities.filter(e => e.type === enemyType).map(e => e.collider || e.mesh);
+        if(raycaster.intersectObjects(colliders, true).length) DOM.fpsCrosshair.classList.add('aiming');
+        else DOM.fpsCrosshair.classList.remove('aiming');
     }
-}
+    // ---------------- TPS Flight Modes ----------------
+    else if(gameMode === 'tps_flight' || gameMode === 'tps_trench') {
+        if(gameMode === 'tps_flight') score += 1; // Flight mode is survival based on time/distance
+        updateHUD();
+        const speedMultiplier = gameMode === 'tps_trench' ? 2.0 : 1.5;
 
-async function renderScene(sceneId) {
-    if (isAnimating) return;
-    const sceneData = storyNodes[sceneId];
-    if (!sceneData) { console.warn("Scene not found", sceneId); return; }
-    state.currentScene = sceneId;
-    state.location = sceneData.location || state.location;
-    setLayerMode("app");
-    if(sceneId==='prologue') { DOM.storyText.innerHTML=''; state.alignment=50; }
-    DOM.choicesContainer.innerHTML='';
-    if(sceneData.onEnter) sceneData.onEnter();
-    updateHUD();
-    DOM.sceneBg.className=`absolute inset-0 transition-all duration-1500 opacity-40 bg-gradient-to-b ${sceneData.bg}`;
-    DOM.sceneIcon.className=`text-7xl md:text-9xl z-10 opacity-0 transform scale-50 filter drop-shadow-[0_0_25px_rgba(255,255,255,.4)] fas ${sceneData.icon}`;
-    requestAnimationFrame(()=>setTimeout(()=>{DOM.sceneIcon.className=`text-7xl md:text-9xl z-10 transition-all duration-1000 transform scale-100 opacity-100 filter drop-shadow-[0_0_25px_rgba(255,255,255,.4)] fas ${sceneData.icon}`},50));
-    await showStoryText(sceneData);
-    saveGame();
-    if(sceneData.minigame){
-        setTimeout(()=>{
-            state.minigameFailScene=sceneData.fail || 'game_over_minigame';
-            if(sceneData.minigame==='negotiation') startNegotiation(sceneData.targetScore,()=>renderScene(sceneData.next),()=>renderScene(sceneData.fail));
-            else startMinigame(sceneData.minigame,sceneData.targetScore,()=>renderScene(sceneData.next));
-        },850);
-        return;
+        if(playerObj) {
+            const mv = getMoveVec();
+            const maxX = gameMode === 'tps_trench' ? 6 : 20; // トレンチ内は移動制限
+            const maxY = gameMode === 'tps_trench' ? 4 : 10;
+            
+            playerObj.position.x += (mv.x * maxX - playerObj.position.x) * 0.1;
+            playerObj.position.y += (-mv.y * maxY - playerObj.position.y) * 0.1;
+            
+            if(Math.abs(mv.x) < 0.1 && Math.abs(mv.y) < 0.1 && !input.joy.active) {
+                playerObj.position.x += (mouse.x * maxX - playerObj.position.x) * 0.1;
+                playerObj.position.y += (mouse.y * maxY - playerObj.position.y) * 0.1;
+            }
+
+            // 機体の傾き表現
+            playerObj.rotation.z = -mv.x * 0.8;
+            playerObj.rotation.x = mv.y * 0.3;
+            
+            camera.position.x += (playerObj.position.x * 0.3 - camera.position.x) * 0.1;
+            camera.position.y += (playerObj.position.y * 0.3 + 4 - camera.position.y) * 0.1;
+            camera.lookAt(playerObj.position.x, playerObj.position.y, playerObj.position.z - 40);
+        }
+        
+        envBlocks.forEach(b => {
+            b.position.z += 2.0 * speedMultiplier;
+            if(b.position.z > 20) b.position.z -= (gameMode==='tps_trench' ? 200 : 400);
+        });
+
+        // TIEファイター出現
+        if(Math.random() < (gameMode==='tps_trench'?0.02:0.05) && entities.filter(e=>e.type==='enemy_tps').length < (gameMode==='tps_trench'?2:5)) {
+            // トレンチラン中はベイダー機(Advanced)が後ろから来る演出を追加
+            const isAdvanced = gameMode === 'tps_trench' && Math.random() < 0.3;
+            const tie = buildTieFighter(isAdvanced);
+            const spawnX = gameMode === 'tps_trench' ? (Math.random()-.5)*8 : (Math.random()-.5)*40;
+            const spawnY = gameMode === 'tps_trench' ? (Math.random()-.5)*3 : (Math.random()-.5)*20;
+            
+            if(isAdvanced) {
+                tie.position.set(spawnX, spawnY+5, 30); // 後ろから
+                entities.push({type:'enemy_tps', mesh: tie, isVader: true, tz: -50});
+            } else {
+                tie.position.set(spawnX, spawnY, -200); // 前から
+                entities.push({type:'enemy_tps', mesh: tie});
+            }
+            scene.add(tie);
+        }
+        
+        entities.forEach(e => {
+            if(e.type === 'enemy_tps') {
+                if(e.isVader) {
+                    // ベイダー機は自機を追い越して前にいく
+                    e.mesh.position.z -= 0.5 * speedMultiplier;
+                    // 自機を狙う
+                    if(playerObj && e.mesh.position.z > playerObj.position.z && Math.random() < 0.05) {
+                        createLaser(e.mesh.position, playerObj.position.clone().sub(e.mesh.position).normalize(), false);
+                    }
+                } else {
+                    e.mesh.position.z += 1.5 * speedMultiplier;
+                    if(Math.random() < 0.03) createLaser(e.mesh.position, new THREE.Vector3(0,0,1), false);
+                }
+            }
+        });
+
+        // トレンチラン特有の進行
+        if(gameMode === 'tps_trench') {
+            trenchTimer++;
+            
+            // フェーズ1: 接近
+            if(missionPhase === 0 && trenchTimer > 300) {
+                missionPhase = 1;
+                showMissionMessage("USE THE FORCE, LUKE...", 4000);
+            }
+            // フェーズ2: 排気口捕捉
+            else if(missionPhase === 1 && trenchTimer > 700) {
+                missionPhase = 2;
+                DOM.targetLockHud.classList.remove('hidden');
+                playSound('alarm');
+                showMissionMessage("TARGET LOCKED. FIRE TORPEDO!", 4000);
+            }
+            
+            // 壁からの砲火
+            if(Math.random() < 0.05) {
+                if(playerObj) {
+                    createLaser(new THREE.Vector3(playerObj.position.x + (Math.random()-.5)*10, playerObj.position.y + 5, camera.position.z + 10), new THREE.Vector3(0,-0.5,-1), false);
+                }
+            }
+        }
     }
-    renderChoices(sceneData.choices,sceneData.next);
+
+    // ---------------- Shared Logic (Lasers & Particles) ----------------
+    for(let i=entities.length-1; i>=0; i--) {
+        const e = entities[i];
+        if(!e) continue;
+        
+        if(e.type === 'laser' || e.type === 'torpedo') {
+            e.mesh.position.add(e.dir.clone().multiplyScalar(e.speed));
+            e.life--;
+            if(e.life <= 0) { scene.remove(e.mesh); entities.splice(i,1); continue; }
+            
+            if(e.isPlayer) {
+                let hit = false;
+                
+                // プロトン魚雷のクリア判定
+                if(e.type === 'torpedo' && e.mesh.position.z < -50) {
+                     createExplosion(e.mesh.position);
+                     createExplosion(e.mesh.position.clone().add(new THREE.Vector3(2,0,0)));
+                     createExplosion(e.mesh.position.clone().add(new THREE.Vector3(-2,0,0)));
+                     score = maxScore; updateHUD(); // クリア条件満たす
+                     scene.remove(e.mesh); entities.splice(i,1);
+                     continue;
+                }
+
+                for(let j=entities.length-1; j>=0; j--) {
+                    const enemy = entities[j];
+                    if(enemy && enemy.type.startsWith('enemy_') && e.mesh.position.distanceTo(enemy.mesh.position) < (enemy.isVader ? 3.0 : 4.0)) {
+                        if(enemy.isVader) {
+                            // ベイダー機にはダメージエフェクトのみで倒せない設定
+                            createExplosion(e.mesh.position);
+                        } else {
+                            createExplosion(enemy.mesh.position);
+                            score += (gameMode === 'tps_flight' ? 50 : 1); updateHUD();
+                            scene.remove(enemy.mesh); entities.splice(j,1);
+                        }
+                        scene.remove(e.mesh); entities.splice(i,1);
+                        hit = true; break;
+                    }
+                }
+                if(hit) continue;
+            } else {
+                const pPos = (gameMode === 'tps_flight' || gameMode === 'tps_trench') ? playerObj?.position : camera.position;
+                if(pPos && e.mesh.position.distanceTo(pPos) < (gameMode.startsWith('tps') ? 2.5 : 1.5)) {
+                    takeDamage(gameMode === 'tps_trench' ? 20 : 10);
+                    scene.remove(e.mesh); entities.splice(i,1);
+                    continue;
+                }
+            }
+        }
+        
+        if(e.type.startsWith('enemy_') && (e.mesh.position.z > 30 || e.mesh.position.z < -300)) {
+            scene.remove(e.mesh); entities.splice(i,1);
+        }
+    }
+
+    for(let i=particles.length-1; i>=0; i--) {
+        const p = particles[i];
+        const pos = p.mesh.geometry.attributes.position.array;
+        for(let j=0; j<p.vels.length; j++) {
+            pos[j*3] += p.vels[j].x; pos[j*3+1] += p.vels[j].y; pos[j*3+2] += p.vels[j].z;
+        }
+        p.mesh.geometry.attributes.position.needsUpdate = true;
+        p.life -= 0.03; p.mesh.material.opacity = p.life;
+        if(p.life <= 0) { scene.remove(p.mesh); p.mesh.geometry.dispose(); particles.splice(i,1); }
+    }
+
+    if(score >= maxScore && gameActive && !currentMiniGameCompleted) {
+        finishMinigame(true);
+    }
+
+    renderer.render(scene, camera);
 }
 
-// --- Three.js engine ---
-let scene,camera,renderer,animationId,gameActive=false,gameMode=null;
-let score=0,maxScore=0,health=100,maxHealth=100,entities=[],particles=[],trenchBlocks=[];
-let mouse=new THREE.Vector2(0,0),raycaster=new THREE.Raycaster(),playerWeapon=null,playerShip=null,playerActor=null,lastShootTime=0,targetRotationX=0,targetRotationY=0;
-let keys={};
-let stageStats={shots:0,hits:0,headshots:0,kills:0,startTime:0,damageTaken:0,combo:0,maxCombo:0,lastHit:0,mode:""};
-let forceProfile=null;
-const matRedLaser=()=>new THREE.MeshBasicMaterial({color:0xff1d1d,transparent:true,opacity:.95});
-const matGreenLaser=()=>new THREE.MeshBasicMaterial({color:0x00ff66,transparent:true,opacity:.9});
-const geoBox=new THREE.BoxGeometry(1,1,1);
-
-function init3DEngine(){
-    scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x000000,.02);
-    camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,.1,1000);
-    renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-    renderer.setSize(window.innerWidth,window.innerHeight); renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-    DOM.gameCanvasContainer.insertBefore(renderer.domElement,DOM.gameCanvasContainer.firstChild);
-    window.addEventListener('resize',onWindowResize,false);
-    document.addEventListener('pointermove',onPointerMove,{passive:false});
-    DOM.gameCanvasContainer.addEventListener('pointerdown',onPointerDown,{passive:false});
-    window.addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);
-    window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-}
-function onWindowResize(){if(!camera||!renderer)return;camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)}
-function onPointerMove(e){if(!gameActive)return;if(e.cancelable)e.preventDefault();mouse.x=(e.clientX/window.innerWidth)*2-1;mouse.y=-(e.clientY/window.innerHeight)*2+1;targetRotationY=-mouse.x*(Math.PI/1.5);targetRotationX=mouse.y*(Math.PI/4)}
-function onPointerDown(e){if(!gameActive)return;if(e.cancelable)e.preventDefault();if(gameMode==='fps_defense')playerShootFPS();if(gameMode==='tps_flight')playerShootTPS()}
-function clearThreeScene(){if(!scene)return;while(scene.children.length>0)scene.remove(scene.children[0]);entities=[];particles=[];trenchBlocks=[];playerShip=null;playerActor=null;playerWeapon=null}
-function addCommonLights(){scene.add(new THREE.AmbientLight(0xffffff,.35));const d=new THREE.DirectionalLight(0xffffff,.9);d.position.set(10,20,10);scene.add(d)}
-function shake(){DOM.gameCanvasContainer.classList.remove('screen-shake');void DOM.gameCanvasContainer.offsetWidth;DOM.gameCanvasContainer.classList.add('screen-shake')}
-function updateHudStats(){const acc=stageStats.shots?Math.round(stageStats.hits/stageStats.shots*100):0;DOM.hudAccuracy.textContent=acc+"%";DOM.hudKills.textContent=stageStats.kills;DOM.comboDisplay.textContent=`COMBO x${stageStats.combo}`;DOM.comboDisplay.classList.toggle('hidden',stageStats.combo<2)}
-function resetStageStats(mode){stageStats={shots:0,hits:0,headshots:0,kills:0,startTime:performance.now(),damageTaken:0,combo:0,maxCombo:0,lastHit:0,mode};updateHudStats()}
-function addCombo(){const now=performance.now();if(now-stageStats.lastHit>2500)stageStats.combo=0;stageStats.combo++;stageStats.maxCombo=Math.max(stageStats.maxCombo,stageStats.combo);stageStats.lastHit=now;updateHudStats()}
-function createExplosion(position,color=0xffaa00,count=42){playSound('explosion');shake();const geo=new THREE.BufferGeometry();const pos=new Float32Array(count*3);const vel=[];for(let i=0;i<count;i++){pos[i*3]=position.x;pos[i*3+1]=position.y;pos[i*3+2]=position.z;vel.push(new THREE.Vector3((Math.random()-.5)*2,(Math.random()-.5)*2,(Math.random()-.5)*2).normalize().multiplyScalar(.25+Math.random()*.75))}geo.setAttribute('position',new THREE.BufferAttribute(pos,3));const mat=new THREE.PointsMaterial({size:.42,color,transparent:true,blending:THREE.AdditiveBlending});const points=new THREE.Points(geo,mat);scene.add(points);particles.push({mesh:points,velocities:vel,life:1})}
-function createLaser(startPos,dir,isPlayer){if(isPlayer){playSound('blaster');stageStats.shots++}else playSound('enemyBlaster');const geo=new THREE.CylinderGeometry(.025,.025,.9,6);geo.rotateX(Math.PI/2);const mesh=new THREE.Mesh(geo,isPlayer?matRedLaser():matGreenLaser());mesh.position.copy(startPos);const nd=dir.clone().normalize();mesh.lookAt(startPos.clone().add(nd));scene.add(mesh);entities.push({type:'laser',mesh,dir:nd,speed:isPlayer?1.75:1.25,isPlayer,life:70});updateHudStats()}
-function takeDamage(amt){if(!gameActive)return;health-=amt;stageStats.damageTaken+=amt;DOM.gameHealth.style.width=Math.max(0,health/maxHealth*100)+'%';DOM.damageOverlay.classList.add('flash-active');shake();setTimeout(()=>DOM.damageOverlay.classList.remove('flash-active'),90);if(health<=0)endGame(false)}
-function addScore(amt){if(!gameActive)return;score+=Math.max(1,Math.round(amt*forceProfile.scoreMult));DOM.gameScore.textContent=score;if(gameMode==='fps_defense'&&score>=maxScore)endGame(true)}
-function removeEntityAt(i){const e=entities[i];if(!e)return;if(e.mesh)scene.remove(e.mesh);entities.splice(i,1)}
-
-function createEnemyStormtrooper(x,z){
-    const group=new THREE.Group(); const matArmor=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.5}); const matBlack=new THREE.MeshStandardMaterial({color:0x111111,roughness:.8});
-    const head=new THREE.Mesh(new THREE.SphereGeometry(.35,16,16),matArmor);head.position.y=2.6;const visor=new THREE.Mesh(new THREE.BoxGeometry(.42,.14,.2),matBlack);visor.position.set(0,2.65,.3);const body=new THREE.Mesh(new THREE.CylinderGeometry(.35,.3,1,8),matArmor);body.position.y=1.7;
-    const armR=new THREE.Mesh(new THREE.CylinderGeometry(.12,.1,1,8),matArmor);armR.position.set(-.5,1.7,.2);armR.rotation.x=-Math.PI/2.5;const armL=armR.clone();armL.position.set(.5,1.7,.2);armL.rotation.z=Math.PI/6;const legR=new THREE.Mesh(new THREE.CylinderGeometry(.15,.1,1.2,8),matArmor);legR.position.set(-.2,.6,0);const legL=legR.clone();legL.position.x=.2;const blaster=new THREE.Mesh(new THREE.BoxGeometry(.1,.15,.7),matBlack);blaster.position.set(-.3,1.7,.6);group.add(head,visor,body,armR,armL,legR,legL,blaster);group.position.set(x,0,z);
-    const collider=new THREE.Mesh(new THREE.BoxGeometry(1.5,3.5,1.5),new THREE.MeshBasicMaterial({visible:false}));collider.position.y=1.5;group.add(collider);scene.add(group);
-    entities.push({type:'enemy_fps',mesh:group,collider,hp:1,speed:.03+Math.random()*.02,nextShoot:Date.now()+1000+Math.random()*2000,legR,legL,timeOffset:Math.random()*Math.PI*2});
-}
-function playerShootFPS(){if(!playerWeapon||!camera)return;const dir=new THREE.Vector3();camera.getWorldDirection(dir);const startPos=new THREE.Vector3();playerWeapon.children[2]?.getWorldPosition(startPos);createLaser(startPos,dir,true)}
-function updateFPS(){camera.rotation.y+=(targetRotationY-camera.rotation.y)*.15;camera.rotation.x+=(targetRotationX-camera.rotation.x)*.15;if(playerWeapon){playerWeapon.position.z+=(-.5-playerWeapon.position.z)*.1;playerWeapon.rotation.x+=(0-playerWeapon.rotation.x)*.1}const colliders=entities.filter(e=>e.type==='enemy_fps').map(e=>e.collider);if(colliders.length){raycaster.setFromCamera(new THREE.Vector2(0,0),camera);const hit=raycaster.intersectObjects(colliders,false);if(hit.length){DOM.fpsCrosshair.classList.add('aiming');if(Date.now()-lastShootTime>150){playerShootFPS();lastShootTime=Date.now();if(playerWeapon){playerWeapon.position.z=-.3;playerWeapon.rotation.x=.05}}}else DOM.fpsCrosshair.classList.remove('aiming')}else DOM.fpsCrosshair.classList.remove('aiming');if(Math.random()<.034&&entities.filter(e=>e.type==='enemy_fps').length<6)createEnemyStormtrooper((Math.random()-.5)*5,-30-Math.random()*10)}
-
-function createDesertBeacon(){const group=new THREE.Group();const base=new THREE.Mesh(new THREE.CylinderGeometry(.35,.45,.7,16),new THREE.MeshStandardMaterial({color:0x38bdf8,emissive:0x0ea5e9,emissiveIntensity:.7}));base.position.y=.35;const ring=new THREE.Mesh(new THREE.TorusGeometry(.7,.04,8,32),new THREE.MeshBasicMaterial({color:0x7dd3fc}));ring.position.y=1.05;ring.rotation.x=Math.PI/2;group.add(base,ring);group.position.set((Math.random()-.5)*26,0,(Math.random()-.5)*26-6);scene.add(group);entities.push({type:'beacon',mesh:group})}
-function initDesert(){camera.position.set(0,18,18);camera.lookAt(0,0,0);const ground=new THREE.Mesh(new THREE.PlaneGeometry(70,70),new THREE.MeshStandardMaterial({color:0xc08a3c,roughness:1}));ground.rotation.x=-Math.PI/2;scene.add(ground);playerActor=new THREE.Group();const speeder=new THREE.Mesh(new THREE.BoxGeometry(1.6,.35,2.4),new THREE.MeshStandardMaterial({color:0xa16207,metalness:.2}));speeder.position.y=.35;const nose=new THREE.Mesh(new THREE.ConeGeometry(.45,1,16),new THREE.MeshStandardMaterial({color:0xfbbf24}));nose.rotation.x=Math.PI/2;nose.position.set(0,.38,-1.4);playerActor.add(speeder,nose);scene.add(playerActor);for(let i=0;i<5;i++)createDesertBeacon();for(let i=0;i<12;i++){const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(.6+Math.random()*1.2),new THREE.MeshStandardMaterial({color:0x7c4a21,roughness:1}));rock.position.set((Math.random()-.5)*32,.5,(Math.random()-.5)*32-6);scene.add(rock);entities.push({type:'rock',mesh:rock})}}
-function updateAdventureMove(speed=.18){let dx=0,dz=0;if(keys.w||keys.arrowup)dz-=1;if(keys.s||keys.arrowdown)dz+=1;if(keys.a||keys.arrowleft)dx-=1;if(keys.d||keys.arrowright)dx+=1;if(Math.abs(dx)+Math.abs(dz)<.1){const tx=mouse.x*17;const tz=-mouse.y*13-7;playerActor.position.x+=(tx-playerActor.position.x)*.055;playerActor.position.z+=(tz-playerActor.position.z)*.055}else{const v=new THREE.Vector3(dx,0,dz).normalize().multiplyScalar(speed);playerActor.position.add(v)}playerActor.position.x=THREE.MathUtils.clamp(playerActor.position.x,-18,18);playerActor.position.z=THREE.MathUtils.clamp(playerActor.position.z,-25,12);playerActor.rotation.y+=(Math.atan2(playerActor.position.x-camera.position.x,playerActor.position.z-camera.position.z)-playerActor.rotation.y)*.05;camera.position.x+=(playerActor.position.x-camera.position.x)*.06;camera.position.z+=(playerActor.position.z+18-camera.position.z)*.06;camera.lookAt(playerActor.position.x,0,playerActor.position.z)}
-function updateDesert(){updateAdventureMove(.32);for(let i=entities.length-1;i>=0;i--){const e=entities[i];if(e.type==='beacon'){e.mesh.rotation.y+=.04;e.mesh.children[1].rotation.z+=.06;if(playerActor.position.distanceTo(e.mesh.position)<1.9){stageStats.hits++;stageStats.kills++;addCombo();addScore(1);createExplosion(e.mesh.position,0x38bdf8,30);removeEntityAt(i)}}if(e?.type==='rock'&&playerActor.position.distanceTo(e.mesh.position)<1.3){takeDamage(.45)}}if(score>=maxScore)endGame(true)}
-
-function initStealth(){camera.position.set(0,22,18);camera.lookAt(0,0,-10);const matFloor=new THREE.MeshStandardMaterial({color:0x444444,roughness:.9});const floor=new THREE.Mesh(new THREE.PlaneGeometry(18,46),matFloor);floor.rotation.x=-Math.PI/2;floor.position.z=-10;scene.add(floor);const wallMat=new THREE.MeshStandardMaterial({color:0xd4d4d8,roughness:.7});for(const x of [-10,10]){const wall=new THREE.Mesh(new THREE.BoxGeometry(1,3,48),wallMat);wall.position.set(x,1.5,-10);scene.add(wall)}const exit=new THREE.Mesh(new THREE.BoxGeometry(6,.2,1),new THREE.MeshBasicMaterial({color:0x22c55e}));exit.position.set(0,.08,-33);scene.add(exit);entities.push({type:'exit',mesh:exit});playerActor=new THREE.Mesh(new THREE.BoxGeometry(1,.5,1),new THREE.MeshStandardMaterial({color:0x38bdf8,emissive:0x0ea5e9,emissiveIntensity:.4}));playerActor.position.set(0,.35,10);scene.add(playerActor);for(let i=0;i<4;i++){const guard=new THREE.Group();const body=new THREE.Mesh(new THREE.CylinderGeometry(.35,.35,1.4,12),new THREE.MeshStandardMaterial({color:0xffffff}));body.position.y=.9;const cone=new THREE.Mesh(new THREE.ConeGeometry(2.2,5,24,1,true),new THREE.MeshBasicMaterial({color:0xff0000,transparent:true,opacity:.22,side:THREE.DoubleSide}));cone.rotation.x=Math.PI/2;cone.position.set(0,.05,-2.8);guard.add(body,cone);guard.position.set(i%2?5:-5,.05,2-i*8);scene.add(guard);entities.push({type:'guard',mesh:guard,baseX:guard.position.x,dir:i%2?1:-1,phase:Math.random()*6})}}
-function updateStealth(){updateAdventureMove(.24);for(const e of entities){if(e.type==='guard'){e.phase+=.018;e.mesh.position.x=e.baseX+Math.sin(e.phase)*3.8;e.mesh.rotation.y=e.dir>0?Math.PI:0;const dist=playerActor.position.distanceTo(e.mesh.position);const inFront=e.dir>0?playerActor.position.z>e.mesh.position.z-5:playerActor.position.z<e.mesh.position.z+5;if(dist<4.2&&inFront){takeDamage(1.4)}}if(e.type==='exit'&&playerActor.position.distanceTo(e.mesh.position)<2.6){score=1;DOM.gameScore.textContent=score;endGame(true)}}}
-
-function createTieFighter(x,y,z){const group=new THREE.Group();const matDark=new THREE.MeshStandardMaterial({color:0x222,roughness:.8});const matWing=new THREE.MeshStandardMaterial({color:0xbfbfbf,roughness:.7});const cockpit=new THREE.Mesh(new THREE.SphereGeometry(.5,12,12),matDark);const wingL=new THREE.Mesh(new THREE.BoxGeometry(.1,2,1.5),matWing);wingL.position.x=-1;const wingR=wingL.clone();wingR.position.x=1;const arm=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,2,8),matDark);arm.rotation.z=Math.PI/2;group.add(cockpit,wingL,wingR,arm);group.position.set(x,y,z);scene.add(group);entities.push({type:'enemy_tps',mesh:group,hp:1,speed:.25+Math.random()*.25})}
-function initPlayerShip(){const group=new THREE.Group();const body=new THREE.Mesh(new THREE.CylinderGeometry(.22,.42,3.2,10),new THREE.MeshStandardMaterial({color:0xdddddd,metalness:.15}));body.rotation.x=Math.PI/2;const wings=new THREE.Mesh(geoBox,new THREE.MeshStandardMaterial({color:0xaa2222,emissive:0x330000,emissiveIntensity:.2}));wings.scale.set(4,.1,1);const glow=new THREE.PointLight(0x38bdf8,1.3,5);glow.position.set(0,0,.9);group.add(body,wings,glow);group.position.set(0,0,-5);scene.add(group);playerShip=group}
-function initTrench(){const matWall=new THREE.MeshStandardMaterial({color:0x444444,roughness:.9});for(let i=0;i<48;i++){const z=-i*5;const l=new THREE.Mesh(geoBox,matWall);l.scale.set(10,10,5);l.position.set(-15,0,z);scene.add(l);trenchBlocks.push(l);const r=l.clone();r.position.x=15;scene.add(r);trenchBlocks.push(r);if(Math.random()>.65){const o=new THREE.Mesh(geoBox,matWall);o.scale.set(1.4+Math.random()*1.5,3+Math.random()*2,1.6);o.position.set((Math.random()-.5)*16,-2,z);scene.add(o);trenchBlocks.push(o)}}}
-function playerShootTPS(){if(!playerShip)return;createLaser(playerShip.position.clone().add(new THREE.Vector3(-.45,0,-1)),new THREE.Vector3(0,0,-1),true);createLaser(playerShip.position.clone().add(new THREE.Vector3(.45,0,-1)),new THREE.Vector3(0,0,-1),true)}
-function updateTPS(){addScore(1);if(score>=maxScore){endGame(true);return}if(playerShip){const tx=mouse.x*8,ty=mouse.y*4;playerShip.position.x+=(tx-playerShip.position.x)*.11;playerShip.position.y+=(ty-playerShip.position.y)*.11;playerShip.rotation.z=(playerShip.position.x-tx)*.2;camera.position.x=playerShip.position.x*.5;camera.position.y=playerShip.position.y*.5+2;camera.position.z=5;camera.lookAt(playerShip.position.x,playerShip.position.y,playerShip.position.z-20)}for(const b of trenchBlocks){b.position.z+=.62;if(b.position.z>5){b.position.z-=240;if(b.scale.x<5)b.position.x=(Math.random()-.5)*16}if(playerShip&&b.scale.x<5&&Math.abs(b.position.z-playerShip.position.z)<1.6&&Math.abs(b.position.x-playerShip.position.x)<2) {takeDamage(10);createExplosion(playerShip.position,0xff4444,24);b.position.z=10}}if(Math.random()<.038&&entities.filter(e=>e.type==='enemy_tps').length<4)createTieFighter((Math.random()-.5)*15,(Math.random()-.5)*5,-95)}
-
-function updateEntities(){for(let i=entities.length-1;i>=0;i--){const e=entities[i];if(!e)continue;if(e.type==='laser'){e.mesh.position.add(e.dir.clone().multiplyScalar(e.speed));e.life--;if(e.life<=0){removeEntityAt(i);continue}if(e.isPlayer){let hit=false;for(let j=entities.length-1;j>=0;j--){const enemy=entities[j];if(!enemy?.type?.startsWith('enemy_'))continue;if(e.mesh.position.distanceTo(enemy.mesh.position)<3.2){const headshot=(gameMode==='fps_defense'&&e.mesh.position.y>2.05);stageStats.hits++;stageStats.kills++;if(headshot)stageStats.headshots++;addCombo();createExplosion(enemy.mesh.position,headshot?0xfce300:0xff8800,headshot?60:40);if(j>i){removeEntityAt(j);removeEntityAt(i)}else{removeEntityAt(i);removeEntityAt(j)}addScore(headshot?2*forceProfile.damageMult:1*forceProfile.damageMult);hit=true;break}}if(hit)continue}else{const pPos=(gameMode==='tps_flight'&&playerShip)?playerShip.position:camera.position;if(e.mesh.position.distanceTo(pPos)<2){takeDamage(12);removeEntityAt(i);continue}}}if(e.type==='enemy_fps'){e.mesh.position.z+=e.speed;e.mesh.lookAt(camera.position.x,0,camera.position.z);const t=Date.now()*.005+e.timeOffset;e.legR.rotation.x=Math.sin(t)*.5;e.legL.rotation.x=-Math.sin(t)*.5;if(Date.now()>e.nextShoot){createLaser(e.mesh.position.clone().add(new THREE.Vector3(-.3,1.7,.6)),camera.position.clone().sub(e.mesh.position).normalize(),false);e.nextShoot=Date.now()+1500+Math.random()*2000}if(e.mesh.position.z>5){takeDamage(10);removeEntityAt(i)}}if(e.type==='enemy_tps'){e.mesh.position.z+=e.speed;if(Math.random()<.025)createLaser(e.mesh.position.clone().add(new THREE.Vector3(0,0,1)),new THREE.Vector3(0,0,1),false);if(e.mesh.position.z>8)removeEntityAt(i)}}for(let i=particles.length-1;i>=0;i--){const p=particles[i],pos=p.mesh.geometry.attributes.position.array;for(let j=0;j<p.velocities.length;j++){pos[j*3]+=p.velocities[j].x;pos[j*3+1]+=p.velocities[j].y;pos[j*3+2]+=p.velocities[j].z}p.mesh.geometry.attributes.position.needsUpdate=true;p.mesh.material.opacity=p.life;p.life-=.025;if(p.life<=0){scene.remove(p.mesh);particles.splice(i,1)}}updateHudStats()}
-function gameLoop(){if(!gameActive)return;animationId=requestAnimationFrame(gameLoop);if(gameMode==='fps_defense')updateFPS();if(gameMode==='desert_search')updateDesert();if(gameMode==='stealth')updateStealth();if(gameMode==='tps_flight')updateTPS();updateEntities();renderer?.render(scene,camera)}
-
-function startMinigame(mode,target,onComplete){
-    if(typeof THREE==='undefined'){alert('Three.jsの読み込みに失敗しました。ネット接続を確認してください。');return}
-    if(!scene)init3DEngine(); clearThreeScene(); addCommonLights();
-    forceProfile=getForceProfile(); gameMode=mode; score=0; maxScore=target; maxHealth=forceProfile.maxHealth; health=maxHealth; state.minigameCallback=onComplete; resetStageStats(mode);
-    DOM.gameScore.textContent='0'; DOM.gameTargetScore.textContent=maxScore; DOM.gameHealth.style.width='100%'; DOM.gameMissionTitle.textContent=mode.replace('_',' ').toUpperCase(); DOM.fpsCrosshair.classList.add('hidden');
+function startMinigame(mode, target, nextScn, failScn) {
+    minigameNext = nextScn; minigameFail = failScn;
+    gameMode = mode; maxScore = target; score = 0; health = 100; maxHealth = 100;
+    currentMiniGameCompleted = false;
+    
     setLayerMode('game');
-    if(mode==='fps_defense'){scene.fog=new THREE.FogExp2(0x000000,.02);camera.position.set(0,2,0);camera.rotation.set(0,0,0);targetRotationX=targetRotationY=0;DOM.fpsCrosshair.classList.remove('hidden');DOM.gameInstructions.innerHTML=`AIM TO AUTO-FIRE / TAP TO FIRE<br><span class="text-xs text-gray-300">${forceProfile.note}</span>`;playerWeapon=new THREE.Group();const matB=new THREE.MeshStandardMaterial({color:0x111,roughness:.5}),matM=new THREE.MeshStandardMaterial({color:0x888,metalness:.8});const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,1,8),matB);barrel.rotation.x=Math.PI/2;barrel.position.set(0,0,-.5);const scope=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.3,8),matB);scope.rotation.x=Math.PI/2;scope.position.set(0,.08,-.3);const muzzle=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.2,8),matM);muzzle.rotation.x=Math.PI/2;muzzle.position.set(0,0,-1);playerWeapon.add(barrel,scope,muzzle);playerWeapon.position.set(.4,-.4,-.5);camera.add(playerWeapon);scene.add(camera);const matWall=new THREE.MeshStandardMaterial({color:0xddd,roughness:.8}),matFloor=new THREE.MeshStandardMaterial({color:0x333,roughness:.9});const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,100),matFloor);floor.rotation.x=-Math.PI/2;floor.position.z=-40;scene.add(floor);const ceil=new THREE.Mesh(new THREE.PlaneGeometry(12,100),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0x222222}));ceil.rotation.x=Math.PI/2;ceil.position.y=5;ceil.position.z=-40;scene.add(ceil);const wl=new THREE.Mesh(new THREE.BoxGeometry(1,5,100),matWall);wl.position.set(-6,2.5,-40);scene.add(wl);const wr=wl.clone();wr.position.x=6;scene.add(wr);for(let i=0;i<10;i++){const p1=new THREE.Mesh(new THREE.BoxGeometry(1.2,5,1),new THREE.MeshStandardMaterial({color:0xaaa}));p1.position.set(-5.5,2.5,-5-i*8);scene.add(p1);const p2=p1.clone();p2.position.x=5.5;scene.add(p2)}}
-    if(mode==='desert_search'){scene.fog=new THREE.FogExp2(0xd59a45,.018);DOM.gameInstructions.innerHTML='指・マウスの位置へ移動 / WASDでも移動 / 青いビーコンを集める';initDesert()}
-    if(mode==='stealth'){scene.fog=new THREE.FogExp2(0x111111,.018);DOM.gameInstructions.innerHTML='指・マウスの位置へ移動 / WASDでも移動 / 赤い視界を避けて出口へ';initStealth()}
-    if(mode==='tps_flight'){scene.fog=new THREE.FogExp2(0x000000,.01);camera.position.set(0,2,5);DOM.gameInstructions.innerHTML='MOVE: POINTER / TAP TO FIRE / 障害物を回避';initPlayerShip();initTrench()}
-    gameActive=true; gameLoop();
+    init3D(); clear3D();
+    
+    DOM.virtualControls.classList.remove('hidden');
+    if(mode.startsWith('explore')) {
+        DOM.gameHud.classList.add('hidden');
+        DOM.btnShoot.classList.add('hidden');
+    } else {
+        DOM.gameHud.classList.remove('hidden');
+        DOM.btnShoot.classList.remove('hidden');
+    }
+    DOM.btnInteract.classList.remove('show');
+
+    scene.add(new THREE.AmbientLight(0x404040, 2));
+    const dl = new THREE.DirectionalLight(0xffffff, 1); dl.position.set(5,10,5); scene.add(dl);
+    
+    DOM.gameTargetScore.textContent = maxScore;
+    updateHUD();
+    trenchTimer = 0;
+    missionPhase = 0;
+    DOM.targetLockHud.classList.add('hidden');
+    DOM.missionMessage.classList.add('opacity-0');
+
+    if(mode === 'explore_cantina') {
+        camera.position.set(0, 10, 8); camera.rotation.set(-Math.PI/4, 0, 0);
+        
+        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.5, 8), new THREE.MeshStandardMaterial({color: 0xffffff}));
+        playerObj.position.set(0, 0.75, 10); scene.add(playerObj);
+        
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({color: 0x443322}));
+        floor.rotation.x = -Math.PI/2; scene.add(floor);
+        const wallMat = new THREE.MeshStandardMaterial({color: 0xaa8866});
+        
+        // Large tavern boundary walls
+        const w1 = new THREE.Mesh(new THREE.BoxGeometry(40, 3, 1), wallMat); w1.position.set(0,1.5,-20); w1.isWall = true; scene.add(w1); envBlocks.push(w1);
+        const w2 = new THREE.Mesh(new THREE.BoxGeometry(40, 3, 1), wallMat); w2.position.set(0,1.5,20); w2.isWall = true; scene.add(w2); envBlocks.push(w2);
+        const w3 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 40), wallMat); w3.position.set(-20,1.5,0); w3.isWall = true; scene.add(w3); envBlocks.push(w3);
+        const w4 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 40), wallMat); w4.position.set(20,1.5,0); w4.isWall = true; scene.add(w4); envBlocks.push(w4);
+        
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(10, 1.5, 3), new THREE.MeshStandardMaterial({color: 0x552211}));
+        bar.position.set(10, 0.75, -5); bar.isWall = true; scene.add(bar); envBlocks.push(bar);
+        
+        for(let i=0; i<4; i++) {
+            const tbl = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 1, 16), new THREE.MeshStandardMaterial({color: 0x333333}));
+            const tx = -10 + (i%2)*8; const tz = 5 + Math.floor(i/2)*8;
+            tbl.position.set(tx, 0.5, tz); tbl.isWall = true; scene.add(tbl); envBlocks.push(tbl);
+        }
+        
+        const han = new THREE.Group();
+        const hBody = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.6, 8), new THREE.MeshStandardMaterial({color: 0x3355aa}));
+        hBody.position.y = 0.8; han.add(hBody);
+        han.position.set(-15, 0, -15); scene.add(han);
+        entities.push({type: 'interactable', mesh: han});
+        
+        DOM.gameStartTitle.textContent = "FIND HAN SOLO";
+        DOM.gameStartDesc.innerHTML = "ジョイスティック(またはWASD)で移動<br>広い酒場を探索し、奥にいるハン・ソロを探し出せ！";
+    }
+    else if(mode === 'explore_deathstar') {
+        camera.position.set(0, 10, 8); camera.rotation.set(-Math.PI/4, 0, 0);
+        
+        playerObj = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.5, 8), new THREE.MeshStandardMaterial({color: 0x8b5a2b}));
+        playerObj.position.set(0, 0.75, 20); scene.add(playerObj);
+        const startPos = playerObj.position.clone();
+        
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 50), new THREE.MeshStandardMaterial({color: 0x222222}));
+        floor.rotation.x = -Math.PI/2; scene.add(floor);
+        const wallMat = new THREE.MeshStandardMaterial({color: 0xcccccc});
+        
+        const wL = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 50), wallMat); wL.position.set(-15, 2, 0); wL.isWall = true; scene.add(wL); envBlocks.push(wL);
+        const wR = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 50), wallMat); wR.position.set(15, 2, 0); wR.isWall = true; scene.add(wR); envBlocks.push(wR);
+        const wT = new THREE.Mesh(new THREE.BoxGeometry(30, 4, 1), wallMat); wT.position.set(0, 2, -25); wT.isWall = true; scene.add(wT); envBlocks.push(wT);
+        const wB = new THREE.Mesh(new THREE.BoxGeometry(30, 4, 1), wallMat); wB.position.set(0, 2, 25); wB.isWall = true; scene.add(wB); envBlocks.push(wB);
+        
+        // Maze walls inside Death Star corridor
+        const m1 = new THREE.Mesh(new THREE.BoxGeometry(20, 4, 1), wallMat); m1.position.set(-5, 2, 10); m1.isWall = true; scene.add(m1); envBlocks.push(m1);
+        const m2 = new THREE.Mesh(new THREE.BoxGeometry(20, 4, 1), wallMat); m2.position.set(5, 2, 0); m2.isWall = true; scene.add(m2); envBlocks.push(m2);
+        const m3 = new THREE.Mesh(new THREE.BoxGeometry(15, 4, 1), wallMat); m3.position.set(-8, 2, -10); m3.isWall = true; scene.add(m3); envBlocks.push(m3);
+        const m4 = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 10), wallMat); m4.position.set(0, 2, -15); m4.isWall = true; scene.add(m4); envBlocks.push(m4);
+        
+        const createEnemy = (x, z, dirX, dirZ) => {
+            const enemy = new THREE.Group();
+            const eBody = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.6, 8), new THREE.MeshStandardMaterial({color: 0xffffff}));
+            eBody.position.y = 0.8; enemy.add(eBody);
+            const cone = new THREE.Mesh(new THREE.ConeGeometry(2.5, 5, 8), new THREE.MeshBasicMaterial({color: 0xff0000, transparent: true, opacity: 0.2}));
+            cone.rotation.x = Math.PI/2; cone.position.set(0, 0.5, 2.5); enemy.add(cone);
+            enemy.position.set(x, 0, z); scene.add(enemy);
+            entities.push({type: 'enemy_patrol', mesh: enemy, dir: new THREE.Vector3(dirX, 0, dirZ), patrolTimer: 100, startPos: startPos});
+        };
+        createEnemy(8, 5, -1, 0);
+        createEnemy(-8, -5, 1, 0);
+        createEnemy(10, -15, 0, 1);
+        
+        const term = new THREE.Mesh(new THREE.BoxGeometry(1.5, 2, 1), new THREE.MeshStandardMaterial({color: 0x0055ff, emissive: 0x0022aa}));
+        term.position.set(-12, 1, -22); term.isWall = true; scene.add(term); envBlocks.push(term);
+        entities.push({type: 'interactable', mesh: term});
+        
+        DOM.gameStartTitle.textContent = "SNEAK MISSION";
+        DOM.gameStartDesc.innerHTML = "ジョイスティック(またはWASD)で移動<br>迷路を抜け、敵の視界(赤色)を避け、奥の青いターミナルを操作せよ！";
+    }
+    else if(mode === 'fps_defense' || mode === 'fps_turret') {
+        camera.position.set(0, 2, 0); camera.rotation.set(0,0,0);
+        DOM.fpsCrosshair.classList.remove('hidden');
+        
+        if (mode === 'fps_defense') {
+            // デススター内部・タンティヴィIV内部風の廊下
+            const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 100), new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.2}));
+            floor.rotation.x = -Math.PI/2; floor.position.z = -40; scene.add(floor); envBlocks.push(floor);
+            
+            const wallMat = new THREE.MeshStandardMaterial({color: 0xeeeeee, metalness: 0.5});
+            const wL = new THREE.Mesh(new THREE.BoxGeometry(2, 10, 100), wallMat); wL.position.set(-15, 5, -40); scene.add(wL); envBlocks.push(wL);
+            const wR = new THREE.Mesh(new THREE.BoxGeometry(2, 10, 100), wallMat); wR.position.set(15, 5, -40); scene.add(wR); envBlocks.push(wR);
+            const ceil = new THREE.Mesh(new THREE.PlaneGeometry(30, 100), wallMat); ceil.rotation.x = Math.PI/2; ceil.position.set(0, 10, -40); scene.add(ceil); envBlocks.push(ceil);
+            
+            // 蛍光灯風のライト
+            for(let i=0; i<5; i++) {
+                const light = new THREE.PointLight(0xffffff, 0.5, 30);
+                light.position.set(0, 9, -10 - i*15);
+                scene.add(light);
+            }
+        } else {
+            // ファルコン砲座風
+            const starGeo = new THREE.BufferGeometry();
+            const starPos = new Float32Array(1500 * 3);
+            for(let i=0; i<1500; i++) {
+                starPos[i*3] = (Math.random()-.5)*300; starPos[i*3+1] = (Math.random()-.5)*300; starPos[i*3+2] = -Math.random()*400 - 50;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+            scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.5})));
+            
+            // 窓枠
+            const windowFrame = new THREE.Mesh(new THREE.RingGeometry(15, 25, 32), new THREE.MeshStandardMaterial({color: 0x222222, side: THREE.DoubleSide}));
+            windowFrame.position.z = -20; scene.add(windowFrame);
+        }
+        
+        DOM.gameStartTitle.textContent = mode === 'fps_defense' ? "DEFEND THE POSITION" : "TURRET DEFENSE";
+        DOM.gameStartDesc.innerHTML = "ジョイスティックで照準<br>FIREボタンで帝国軍を迎撃せよ！";
+    }
+    else if (mode === 'tps_flight' || mode === 'tps_trench') {
+        camera.position.set(0, 4, 15);
+        DOM.fpsCrosshair.classList.add('hidden');
+        
+        playerObj = buildXWing();
+        playerObj.position.set(0, 0, -5);
+        scene.add(playerObj);
+        
+        if (mode === 'tps_trench') {
+            const matWall = new THREE.MeshStandardMaterial({color: 0x555555, roughness: 0.8, metalness: 0.2});
+            const matDetail = new THREE.MeshStandardMaterial({color: 0x333333});
+            
+            const buildTrenchSegment = (zPos) => {
+                const group = new THREE.Group();
+                // 溝の底
+                const floor = new THREE.Mesh(new THREE.BoxGeometry(20, 2, 20), matWall);
+                floor.position.set(0, -5, 0); group.add(floor);
+                // 左右の壁
+                const wL = new THREE.Mesh(new THREE.BoxGeometry(10, 20, 20), matWall);
+                wL.position.set(-15, 4, 0); group.add(wL);
+                const wR = new THREE.Mesh(new THREE.BoxGeometry(10, 20, 20), matWall);
+                wR.position.set(15, 4, 0); group.add(wR);
+                
+                // ディテール（表面の凹凸）
+                for(let i=0; i<5; i++) {
+                    const d1 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 2), matDetail);
+                    d1.position.set(-9.5, (Math.random()-.5)*10 + 4, (Math.random()-.5)*18); group.add(d1);
+                    const d2 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 2), matDetail);
+                    d2.position.set(9.5, (Math.random()-.5)*10 + 4, (Math.random()-.5)*18); group.add(d2);
+                    const d3 = new THREE.Mesh(new THREE.BoxGeometry(2, 1, 2), matDetail);
+                    d3.position.set((Math.random()-.5)*18, -3.5, (Math.random()-.5)*18); group.add(d3);
+                }
+                group.position.z = zPos;
+                return group;
+            };
+
+            for(let i=0; i<15; i++) {
+                const seg = buildTrenchSegment(-i * 20);
+                scene.add(seg); envBlocks.push(seg);
+            }
+        } else {
+            // デス・スター表面上空
+            const dsSurface = new THREE.Mesh(new THREE.PlaneGeometry(800, 800, 32, 32), new THREE.MeshStandardMaterial({color: 0x444444, wireframe: true}));
+            dsSurface.rotation.x = -Math.PI/2; dsSurface.position.y = -20;
+            scene.add(dsSurface); envBlocks.push(dsSurface);
+        }
+        
+        const starGeo = new THREE.BufferGeometry();
+        const starPos = new Float32Array(2000 * 3);
+        for(let i=0; i<2000; i++) {
+            starPos[i*3] = (Math.random()-.5)*400; starPos[i*3+1] = (Math.random()-.5)*400; starPos[i*3+2] = -Math.random()*500 - 100;
+        }
+        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 0.5}));
+        scene.add(stars);
+
+        DOM.gameStartTitle.textContent = mode === 'tps_flight' ? "SURFACE ATTACK" : "TRENCH RUN";
+        DOM.gameStartDesc.innerHTML = mode === 'tps_flight' 
+            ? "ジョイスティックで操縦<br>FIREボタンで攻撃！デス・スター表面の防衛網を突破せよ！" 
+            : "フォースを信じろ<br>トレンチを抜け、ターゲット・ロックオン後にプロトン魚雷を撃ち込め！";
+    }
+
+    renderer.render(scene, camera);
+    
+    DOM.gameStartOverlay.classList.remove('hidden');
+
+    bindSafeButton(DOM.btnStartMission, () => {
+        playSound('click');
+        playSound('saber');
+        DOM.gameStartOverlay.classList.add('hidden');
+        gameActive = true;
+        startBGM(140);
+        lastShoot = Date.now();
+        gameLoop();
+    });
 }
 
-function calcRank(success){const acc=stageStats.shots?stageStats.hits/stageStats.shots*100:(success?100:0);const hp=Math.max(0,health/maxHealth*100);const time=(performance.now()-stageStats.startTime)/1000;let points=acc*.35+hp*.35+Math.min(stageStats.maxCombo,12)*2.2+Math.min(stageStats.kills,20)*.8;if(!success)points-=35;if(time<45)points+=8;if(stageStats.headshots)points+=Math.min(10,stageStats.headshots*2);if(points>=88)return'S';if(points>=72)return'A';if(points>=55)return'B';return'C'}
-function showStageResult(success,nextAction){
-    const acc=stageStats.shots?Math.round(stageStats.hits/stageStats.shots*100):(success?100:0);const hp=Math.max(0,Math.round(health/maxHealth*100));const time=((performance.now()-stageStats.startTime)/1000).toFixed(1);const rank=calcRank(success);const key=`${state.currentScene}_${stageStats.mode}`;
-    if(success){state.completedMissions[key]=true;const order={S:4,A:3,B:2,C:1};if(!state.bestRanks[key]||order[rank]>order[state.bestRanks[key]])state.bestRanks[key]=rank;state.bestScores[key]=Math.max(state.bestScores[key]||0,score)}
-    saveGame();DOM.resultTitle.textContent=success?'MISSION CLEAR':'MISSION FAILED';DOM.resultRank.textContent=rank;DOM.resultAcc.textContent=acc+'%';DOM.resultHp.textContent=hp+'%';DOM.resultTime.textContent=time+'s';DOM.resultCombo.textContent=stageStats.maxCombo;DOM.resultBonus.textContent=`撃破 ${stageStats.kills} / ヘッドショット ${stageStats.headshots} / ${forceProfile?.note||''}`;DOM.resultNextBtn.textContent=success?'CONTINUE':'RETRY';DOM.resultOverlay.style.display='flex';
-    DOM.resultNextBtn.replaceWith(DOM.resultNextBtn.cloneNode(true));DOM.resultNextBtn=document.getElementById('result-next-btn');bindSafeButton(DOM.resultNextBtn,()=>{DOM.resultOverlay.style.display='none';nextAction()});
+function finishMinigame(success) {
+    if(currentMiniGameCompleted) return;
+    currentMiniGameCompleted = true;
+    gameActive = false;
+    
+    stopBGM();
+    DOM.virtualControls.classList.add('hidden');
+    DOM.targetLockHud.classList.add('hidden');
+    DOM.missionMessage.classList.add('opacity-0');
+    DOM.gameCanvasContainer.classList.add('opacity-0');
+    
+    setTimeout(() => {
+        clear3D();
+        showResult(success ? 'MISSION CLEAR' : 'MISSION FAILED', success ? '見事な腕前だ。' : 'フォースと共にあらんことを...', success, () => renderScene(success ? minigameNext : minigameFail));
+    }, 500);
 }
-function endGame(success){if(!gameActive)return;gameActive=false;if(animationId)cancelAnimationFrame(animationId);animationId=null;DOM.gameCanvasContainer.style.opacity='0';DOM.gameCanvasContainer.style.pointerEvents='none';setTimeout(()=>{DOM.gameCanvasContainer.style.display='none';DOM.gameCanvasContainer.classList.add('hidden');setLayerMode('app');const cb=state.minigameCallback;state.minigameCallback=null;if(success)showStageResult(true,()=>cb&&cb());else showStageResult(false,()=>renderScene(state.minigameFailScene||'game_over_minigame'))},550)}
 
-// Negotiation mini game
-const negotiationQuestions=[
-    {speaker:'HAN SOLO',text:'「帝国に追われてる客を乗せるのは高いぞ。いくら出せる？」',choices:[['安くしろと強く命令する',-20],['危険料込みで少し上乗せすると伝える',25],['何も言わずライトセーバーを見せる',-5]]},
-    {speaker:'CHEWBACCA',text:'チューバッカが低く唸っている。信用されていないようだ。',choices:[['相棒にも敬意を払い、目を見てうなずく',25],['ハンだけに話しかけ続ける',-10],['早くしろと急かす',-15]]},
-    {speaker:'HAN SOLO',text:'「で、本当は何から逃げてる？」',choices:[['帝国の目を避けたいと正直に伝える',30],['何も説明しない',-15],['反乱軍の任務だと大声で言う',-25]]}
-];
-let negotiationRound=0,trust=50,negoSuccess=null,negoFail=null;
-function startNegotiation(target,onComplete,onFail){setLayerMode('app');negoSuccess=onComplete;negoFail=onFail;negotiationRound=0;trust=50;forceProfile=getForceProfile();resetStageStats('negotiation');maxScore=target;score=0;DOM.negotiationOverlay.style.display='flex';renderNegotiationRound()}
-function renderNegotiationRound(){const q=negotiationQuestions[negotiationRound];DOM.dialogRound.textContent=`ROUND ${negotiationRound+1} / ${negotiationQuestions.length}`;DOM.trustFill.style.width=`${Math.max(0,Math.min(100,trust))}%`;DOM.dialogSpeaker.textContent=q.speaker;DOM.dialogText.textContent=q.text;DOM.dialogChoices.innerHTML='';q.choices.forEach(([label,delta])=>{const b=document.createElement('button');b.className='dialog-choice';b.textContent=label;bindSafeButton(b,()=>{playSound('click');trust+=delta;if(delta>0){score++;stageStats.hits++;stageStats.kills++;addCombo();state.alignment+=delta>25?5:2}else{state.alignment-=3;stageStats.damageTaken+=Math.abs(delta)}negotiationRound++;if(negotiationRound>=negotiationQuestions.length){finishNegotiation()}else renderNegotiationRound()});DOM.dialogChoices.appendChild(b)})}
-function finishNegotiation(){DOM.negotiationOverlay.style.display='none';health=trust;maxHealth=100;const success=trust>=60;showStageResult(success,()=>success?negoSuccess():negoFail())}
+function showResult(title, desc, success, callback) {
+    setLayerMode('result');
+    DOM.resultTitle.textContent = title;
+    DOM.resultTitle.style.color = success ? '#fce300' : '#e74c3c';
+    DOM.resultDesc.textContent = desc;
+    
+    const newBtn = DOM.resultNextBtn.cloneNode(true);
+    DOM.resultNextBtn.replaceWith(newBtn);
+    DOM.resultNextBtn = newBtn;
+    bindSafeButton(DOM.resultNextBtn, () => {
+        playSound('click');
+        callback();
+    });
+}
 
-// Boot
-let bootStarted=false,crawlFinished=false,crawlTimeout=null;
-bindSafeButton(DOM.btnBegin,async()=>{if(bootStarted)return;bootStarted=true;resetSave();await safeInitAudio();playSound('click');playSound('saber');DOM.startOverlay.classList.add('opacity-0','transition-opacity','duration-700');DOM.startOverlay.style.pointerEvents='none';setTimeout(()=>DOM.startOverlay.classList.add('hidden'),700);setLayerMode('crawl');crawlTimeout=setTimeout(()=>finishCrawl(),55000)});
-bindSafeButton(DOM.btnContinue,async()=>{if(bootStarted)return;bootStarted=true;await safeInitAudio();playSound('click');loadGame();setLayerMode('app');renderScene(state.currentScene||'prologue')});
-bindSafeButton(DOM.btnResetSave,()=>{resetSave();playSound('click')});
-bindSafeButton(DOM.skipCrawlBtn,()=>{playSound('click');finishCrawl()});
-function finishCrawl(){if(crawlFinished)return;crawlFinished=true;if(crawlTimeout){clearTimeout(crawlTimeout);crawlTimeout=null}DOM.crawlContainer.classList.add('opacity-0','transition-opacity','duration-700');DOM.crawlContainer.style.pointerEvents='none';setTimeout(()=>{setLayerMode('app');renderScene('prologue')},700)}
-updateStartSaveUI();updateHUD();setLayerMode('start');
+// ==========================================
+// 6. BOOT
+// ==========================================
+bindSafeButton(DOM.btnBegin, async () => {
+    await initAudio(); playSound('click'); playSound('saber');
+    DOM.startOverlay.classList.add('opacity-0');
+    setTimeout(() => { setLayerMode('crawl'); DOM.startOverlay.classList.add('hidden'); }, 700);
+    setTimeout(() => skipCrawl(), 50000);
+});
+
+bindSafeButton(DOM.btnContinue, async () => {
+    await initAudio(); playSound('click');
+    loadGame(); renderScene(state.currentScene);
+});
+
+bindSafeButton(DOM.skipCrawlBtn, () => { playSound('click'); skipCrawl(); });
+function skipCrawl() { setLayerMode('app'); renderScene('prologue'); }
+
+if(hasSave()) DOM.btnContinue.classList.remove('hidden');
+
+document.body.addEventListener('pointerdown', async () => {
+    if(!audioCtxReady) await initAudio();
+    if(Tone.context.state !== 'running') Tone.context.resume();
+}, {once: true});
+
 </script>
 </body>
 </html>
